@@ -1,69 +1,53 @@
 #include <iostream>
 #include <vector>
 
-std::vector<int> plusOne(std::vector<int>& digits)
+int romanToInt(std::string s)
 {
-	//int lastDigit = static_cast<int>(digits.size()) - 1;
-	//// plus one
-	//if (digits[lastDigit] == 9)
-	//{
-	//	bool allDigitIsNine{ true };
-	//	// check if all digit is 9
-	//	for (int i{ 0 }; i < lastDigit; ++i)
-	//	{
-	//		if (digits[i] != 9)
-	//			allDigitIsNine = false;
-	//	}
+	int total{ 0 };
 
-	//	// 9, 99, 999 -> 10, 100, 1000
-	//	if (allDigitIsNine) {
-	//		digits.insert(digits.begin(), 1);
-	//		for (int i{ 1 }; i < static_cast<int>(digits.size()); ++i)
-	//			digits[i] = 0;
-	//	}
-	//	else
-	//	{
-	//		digits.at(lastDigit) = 0;
-	//		digits.at(lastDigit - 1) += 1;
-	//	}
-	//}
-	//else
-	//digits.at(lastDigit) += 1;
-
-	bool currentDigitIsTen{ false };
-	int lastDigit = static_cast<int>(digits.size()) - 1;
-	for (int i{ lastDigit }; i >= 0; --i)
+	for (int i{ 0 }; i < static_cast<int>(s.size()); ++i)
 	{
-		if (i == lastDigit || currentDigitIsTen == true)
+		// if I before V is not count I and substract I (meaning IV = V - I)
+		if (i > 0 && i < static_cast<int>(s.size()))
 		{
-			++digits[i];
-			currentDigitIsTen = false;
+			switch (s[i])
+			{
+			case 'I': { ++total; break; }
+			case 'V': { if (s[i - 1] == 'I') { total -= 2; }; total += 5; break; }
+			case 'X': { if (s[i - 1] == 'I') { total -= 2; }; total += 10; break; }
+			case 'L': { if (s[i - 1] == 'X') { total -= 20; }; total += 50; break; }
+			case 'C': { if (s[i - 1] == 'X') { total -= 20; }; total += 100; break; }
+			case 'D': { if (s[i - 1] == 'C') { total -= 200; }; total += 500; break; }
+			case 'M': { if (s[i - 1] == 'C') { total -= 200; }; total += 1000; break; }
+			}
+		}
+		else
+		{
+			switch (s[i])
+			{
+			case 'I': { ++total; break; }
+			case 'V': { total += 5; break; }
+			case 'X': {  total += 10; break; }
+			case 'L': { total += 50; break; }
+			case 'C': { total += 100; break; }
+			case 'D': { total += 500; break; }
+			case 'M': { total += 1000; break; }
+			}
 		}
 
-		if (digits[i] == 10)
-		{
-			digits[i] = 0;
-
-			// first Digit = 1, after first Digit is all 0
-			if (i == 0)
-				digits.insert(digits.begin(), 1);
-
-			currentDigitIsTen = true;
-		}
-		
 	}
 
-	return digits;
+	return total;
 }
-
 
 
 int main()
 {
-	std::vector<int> test{ 9,9 };
-	plusOne(test);
-	for (int i{0}; i < static_cast<int>(test.size()); ++i)
-		std::cout << test[i] << ' ';
+
+	std::cout << romanToInt("MCMXCIV") << '\n';
+	std::cout << romanToInt("IV") << '\n';
+	std::cout << romanToInt("LVIII") << '\n';
+	std::cout << romanToInt("III") << '\n';
 
 	return 0;
 }

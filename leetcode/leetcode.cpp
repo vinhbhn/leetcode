@@ -1,36 +1,70 @@
 #include <iostream>
 #include <vector>
 
-class Solution {
-public:
-	std::vector<int> twoSum(std::vector<int>& nums, int target)
+std::vector<int> plusOne(std::vector<int>& digits)
+{
+	//int lastDigit = static_cast<int>(digits.size()) - 1;
+	//// plus one
+	//if (digits[lastDigit] == 9)
+	//{
+	//	bool allDigitIsNine{ true };
+	//	// check if all digit is 9
+	//	for (int i{ 0 }; i < lastDigit; ++i)
+	//	{
+	//		if (digits[i] != 9)
+	//			allDigitIsNine = false;
+	//	}
+
+	//	// 9, 99, 999 -> 10, 100, 1000
+	//	if (allDigitIsNine) {
+	//		digits.insert(digits.begin(), 1);
+	//		for (int i{ 1 }; i < static_cast<int>(digits.size()); ++i)
+	//			digits[i] = 0;
+	//	}
+	//	else
+	//	{
+	//		digits.at(lastDigit) = 0;
+	//		digits.at(lastDigit - 1) += 1;
+	//	}
+	//}
+	//else
+	//digits.at(lastDigit) += 1;
+
+	bool currentDigitIsTen{ false };
+	int lastDigit = static_cast<int>(digits.size()) - 1;
+	for (int i{ lastDigit }; i >= 0; --i)
 	{
-		std::vector<int> output;
-
-		for (int i{ 0 }; i < nums.size() - 1; ++i) {
-			for (int j{ i + 1 }; j < nums.size(); ++j) {
-				if (nums[i] + nums[j] == target)
-				{
-					output.push_back(i);
-					output.push_back(j);
-				}
-
-			}
+		if (i == lastDigit || currentDigitIsTen == true)
+		{
+			++digits[i];
+			currentDigitIsTen = false;
 		}
 
-		return output;
+		if (digits[i] == 10)
+		{
+			digits[i] = 0;
+
+			// first Digit = 1, after first Digit is all 0
+			if (i == 0)
+				digits.insert(digits.begin(), 1);
+
+			currentDigitIsTen = true;
+		}
+		
 	}
 
-	friend std::ostream& operator<<(std::ostream& out, const Solution& s)
-	{
-		return out << s;
-	}
-};
+	return digits;
+}
+
 
 
 int main()
 {
-	std::vector<int> test{ 3,3 };
-	std::cout << Solution::twoSum(test, 6) << '\n';
+	std::vector<int> test{ 9,9 };
+	plusOne(test);
+	for (int i{0}; i < static_cast<int>(test.size()); ++i)
+		std::cout << test[i] << ' ';
+
+	return 0;
 }
 

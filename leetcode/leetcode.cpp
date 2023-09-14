@@ -3,50 +3,30 @@
 #include <string>
 #include <algorithm>
 
-//bool isPalindrome(int x)
-//{
-//	// x < 0: not palindrome
-//	// x = -121, reverse: x = 121-,then do not need compare
-//	if (x < 0)
-//		return false;
-//
-//	if (x == 0)
-//		return true;
-//
-//	// x > 0: convert it to string then reverse, comp
-//	std::string xToStr{ std::to_string(x) };
-//	std::reverse(xToStr.begin(), xToStr.end());
-//
-//	return (xToStr == std::to_string(x));
-//}
-
-bool isPalindrome(int x)
+std::string longestCommonPrefix(std::vector<std::string>& strs)
 {
-	// x < 0
-		// e.g -121, reverse: 121-
-	if (x < 0)
-		return false;
-
-	// using Modulo
-	long long reversed{ 0 };
-	int number{ x };
-	while (x > 0)
+	std::sort(strs.begin(), strs.end()); // sorting the array
+	std::string ans{};
+	for (int i{ 0 }; i < strs[0].size(); ++i) // max length = element 1 length of strs
 	{
-		int digit = x % 10;
-		reversed = (reversed * 10) + digit;
-		x /= 10;
+		if (strs[0][i] != strs[strs.size() - 1][i])
+			break;
+
+		ans += strs[0][i]; // concatinate if the characters are matching
 	}
-	return (number == reversed);
+
+	return ans;
 }
 
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << isPalindrome(121) << '\n';
-	std::cout << isPalindrome(122) << '\n';
-	std::cout << isPalindrome(-121) << '\n';
-	std::cout << isPalindrome(10) << '\n';
+	std::vector<std::string> strs1 = { "flower", "flow", "flight" };
+	std::cout << longestCommonPrefix(strs1) << '\n';
+	std::vector<std::string> strs2 = { "dog", "racecar", "car" };
+	std::cout << longestCommonPrefix(strs2) << '\n';
+	std::vector<std::string> strs3 = { "a" };
+	std::cout << longestCommonPrefix(strs3) << '\n';
 
 	return 0;
 }

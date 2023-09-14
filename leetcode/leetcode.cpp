@@ -1,53 +1,47 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <algorithm>
 
-int romanToInt(std::string s)
+//bool isPalindrome(int x)
+//{
+//	// x < 0: not palindrome
+//	// x = -121, reverse: x = 121-,then do not need compare
+//	if (x < 0)
+//		return false;
+//
+//	if (x == 0)
+//		return true;
+//
+//	// x > 0: convert it to string then reverse, comp
+//	std::string xToStr{ std::to_string(x) };
+//	std::reverse(xToStr.begin(), xToStr.end());
+//
+//	return (xToStr == std::to_string(x));
+//}
+
+bool isPalindrome(int x)
 {
-	int total{ 0 };
-
-	for (int i{ 0 }; i < static_cast<int>(s.size()); ++i)
+	// using Modulo
+	long long reversed{ 0 };
+	int number{ x };
+	while (x > 0)
 	{
-		// if I before V is not count I and substract I (meaning IV = V - I)
-		if (i > 0 && i < static_cast<int>(s.size()))
-		{
-			switch (s[i])
-			{
-			case 'I': { ++total; break; }
-			case 'V': { if (s[i - 1] == 'I') { total -= 2; }; total += 5; break; }
-			case 'X': { if (s[i - 1] == 'I') { total -= 2; }; total += 10; break; }
-			case 'L': { if (s[i - 1] == 'X') { total -= 20; }; total += 50; break; }
-			case 'C': { if (s[i - 1] == 'X') { total -= 20; }; total += 100; break; }
-			case 'D': { if (s[i - 1] == 'C') { total -= 200; }; total += 500; break; }
-			case 'M': { if (s[i - 1] == 'C') { total -= 200; }; total += 1000; break; }
-			}
-		}
-		else
-		{
-			switch (s[i])
-			{
-			case 'I': { ++total; break; }
-			case 'V': { total += 5; break; }
-			case 'X': {  total += 10; break; }
-			case 'L': { total += 50; break; }
-			case 'C': { total += 100; break; }
-			case 'D': { total += 500; break; }
-			case 'M': { total += 1000; break; }
-			}
-		}
-
+		int digit = x % 10;
+		reversed = (reversed * 10) + digit;
+		x /= 10;
 	}
-
-	return total;
+	return (number == reversed);
 }
 
 
 int main()
 {
-
-	std::cout << romanToInt("MCMXCIV") << '\n';
-	std::cout << romanToInt("IV") << '\n';
-	std::cout << romanToInt("LVIII") << '\n';
-	std::cout << romanToInt("III") << '\n';
+	std::cout << std::boolalpha;
+	std::cout << isPalindrome(121) << '\n';
+	std::cout << isPalindrome(122) << '\n';
+	std::cout << isPalindrome(-121) << '\n';
+	std::cout << isPalindrome(10) << '\n';
 
 	return 0;
 }

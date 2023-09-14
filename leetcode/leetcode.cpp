@@ -22,6 +22,11 @@
 
 bool isPalindrome(int x)
 {
+	// x < 0
+		// e.g -121, reverse: 121-
+	if (x < 0)
+		return false;
+
 	// using Modulo
 	long long reversed{ 0 };
 	int number{ x };

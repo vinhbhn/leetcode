@@ -3,76 +3,29 @@
 #include <string>
 #include <algorithm>
 
-//int mySqrt(int x) {
-//	if (x == 1 || x == 0)
-//		return x;
-//
-//	int i{ 2 };
-//	unsigned long long cal{ 0 };
-//	while (i <= x)
-//	{
-//		cal = i * i;
-//		if (cal == x)
-//			return i;
-//
-//		if (cal > x)
-//			return i - 1;
-//
-//		++i;
-//	}
-//
-//	return i;
-//}
+// count char from s.end() then count ' ' again so break or reach s.begin()
+int lengthOfLastWord(std::string s) {
+	int count{ 0 };
 
-int mySqrt(int x) {
-    if (x == 1 || x == 0)
-        return x;
+	for (int i{static_cast<int>(s.size()) - 1}; i >= 0; i--)
+	{
+		if (s[i] == ' ' && count > 0)
+			break;
 
-    int i{ 2 };
-    while (i <= x)
-    {
-        if (x / i == i)
-            return i;
-        else if (x / i < i)
-            return i - 1;
+		if (s[i] != ' ')
+			++count;
+	}
 
-        ++i;
-    }
-
-    return i;
-}
-
-// https://leetcode.com/problems/sqrtx/solutions/
-int mySqrt(int x) {
-    if (x == 0)
-        return x;
-    int first = 1, last = x;
-    int mid{ -1 };
-    while (first <= last) {
-        mid = first + (last - first) / 2;
-        // mid * mid == x gives runtime error
-        if (mid == x / mid)
-            return mid;
-        else if (mid > x / mid) {
-            last = mid - 1;
-        }
-        else {
-            first = mid + 1;
-        }
-    }
-    return last;
+	return count;
 }
 
 int main()
 {
-	std::cout << mySqrt(2) << '\n';
-	std::cout << mySqrt(4) << '\n';
-	std::cout << mySqrt(8) << '\n';
-	std::cout << mySqrt(16) << '\n';
-	std::cout << mySqrt(46431) << '\n';
-	std::cout << mySqrt(2147483647) << '\n';
-
-
+	std::cout << lengthOfLastWord("Hello World") << '\n';
+	std::cout << lengthOfLastWord("   fly me   to   the moon  ") << '\n';
+	std::cout << lengthOfLastWord("luffy is still joyboy") << '\n';
+	std::cout << lengthOfLastWord("a") << '\n';
+	std::cout << lengthOfLastWord("a ") << '\n';
 
 	return 0;
 }

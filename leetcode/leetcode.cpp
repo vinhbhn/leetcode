@@ -4,31 +4,29 @@
 #include <algorithm>
 #include <functional>
 
-// https://en.cppreference.com/w/cpp/utility/functional/default_searcher
-// three way work
-int strStr(std::string haystack, std::string needle) {
-	/*auto it = std::search(haystack.begin(), haystack.end(), std::default_searcher(needle.begin(), needle.end()));
-	if (it != haystack.end())
-		return (it - haystack.begin());
-	else
-		return -1;*/
+int reverse(int x)
+{
+	long number{ 0 };
+	while (x)
+	{
+		number = number * 10 + x % 10;
+		x /= 10;
+	}
 
-	/*auto it = std::search(haystack.begin(), haystack.end(), std::boyer_moore_searcher(needle.begin(), needle.end()));
-	if (it != haystack.end())
-		return (it - haystack.begin());
-	else
-		return -1;*/
+	if (number > INT_MAX || number < INT_MIN)
+		return 0;
 
-	return haystack.find(needle);
+	return number;
 }
+
 
 int main()
 {
-	using namespace std::literals;
-	std::cout << strStr("sadbutsad", "sad") << '\n';
-	std::cout << strStr("leetcode", "leeto") << '\n';
-	std::cout << strStr("hello", "ll") << '\n';
-
+	std::cout << reverse(123) << '\n';
+	std::cout << reverse(-123) << '\n';
+	std::cout << reverse(120) << '\n';
+	std::cout << reverse(12345) << '\n';
+	std::cout << reverse(1534236469) << '\n'; // return 0
 
 	return 0;
 }

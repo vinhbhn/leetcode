@@ -2,37 +2,33 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <stack>
+#include <functional>
 
-bool isPalindrome(std::string s) {
-	// filter uppercase/lowercase letters, convert uppercase to lowercase
-	std::string output;
-	for (int i{ 0 }; i < s.size(); ++i)
-	{
-		if (s[i] >= 'A' && s[i] <= 'Z')
-		{
-			output += s[i] + 32;
-		}
+// https://en.cppreference.com/w/cpp/utility/functional/default_searcher
+// three way work
+int strStr(std::string haystack, std::string needle) {
+	/*auto it = std::search(haystack.begin(), haystack.end(), std::default_searcher(needle.begin(), needle.end()));
+	if (it != haystack.end())
+		return (it - haystack.begin());
+	else
+		return -1;*/
 
-		if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= '0' && s[i] <= '9'))
-			output += s[i];
-	}
+	/*auto it = std::search(haystack.begin(), haystack.end(), std::boyer_moore_searcher(needle.begin(), needle.end()));
+	if (it != haystack.end())
+		return (it - haystack.begin());
+	else
+		return -1;*/
 
-	if (output.empty())
-		return true;
-
-	std::string str = output;
-	std::reverse(output.begin(), output.end());
-	return str == output;
+	return haystack.find(needle);
 }
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << isPalindrome("A man, a plan, a canal: Panama") << '\n';
-	std::cout << isPalindrome("race a car") << '\n';
-	std::cout << isPalindrome(" ") << '\n';
-	std::cout << isPalindrome("0P") << '\n';
+	using namespace std::literals;
+	std::cout << strStr("sadbutsad", "sad") << '\n';
+	std::cout << strStr("leetcode", "leeto") << '\n';
+	std::cout << strStr("hello", "ll") << '\n';
+
 
 	return 0;
 }

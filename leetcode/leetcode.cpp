@@ -4,86 +4,46 @@
 #include <algorithm>
 #include <stack>
 
-// 78/95 testcases
-//bool isValid(std::string s) {
-//	int size{ static_cast<int>(s.size()) };
-//	bool correct{ false };
-//	
-//	if (size == 1 || size % 2 != 0)
-//		return false;
+// Time complexity: O((m+n)log(m+n))
+// Space complexity: O(1)
+void merge(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+	for (int i{ 0 }; i < nums2.size(); ++i)
+	{
+		nums1[i+m] = nums2[i];
+	}
+
+	std::sort(nums1.begin(), nums1.end());
+}
+
+// https://leetcode.com/problems/merge-sorted-array/solutions/3436053/beats-100-best-c-java-python-and-javascript-solution-two-pointer-stl/
+// Time complexity: O(m+n)
+// Space complexity: O(1)
+//void merge(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+//	int i{ m - 1 }, j{ n - 1 }, k{ m + n - 1 };
 //
-//	// squentially
-//	for (int i{ 0 }; i < size - 1; i += 2)
+//	while (j >= 0)
 //	{
-//		if ((s[i] == '(' && s[i + 1] == ')') || (s[i] == '{' && s[i + 1] == '}') || (s[i] == '[' && s[i + 1] == ']'))
-//			correct = true;
+//		if (i >= 0 && nums1[i] > nums2[j])
+//			nums1[k--] = nums1[i--];
 //		else
-//		{
-//			// guard, maybe true true false
-//			correct = false;
-//			break;
-//		}
+//			nums1[k--] = nums2[j--];
 //	}
-//
-//	// mirror, center position
-//	if (size >= 4 && correct == false)
-//	{
-//		for (int i{ 0 }, j{ size - 1 }; i <= ((size - 1) / 2); ++i, --j)
-//		{
-//			if ((s[i] == '(' && s[j] == ')') || (s[i] == '{' && s[j] == '}') || (s[i] == '[' && s[j] == ']'))
-//				correct = true;
-//			else
-//			{
-//				correct = false;
-//				break;
-//			}
-//		}
-//	}
-//	
-//	return correct;
 //}
 
-// https://leetcode.com/problems/valid-parentheses/solutions/3399077/easy-solutions-in-java-python-and-c-look-at-once-with-exaplanation/
-bool isValid(std::string s)
-{
-	std::stack<char> st; // create an empty stack to store opening brackets
-	for (char c : s) // loop through each character in the string
-	{
-		if (c == '(' || c == '{' || c == '[') // if the character is an opening bracket
-			st.push(c);
-		else // if the character is a closing bracket
-		{
-			if (st.empty() // if the stack is empty or
-				|| c == ')' && st.top() != '(' // the closing bracket doesn't match the corresponding opening bracket at the top of the stack
-				|| c == '}' && st.top() != '{'
-				|| c == ']' && st.top() != '['
-				) {
-				return false; // the string is not valid, so return false
-			}
-
-			st.pop(); // otherwise, pop the opening bracket from the stack
-		}
-	}
-	
-	return st.empty();
-	// if the stack is empty, all opening brackets have been matched with their corresponding closing brackets,
-	// so the string is valid, otherwise, there are unmatched opening brackets, so return false.
-}
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << isValid("()") << '\n';
-	std::cout << isValid("()[]{}") << '\n';
-	std::cout << isValid("(]") << '\n';
-	std::cout << isValid("(]}") << '\n';
-	std::cout << isValid("(") << '\n';
-	std::cout << isValid(")") << '\n';
-	std::cout << isValid("{[]}") << '\n';
-	std::cout << isValid("({[]})") << '\n';
-	std::cout << isValid("[{[]]}") << '\n';
-	std::cout << isValid("(){}}{") << '\n';
-	std::cout << isValid("(([]){})") << '\n';
+	std::vector<int> nums1{ 1, 2, 3, 0,0,0 };
+	std::vector<int> nums2{ 2,5,6 };
+	merge(nums1, 3, nums2, 3);
+
+	std::vector<int> nums3{ 1 };
+	std::vector<int> nums4;
+	merge(nums3, 1, nums4, 0);
+
+	std::vector<int> nums6{ 1 };
+	std::vector<int> nums5{ 0 };
+	merge(nums5, 0, nums6, 1);
 
 	return 0;
 }

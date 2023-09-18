@@ -4,46 +4,35 @@
 #include <algorithm>
 #include <stack>
 
-// Time complexity: O((m+n)log(m+n))
-// Space complexity: O(1)
-void merge(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
-	for (int i{ 0 }; i < nums2.size(); ++i)
+bool isPalindrome(std::string s) {
+	// filter uppercase/lowercase letters, convert uppercase to lowercase
+	std::string output;
+	for (int i{ 0 }; i < s.size(); ++i)
 	{
-		nums1[i+m] = nums2[i];
+		if (s[i] >= 'A' && s[i] <= 'Z')
+		{
+			output += s[i] + 32;
+		}
+
+		if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= '0' && s[i] <= '9'))
+			output += s[i];
 	}
 
-	std::sort(nums1.begin(), nums1.end());
+	if (output.empty())
+		return true;
+
+	std::string str = output;
+	std::reverse(output.begin(), output.end());
+	return str == output;
 }
-
-// https://leetcode.com/problems/merge-sorted-array/solutions/3436053/beats-100-best-c-java-python-and-javascript-solution-two-pointer-stl/
-// Time complexity: O(m+n)
-// Space complexity: O(1)
-//void merge(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
-//	int i{ m - 1 }, j{ n - 1 }, k{ m + n - 1 };
-//
-//	while (j >= 0)
-//	{
-//		if (i >= 0 && nums1[i] > nums2[j])
-//			nums1[k--] = nums1[i--];
-//		else
-//			nums1[k--] = nums2[j--];
-//	}
-//}
-
 
 int main()
 {
-	std::vector<int> nums1{ 1, 2, 3, 0,0,0 };
-	std::vector<int> nums2{ 2,5,6 };
-	merge(nums1, 3, nums2, 3);
-
-	std::vector<int> nums3{ 1 };
-	std::vector<int> nums4;
-	merge(nums3, 1, nums4, 0);
-
-	std::vector<int> nums6{ 1 };
-	std::vector<int> nums5{ 0 };
-	merge(nums5, 0, nums6, 1);
+	std::cout << std::boolalpha;
+	std::cout << isPalindrome("A man, a plan, a canal: Panama") << '\n';
+	std::cout << isPalindrome("race a car") << '\n';
+	std::cout << isPalindrome(" ") << '\n';
+	std::cout << isPalindrome("0P") << '\n';
 
 	return 0;
 }

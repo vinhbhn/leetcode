@@ -8,36 +8,24 @@
 #include <bitset>
 #include <cstdint>
 
-// using STL C++20
-//int hammingWeight(std::uint32_t n) {
-//	return std::popcount(n);
-//}
-
-//int hammingWeight(std::uint32_t n) {
-//	std::bitset<32> bits{ n };
-//	return bits.count();
-//}
-
-// answer
-int hammingWeight(std::uint32_t n) {
-	int count{ 0 };
-	while (n != 0)
+std::uint32_t reverseBits(std::uint32_t n) {
+	int ans{ 0 };
+	for (int i{ 0 }; i < sizeof(int) * 8; i++)
 	{
+		ans <<= 1;
 		if (n & 1)
-			++count;
+			ans ^= 1;
 
 		n >>= 1;
 	}
-
-	return count;
+	return ans;
 }
 
 
 int main()
 {
-	std::cout << hammingWeight(0b00000000000000000000000000001011) << '\n';
-	std::cout << hammingWeight(0b00000000000000000000000010000000) << '\n';
-	std::cout << hammingWeight(0b11111111111111111111111111111101) << '\n';
+	std::cout << reverseBits(0b00000010100101000001111010011100) << '\n';
+	std::cout << reverseBits(0b11111111111111111111111111111101) << '\n';
 
 
 	return 0;

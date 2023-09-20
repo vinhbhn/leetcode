@@ -4,32 +4,40 @@
 #include <algorithm>
 #include <functional>
 #include <stack>
+#include <bit>
+#include <bitset>
+#include <cstdint>
 
-struct ListNode {
-	int val;
-	ListNode* next;
-	ListNode() : val(0), next(nullptr) {}
-	ListNode(int x) : val(x), next(nullptr) {}
-	ListNode(int x, ListNode* next) : val(x), next(next) {}
-};
+// using STL C++20
+//int hammingWeight(std::uint32_t n) {
+//	return std::popcount(n);
+//}
 
-ListNode* deleteDuplicates(ListNode* head)
-{
-	ListNode* temp = head;
-	while (temp && temp->next)
+//int hammingWeight(std::uint32_t n) {
+//	std::bitset<32> bits{ n };
+//	return bits.count();
+//}
+
+// answer
+int hammingWeight(std::uint32_t n) {
+	int count{ 0 };
+	while (n != 0)
 	{
-		if (temp->val == temp->next->val)
-		{
-			temp->next = temp->next->next;
-			continue;
-		}
-		temp = temp->next;
+		if (n & 1)
+			++count;
+
+		n >>= 1;
 	}
-	return head;
+
+	return count;
 }
+
 
 int main()
 {
+	std::cout << hammingWeight(0b00000000000000000000000000001011) << '\n';
+	std::cout << hammingWeight(0b00000000000000000000000010000000) << '\n';
+	std::cout << hammingWeight(0b11111111111111111111111111111101) << '\n';
 
 
 	return 0;

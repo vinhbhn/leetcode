@@ -5,81 +5,76 @@
 #include <functional>
 #include <stack>
 
-//int searchInsert(std::vector<int>& nums, int target) {
-//	if (static_cast<int>(nums.size()) == 1)
-//	{
-//		if (target > nums[0])
-//			return 1;
-//		else
-//			return 0;
-//	}
-//
-//	int current{}, last{ static_cast<int>(nums.size()) - 1 };
-//
-//	for (int first{ 0 }; first <= last; )
-//	{
-//		if (first + 1 == last)
-//		{
-//			if (target <= nums[first])
-//				return first;
-//			else if (target > nums[last])
-//				return last + 1;
-//			else
-//				return last;
-//
-//		}
-//
-//		int current = (first + last) / 2;
-//
-//		if (target == nums[current])
-//			return current;
-//		else if (target > nums[current])
-//		{
-//			first = current;
-//		}
-//		else
-//		{
-//			last = current;
-//		}
-//	}
-//
-//	return current;
-//}
+struct ListNode {
+	int val;
+	ListNode* next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode* next) : val(x), next(next) {}
+};
 
-int searchInsert(std::vector<int>& nums, int target)
-{
-	int first{ 0 }, last{ static_cast<int>(nums.size()) }, mid{};
+class Solution {
+public:
+	// https://leetcode.com/problems/merge-two-sorted-lists/solutions/3431490/c-java-python-javascript-full-explained-iterative-approach-recursive-approach/
+	// Iterative Approach
+	ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+		ListNode* ans = new ListNode();
+		ListNode* ptr = ans;
 
-	if (target > nums[last - 1])
-		return last;
-
-	while (first <= last)
-	{
-		mid = (first + last) / 2;
-		if (target == nums[mid])
-			return mid;
-		else if (target > nums[mid])
-			first = mid + 1;
-		else
-			last = mid - 1;
+		while (list1 && list2)
+		{
+			if (list1->val <= list2->val)
+			{
+				ans->next = new ListNode(list1->val);
+				list1 = list1->next;
+			}
+			else
+			{
+				ans->next = new ListNode(list2->val);
+				list2 = list2->next;
+			}
+			ans = ans->next;
+		}
+		while (list1)
+		{
+			ans->next = new ListNode(list1->val);
+			list1 = list1->next;
+			ans = ans->next;
+		}
+		while (list2)
+		{
+			ans->next = new ListNode(list2->val);
+			list2 = list2->next;
+			ans = ans->next;
+		}
+		return ptr->next;
 	}
 
-	return first;
-}
+	// Recursive Approach
+	ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+		ListNode* ptr1 = list1;
+		ListNode* ptr2 = list2;
+
+		if (ptr1 == nullptr)
+			return list2;
+		if (ptr2 == nullptr)
+			return list1;
+
+		if (ptr1->val < ptr2->val)
+		{
+			ptr1->next = mergeTwoLists(ptr1->next, ptr2);
+			return ptr1;
+		}
+		else
+		{
+			ptr2->next = mergeTwoLists(ptr1, ptr2->next);
+			return ptr2;
+		}
+	}
+};
 
 int main()
 {
-	std::vector<int> s{ 1,3,5,6 };
-	int target = 5;
-	std::cout << searchInsert(s, target) << '\n';
-	target = 2;
-	std::cout << searchInsert(s, target) << '\n';
-	target = 7;
-	std::cout << searchInsert(s, target) << '\n';
-	target = 0;
-	std::cout << searchInsert(s, target) << '\n';
-	s = { 1 };
-	std::cout << searchInsert(s, target) << '\n';
 
 
 	return 0;

@@ -10,7 +10,7 @@
 
 std::uint32_t reverseBits(std::uint32_t n) {
 	int ans{ 0 };
-	for (int i{ 0 }; i < sizeof(int) * 8; i++)
+	for (int i{ 0 }; i < 32; i++)
 	{
 		ans <<= 1;
 		if (n & 1)

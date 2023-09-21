@@ -8,37 +8,93 @@
 #include <bitset>
 #include <cstdint>
 
-bool isSameAfterReversals(int num) {
-	long number{ num }, reversed1{ 0 };
-	while (number)
+std::string addBinary(std::string a, std::string b) {
+	bool carry{ false };
+
+	if (a.size() > b.size())
 	{
-		reversed1 = reversed1 * 10 + number % 10;
-		number /= 10;
+		while (a.size() != b.size())
+		{
+			b = '0' + b;
+		}
+	}
+	else if (a.size() < b.size())
+	{
+		while (a.size() != b.size())
+		{
+			a = '0' + a;
+		}
 	}
 
-	long number2{ reversed1 }, reversed2{ 0 };
-	while (number2)
+	std::string ans{ a };
+	for (int i{ static_cast<int>(ans.size()) - 1 }; i >= 0; i--)
 	{
-		reversed2 = reversed2 * 10 + number2 % 10;
-		number2 /= 10;
+		if (a[i] == '1')
+		{
+			if (b[i] == '1')
+			{
+				if (carry)
+				{
+					//ans[i] = '1'; = a[i]
+					// carry still true
+					continue;
+				}
+
+				ans[i] = '0';
+				carry = true;
+			}
+			else // b[i] = 0
+			{
+				if (carry)
+				{
+					ans[i] = '0';
+					continue;
+				}
+
+				//ans[i] = a[i];
+			}
+		}
+
+		// a[i] = '0'
+		if (b[i] == '1')
+		{
+			if (carry)
+			{
+				//ans[i] = '0'; = a[i]
+				// carry still true
+				continue;
+			}
+
+			ans[i] = b[i];
+		}
+		else // b[i] = 0
+		{
+			if (carry)
+			{
+				ans[i] = '1';
+				carry = false;
+				continue;
+			}
+
+			//ans[i] = a[i]; // because init ans = a
+		}
 	}
 
-	return (num == reversed2);
+	if (carry)
+		ans = '1' + ans;
+
+	return ans;
 }
 
-bool isSameAfterReversals(int num) {
-	if (num == 0) return true;
-	if (num % 10 == 0) return false;
-	return true;
-}
 
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << isSameAfterReversals(526) << '\n';
-	std::cout << isSameAfterReversals(1800) << '\n';
-	std::cout << isSameAfterReversals(0) << '\n';
+	std::cout << addBinary("1010", "1011") << '\n';
+	std::cout << addBinary("11", "1") << '\n';
+	std::cout << addBinary("1", "111") << '\n';
+	std::cout << addBinary("1111", "1111") << '\n';
+
 
 
 	return 0;

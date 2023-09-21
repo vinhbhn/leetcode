@@ -8,37 +8,34 @@
 #include <bitset>
 #include <cstdint>
 
-//int addDigits(int num) {
-//	if (num >= 0 && num <= 9)
-//		return num;
-//
-//	int sum{ 0 };
-//	while (num)
-//	{
-//		sum += num % 10;
-//		num /= 10;
-//	}
-//
-//	return addDigits(sum);
-//}
+// answer
+bool isUgly(int n) {
+	// n is a positive integer
+	if (n <= 0)
+		return false;
 
-// digit root
-// ABCD = 1000A + 100B + 10C + D = (A+B+C+D)+9*(111A+11B+C) = mod 9 (gegens comment)
-int addDigits(int num)
-{
-	if (num == 0)
-		return 0;
-	else if (num % 9 == 0)
-		return 9;
-	else
-		return num % 9;
+	for (int prime : { 2, 3, 5 })
+	{
+		while (n % prime == 0)
+			n /= prime;
+	}
+
+	return (n == 1);
 }
 
 int main()
 {
-	std::cout << addDigits(0) << '\n';
-	std::cout << addDigits(38) << '\n';
-	std::cout << addDigits(1) << '\n';
+	std::cout << std::boolalpha;
+	std::cout << isUgly(1) << '\n';
+	std::cout << isUgly(6) << '\n';
+	std::cout << isUgly(14) << '\n';
+	std::cout << isUgly(24) << '\n';
+	std::cout << isUgly(18) << '\n';
+	std::cout << isUgly(8) << '\n';
+	std::cout << isUgly(-2147483648) << '\n';
+	std::cout << isUgly(0) << '\n';
+	std::cout << isUgly(16) << '\n';
+	std::cout << isUgly(22) << '\n';
 
 
 	return 0;

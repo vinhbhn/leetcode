@@ -9,56 +9,65 @@
 #include <cstdint>
 #include <unordered_set>
 
-// O(n logn)
-//bool containsDuplicate(std::vector<int>& nums) {
-//	std::sort(nums.begin(), nums.end());
+// O(n^2)
+//std::vector<int> twoSum(std::vector<int>& nums, int target) {
+//	for (int i{ 0 }; i < nums.size() - 1; ++i) {
+//		for (int j{ i + 1 }; j < nums.size(); ++j) {
+//			if (nums[i] + nums[j] == target)
+//			{
+//				return { i, j };
+//			}
 //
-//	for (int i{ 0 }; i < static_cast<int>(nums.size()) - 1; i++)
-//		if (nums[i] == nums[i + 1])
-//			return true;
-//
-//	return false;
-//}
-//
-//bool containsDuplicate(std::vector<int>& nums) {
-//	std::sort(nums.begin(), nums.end());
-//
-//	auto it = std::adjacent_find(nums.begin(), nums.end());
-//	if (it == nums.end())
-//		return false;
-//	else
-//		return true;
-//
-//	return false;
-//}
-
-//https://leetcode.com/problems/contains-duplicate/solutions/3672475/4-method-s-c-java-python-beginner-friendly/
-// hash set
-// O(n)
-//bool containsDuplicate(std::vector<int>& nums) {
-//	std::unordered_set<int> seen;
-//	for (int num : nums)
-//	{
-//		if (seen.count(num) > 0)
-//			return true;
-//		seen.insert(num);
+//		}
 //	}
-//	return false;
+//
+//	return {};
 //}
 
-// hash map
+
+// https://leetcode.com/problems/two-sum/solutions/3619262/3-method-s-c-java-python-beginner-friendly/
 // O(n)
-bool containsDuplicate(std::vector<int>& nums)
-{
-	std::unordered_map<int, int> seen;
-	for (int num : nums)
+// two pass hash table
+//std::vector<int> twoSum(std::vector<int>& nums, int target) {
+//	std::unordered_map<int, int> numsMap;
+//	int n = static_cast<int>(nums.size());
+//
+//	// Build the hash table
+//	for (int i{ 0 }; i < n; i++)
+//	{
+//		numsMap[nums[i]] = i;
+//	}
+//
+//	// find the complement
+//	for (int i{ 0 }; i < n; i++)
+//	{
+//		int complement = target - nums[i];
+//		if (numsMap.count(complement) && numsMap[complement] != i)
+//			return { i, numsMap[complement] };
+//	}
+//
+//	return {}; // no solution found
+//}
+
+// one pass hash table
+std::vector<int> twoSum(std::vector<int>& nums, int target) {
+	std::unordered_map<int, int> numsMap;
+	int complement{ 0 };
+
+	for (int i{ 0 }; i < static_cast<int>(nums.size()); i++)
 	{
-		if (seen[num] >= 1)
-			return true;
-		seen[num]++;
+		complement = target - nums[i];
+		if (numsMap.count(complement))
+			return { numsMap[complement], i };
+
+		numsMap[nums[i]] = i;
 	}
-	return false;
+
+	return {};
 }
+
+
+
 
 int main()
 {

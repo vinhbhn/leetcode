@@ -8,41 +8,41 @@
 #include <bitset>
 #include <cstdint>
 
-// O(n^2)
-//std::vector<int> getRow(int rowIndex) {
-//	std::vector<std::vector<int>> result;
-//	for (int i = 0; i < rowIndex + 1; i++)
-//	{
-//		std::vector<int> row(i + 1, 1);
-//		for (int j{ 1 }; j < i; j++)
-//		{
-//			row[j] = result.back()[j - 1] + result.back()[j];
-//		}
-//		result.push_back(row);
-//	}
-//	return result[rowIndex]; // or result.back()
-//}
+bool containsDuplicate(std::vector<int>& nums) {
+	std::sort(nums.begin(), nums.end());
 
-// https://leetcode.com/problems/pascals-triangle-ii/solutions/3177710/best-c-2-solutions-ever-dp-tabulation-bottom-up-one-stop-solution/
-// O(n)
-std::vector<int> getRow(int rowIndex) {
-	std::vector<int> output(rowIndex + 1, 0);
-	output[0] = 1;
-	for (int i = 0; i < rowIndex; i++) {
-		for (int j = i + 1; j >= 1; j--) {
-			output[j] += output[j - 1];
-		}
-	}
-	return output;
+	for (int i{ 0 }; i < static_cast<int>(nums.size()) - 1; i++)
+			if (nums[i] == nums[i+1])
+				return true;
+
+	return false;
 }
+
+bool containsDuplicate(std::vector<int>& nums) {
+	std::sort(nums.begin(), nums.end());
+
+	auto it = std::adjacent_find(nums.begin(), nums.end());
+	if (it == nums.end())
+		return false;
+	else
+		return true;
+
+	return false;
+}
+
+
 
 int main()
 {
-	std::vector<int> a = getRow(3);
-	for (int i : a)
-	{
-		std::cout << a[i] << ' ';
-	}
+	std::vector<int> nums{ 1,2,3,1 };
+	std::cout << std::boolalpha;
+	std::cout << containsDuplicate(nums) << '\n';
+
+	nums = { 1,2,3,4 };
+	std::cout << containsDuplicate(nums) << '\n';
+
+	nums = { 1,1,1,3,3,4,3,2,4,2 };
+	std::cout << containsDuplicate(nums) << '\n';
 
 	return 0;
 }

@@ -9,80 +9,96 @@
 #include <cstdint>
 #include <unordered_set>
 
-//int majorityElement(std::vector<int>& nums) {
-//	std::sort(nums.begin(), nums.end());
-//	int number{ nums[0] }, count{ 1 }, numsSize{ static_cast<int>(nums.size()) };
+struct ListNode {
+	int val;
+	ListNode* next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode* next) : val(x), next(next) {}
+};
+
+// https://leetcode.com/problems/remove-linked-list-elements/solutions/3136351/c-recursive-approach/
+//ListNode* removeElements(ListNode* head, int val) {
+//	// base case, recursion ends when null is reached
+//	if (head == NULL)
+//		return NULL;
 //
-//	for (auto num : nums)
+//	// the node has to be removed -> it is skipped during the iteration
+//	if (head->val == val)
+//		return removeElements(head->next, val);
+//
+//	// the node doesn't have to be skipped -> the rest of the list has
+//	// to be joined to the node
+//	head->next = removeElements(head->next, val);
+//	return head;
+//}
+
+// https://leetcode.com/problems/remove-linked-list-elements/solutions/722528/c-2-solutions-with-single-pointer-with-double-pointers-easy-to-understand/
+//ListNode* removeElements(ListNode* head, int val) {
+//	if (head == nullptr) return head;
+//	while (head != nullptr && head->val == val)
 //	{
-//		std::cout << num << ' ';
+//		head = head->next;
 //	}
-//
-//	for (int i{ 1 }; i < numsSize; i++)
+//	ListNode* curr = head;
+//	ListNode* prev = nullptr;
+//	while (curr != nullptr)
 //	{
-//		// more than
-//		if (count > (numsSize / 2))
-//			return number;
-//
-//
-//		if (number != nums[i])
+//		if (curr->val == val)
 //		{
-//			number = nums[i];
-//			count = 1;
+//			prev->next = curr->next;
+//			curr = curr->next;
 //		}
 //		else
-//			++count;
+//		{
+//			prev = curr;
+//			curr = curr->next;
+//		}
 //	}
-//
-//	return number;
+//	return head;
 //}
 
-// https://leetcode.com/problems/majority-element/solutions/3676530/3-method-s-beats-100-c-java-python-beginner-friendly/
-// majority element is present at the middle position after the vector's sorted ( = n / 2)
-// O(n logn)
-//int majorityElement(std::vector<int>& nums) {
-//	std::sort(nums.begin(), nums.end());
-//	int n = nums.size();
-//	return nums[n / 2];
-//}
+ListNode* removeElements(ListNode* head, int val) {
+	if (head == nullptr) return head;
 
-// hash map
-// O(n)
-//int majorityElement(std::vector<int>& nums) {
-//	int n = nums.size();
-//	std::unordered_map<int, int> m;
-//	
-//	for (int i{ 0 }; i < n; i++)
-//		m[nums[i]]++;
-//
-//	n /= 2;
-//	for (auto x : m)
-//	{
-//		if (x.second > n)
-//			return x.first;
-//	}
-//
-//	return 0;
-//}
-
-// moore voting algorithm
-// O(n)
-int majorityElement(std::vector<int>& nums) {
-	int count{ 0 }, candidate{ 0 };
-
-	for (int num : nums)
+	// This is for the case when a linked list is like this: 
+		// 1->1->2->null , val = 1
+		// 1->1->1->null , val = 1
+	while (head != nullptr && head->val == val)
 	{
-		if (count == 0)
-			candidate = num;
-
-		if (num == candidate)
-			count++;
-		else
-			count--;
+		head = head->next;
 	}
 
-	return candidate;
+	ListNode* curr = head;
+	while (curr != nullptr && curr->next != nullptr)
+	{
+		if (curr->next->val == val)
+		{
+			curr->next = curr->next->next;
+		}
+		else
+			curr = curr->next;
+	}
+	return head;
 }
+
+
+// not answer
+//ListNode* removeElements(ListNode* head, int val) {
+//	ListNode* temp = head;
+//
+//	while (temp && temp->next)
+//	{
+//		if (temp->next->val == val)
+//		{
+//			temp->next = temp->next->next;
+//			continue;
+//		}
+//		temp = temp->next;
+//	}
+//
+//	return head;
+//}
 
 int main()
 {

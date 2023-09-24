@@ -9,77 +9,91 @@
 #include <cstdint>
 #include <unordered_set>
 
-// O(n^2)
-//std::vector<int> twoSum(std::vector<int>& nums, int target) {
-//	for (int i{ 0 }; i < nums.size() - 1; ++i) {
-//		for (int j{ i + 1 }; j < nums.size(); ++j) {
-//			if (nums[i] + nums[j] == target)
-//			{
-//				return { i, j };
-//			}
+//int majorityElement(std::vector<int>& nums) {
+//	std::sort(nums.begin(), nums.end());
+//	int number{ nums[0] }, count{ 1 }, numsSize{ static_cast<int>(nums.size()) };
 //
+//	for (auto num : nums)
+//	{
+//		std::cout << num << ' ';
+//	}
+//
+//	for (int i{ 1 }; i < numsSize; i++)
+//	{
+//		// more than
+//		if (count > (numsSize / 2))
+//			return number;
+//
+//
+//		if (number != nums[i])
+//		{
+//			number = nums[i];
+//			count = 1;
 //		}
+//		else
+//			++count;
 //	}
 //
-//	return {};
+//	return number;
 //}
 
+// https://leetcode.com/problems/majority-element/solutions/3676530/3-method-s-beats-100-c-java-python-beginner-friendly/
+// majority element is present at the middle position after the vector's sorted ( = n / 2)
+// O(n logn)
+//int majorityElement(std::vector<int>& nums) {
+//	std::sort(nums.begin(), nums.end());
+//	int n = nums.size();
+//	return nums[n / 2];
+//}
 
-// https://leetcode.com/problems/two-sum/solutions/3619262/3-method-s-c-java-python-beginner-friendly/
+// hash map
 // O(n)
-// two pass hash table
-//std::vector<int> twoSum(std::vector<int>& nums, int target) {
-//	std::unordered_map<int, int> numsMap;
-//	int n = static_cast<int>(nums.size());
-//
-//	// Build the hash table
+//int majorityElement(std::vector<int>& nums) {
+//	int n = nums.size();
+//	std::unordered_map<int, int> m;
+//	
 //	for (int i{ 0 }; i < n; i++)
+//		m[nums[i]]++;
+//
+//	n /= 2;
+//	for (auto x : m)
 //	{
-//		numsMap[nums[i]] = i;
+//		if (x.second > n)
+//			return x.first;
 //	}
 //
-//	// find the complement
-//	for (int i{ 0 }; i < n; i++)
-//	{
-//		int complement = target - nums[i];
-//		if (numsMap.count(complement) && numsMap[complement] != i)
-//			return { i, numsMap[complement] };
-//	}
-//
-//	return {}; // no solution found
+//	return 0;
 //}
 
-// one pass hash table
-std::vector<int> twoSum(std::vector<int>& nums, int target) {
-	std::unordered_map<int, int> numsMap;
-	int complement{ 0 };
+// moore voting algorithm
+// O(n)
+int majorityElement(std::vector<int>& nums) {
+	int count{ 0 }, candidate{ 0 };
 
-	for (int i{ 0 }; i < static_cast<int>(nums.size()); i++)
+	for (int num : nums)
 	{
-		complement = target - nums[i];
-		if (numsMap.count(complement))
-			return { numsMap[complement], i };
+		if (count == 0)
+			candidate = num;
 
-		numsMap[nums[i]] = i;
+		if (num == candidate)
+			count++;
+		else
+			count--;
 	}
 
-	return {};
+	return candidate;
 }
-
-
-
 
 int main()
 {
-	std::vector<int> nums{ 1,2,3,1 };
-	std::cout << std::boolalpha;
-	std::cout << containsDuplicate(nums) << '\n';
+	std::vector<int> nums = { 3,2,3 };
+	std::cout << majorityElement(nums) << '\n';
 
-	nums = { 1,2,3,4 };
-	std::cout << containsDuplicate(nums) << '\n';
+	nums = { 2,2,1,1,1,2,2 };
+	std::cout << majorityElement(nums) << '\n';
 
-	nums = { 1,1,1,3,3,4,3,2,4,2 };
-	std::cout << containsDuplicate(nums) << '\n';
+	nums = { 6,5,5 };
+	std::cout << majorityElement(nums) << '\n';
 
 	return 0;
 }

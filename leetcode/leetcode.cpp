@@ -9,24 +9,26 @@
 #include <cstdint>
 #include <unordered_set>
 
-void reverseString(std::vector<char>& s) {
-	std::reverse(s.begin(), s.end());
+int missingNumber(std::vector<int>& nums) {
+	int n = nums.size();
+	int sum = (n * (n + 1)) / 2;
+	for (int i{ 0 }; i < n; i++)
+	{
+		sum -= nums[i];
+	}
+	return sum;
 }
 
 int main()
 {
-	/*std::vector nums = { 1,2,3,1 };
-	std::cout << std::boolalpha;
-	std::cout << containsNearbyDuplicate(nums, 3) << '\n';
+	std::vector nums = { 3,0,1 };
+	std::cout << missingNumber(nums) << '\n';
 
-	nums = { 1,0,1,1 };
-	std::cout << containsNearbyDuplicate(nums, 1) << '\n';
+	nums = { 0,1 };
+	std::cout << missingNumber(nums) << '\n';
 
-	nums = { 1,2,3,1,2,3 };
-	std::cout << containsNearbyDuplicate(nums, 2) << '\n';
-
-	nums = { 0, 1, 2, 3, 4, 0, 0, 7, 8, 9, 10, 11, 12, 0 };
-	std::cout << containsNearbyDuplicate(nums, 2) << '\n';*/
+	nums = { 9,6,4,2,3,5,7,0,1 };
+	std::cout << missingNumber(nums) << '\n';
 
 	return 0;
 }

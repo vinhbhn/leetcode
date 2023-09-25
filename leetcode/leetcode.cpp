@@ -9,31 +9,46 @@
 #include <cstdint>
 #include <unordered_set>
 
-std::vector<std::string> fizzBuzz(int n) {
-	std::vector <std::string> v(n, "");
-	std::string s{};
-	for (int i{ 1 }; i <= n; i++)
-	{
-		if (i % 3 == 0 || i % 5 == 0)
-		{
-			if (i % 3 == 0)
-				s += "Fizz";
-			if (i % 5 == 0)
-				s += "Buzz";
-		}
-		else
-			s = std::to_string(i);
+// hash map
+// O(n) O(n)
+int singleNumber(std::vector<int>& nums) {
+	std::unordered_map<int, int> s;
 
-		v.push_back(s);
-		s = "";
-	}
+	for (auto num : nums)
+		s[num]++;
 
-	return v;
+	for (auto x : s)
+		if (x.second == 1)
+			return x.first;
+
+	return 0;
 }
+
+// constant space
+// O(n) O(1)
+int singleNumber(std::vector<int>& nums) {
+	int ans{ 0 };
+
+	for (auto num : nums)
+		ans ^= num;
+
+	return ans;
+}
+
+
 
 int main()
 {
-	
+	std::vector<int> nums = { 2,2,1 };
+	std::cout << singleNumber(nums) << '\n';
+
+	nums = { 4,1,2,1,2 };
+	std::cout << singleNumber(nums) << '\n';
+
+	nums = { 1 };
+	std::cout << singleNumber(nums) << '\n';
+
+
 	return 0;
 }
 

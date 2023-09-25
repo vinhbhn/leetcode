@@ -9,26 +9,50 @@
 #include <cstdint>
 #include <unordered_set>
 
-int missingNumber(std::vector<int>& nums) {
-	int n = nums.size();
-	int sum = (n * (n + 1)) / 2;
-	for (int i{ 0 }; i < n; i++)
+//void moveZeroes(std::vector<int>& nums) {
+//	int count{ 0 };
+//	for (std::vector<int>::iterator it = nums.begin(); it != nums.end();)
+//	{
+//		if (*it == 0)
+//		{
+//			++count;
+//			it = nums.erase(it);
+//		}
+//		else
+//			++it;
+//	}
+//
+//	while (count != 0)
+//	{
+//		nums.push_back(0);
+//		--count;
+//	}
+//}
+
+// https://leetcode.com/problems/move-zeroes/solutions/3882065/simple-c-solution/
+// using two pointers
+void moveZeroes(std::vector<int>& nums) {
+	int i = 0, j = 0;
+	while (i < nums.size() && j < nums.size())
 	{
-		sum -= nums[i];
+		if (nums[j] != 0)
+			std::swap(nums[i++], nums[j++]);
+		else
+			j++;
 	}
-	return sum;
 }
 
 int main()
 {
-	std::vector nums = { 3,0,1 };
-	std::cout << missingNumber(nums) << '\n';
+	std::vector nums = { 0,1,0,3,12 };
+	moveZeroes(nums);
+	for(auto num : nums)
+	std::cout << num << ' ';
+	std::cout << "\n";
 
-	nums = { 0,1 };
-	std::cout << missingNumber(nums) << '\n';
+	nums = { 0 };
+	//std::cout << moveZeroes(nums) << '\n';
 
-	nums = { 9,6,4,2,3,5,7,0,1 };
-	std::cout << missingNumber(nums) << '\n';
 
 	return 0;
 }

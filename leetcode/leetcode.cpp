@@ -9,61 +9,20 @@
 #include <cstdint>
 #include <unordered_set>
 
-//bool isPowerOfFour(int n) {
-//	if (n <= 0) return false;
-//
-//	return std::ceil(std::log(n) / std::log(4)) == std::floor(std::log(n) / std::log(4));
-//}
+// https://leetcode.com/problems/find-the-difference/solutions/4086631/99-78-xor-sum/?envType=daily-question&envId=2023-09-25
+// use XOR: O(n) O(1)
+char findTheDifference(std::string s, std::string t) {
+	char result{};
+	for (char c : s + t)
+		result ^= c;
 
-//bool isPowerOfFour(int n) {
-//	if (n <= 0) return false;
-//
-//	return std::ceil(std::log(n) / std::log(4)) == std::floor(std::log(n) / std::log(4));
-//}
-
-//bool isPowerOfFour(int n) {
-//	if (n <= 0) return false;
-//
-//	while (n > 1)
-//	{
-//		if (n % 4 != 0)
-//			return false;
-//		n /= 4;
-//	}
-//
-//	return (n == 1);
-//}
-
-//bool isPowerOfFour(int n) {
-//	if (n <= 0) return false;
-//
-//	return ((n == 1) || (n % 4 == 0) && isPowerOfFour(n / 4));
-//}
-
-// https://leetcode.com/problems/power-of-four/solutions/3230200/best-c-4-solution-bit-manipulation-math-iterative-recursive-one-stop-solution/
-// bit manipulation
-// O(1) O(1)
-//bool isPowerOfFour(int n) {
-//	int evenPostion = 0x55555555; // 5 = 0101
-//	return ((n > 0) && ((n & (n - 1)) == 0) && (evenPostion & n) > 0);
-//
-//}
-// bit manipulation + math
-// O(1) O(1)
-bool isPowerOfFour(int n) {
-	return ((n > 0) && ((n & (n - 1)) == 0) && ((n % 3 == 1)));
+	return result;
 }
-
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << isPowerOfFour(16) << '\n';
-	std::cout << isPowerOfFour(5) << '\n';
-	std::cout << isPowerOfFour(1) << '\n';
-	std::cout << isPowerOfFour(8) << '\n';
-
-
+	std::cout << findTheDifference("abcd", "abcde") << '\n';
+	std::cout << findTheDifference("", "y") << '\n';
 
 	return 0;
 }

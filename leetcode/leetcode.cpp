@@ -9,49 +9,64 @@
 #include <cstdint>
 #include <unordered_set>
 
-//void moveZeroes(std::vector<int>& nums) {
-//	int count{ 0 };
-//	for (std::vector<int>::iterator it = nums.begin(); it != nums.end();)
+// too slow
+//bool isPowerOfThree(int n) {
+//	if (n <= 0)
+//		return false;
+//
+//	for (int i = 0; i < std::sqrt(n); i++)
 //	{
-//		if (*it == 0)
-//		{
-//			++count;
-//			it = nums.erase(it);
-//		}
-//		else
-//			++it;
+//		if (std::pow(3, i) == n)
+//			return true;
 //	}
 //
-//	while (count != 0)
-//	{
-//		nums.push_back(0);
-//		--count;
-//	}
+//	return false;
 //}
 
-// https://leetcode.com/problems/move-zeroes/solutions/3882065/simple-c-solution/
-// using two pointers
-void moveZeroes(std::vector<int>& nums) {
-	int i = 0, j = 0;
-	while (i < nums.size() && j < nums.size())
-	{
-		if (nums[j] != 0)
-			std::swap(nums[i++], nums[j++]);
-		else
-			j++;
-	}
+//bool isPowerOfThree(int n) {
+//	if (n <= 0)
+//		return false;
+//
+//	while (n > 1) {
+//		if (n % 3 != 0)
+//			return false;
+//
+//		n /= 3;
+//	}
+//
+//	return true;
+//}
+
+//https://leetcode.com/problems/power-of-three/solutions/3230079/best-c-3-solution-math-recursion-one-stop-solution/
+// using math O(1) O(1)
+//bool isPowerOfThree(int n) {
+//	return n > 0 && 1162261467 % n == 0;
+//}
+// recursive O(logN) O(logN)
+bool isPowerOfThree(int n) {
+	if (n == 0)
+		return false;
+	else if (n == 1)
+		return true;
+
+	return (n % 3 == 0) && isPowerOfThree(n / 3);
 }
+
+
 
 int main()
 {
-	std::vector nums = { 0,1,0,3,12 };
-	moveZeroes(nums);
-	for(auto num : nums)
-	std::cout << num << ' ';
-	std::cout << "\n";
+	int n = 27;
+	std::cout << std::boolalpha;
+	std::cout << isPowerOfThree(n) << '\n';
 
-	nums = { 0 };
-	//std::cout << moveZeroes(nums) << '\n';
+	n = 0;
+	std::cout << isPowerOfThree(n) << '\n';
+
+	n = -1;
+	std::cout << isPowerOfThree(n) << '\n';
+
+	std::cout << isPowerOfThree(1) << '\n';
 
 
 	return 0;

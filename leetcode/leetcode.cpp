@@ -9,45 +9,61 @@
 #include <cstdint>
 #include <unordered_set>
 
-//bool isPowerOfTwo(int n) {
-//	if (n <= 0)
-//		return false;
+//bool isPowerOfFour(int n) {
+//	if (n <= 0) return false;
+//
+//	return std::ceil(std::log(n) / std::log(4)) == std::floor(std::log(n) / std::log(4));
+//}
+
+//bool isPowerOfFour(int n) {
+//	if (n <= 0) return false;
+//
+//	return std::ceil(std::log(n) / std::log(4)) == std::floor(std::log(n) / std::log(4));
+//}
+
+//bool isPowerOfFour(int n) {
+//	if (n <= 0) return false;
 //
 //	while (n > 1)
 //	{
-//		if (n % 2 != 0)
+//		if (n % 4 != 0)
 //			return false;
-//		n /= 2;
+//		n /= 4;
 //	}
 //
-//	return true;
+//	return (n == 1);
 //}
 
-// https://leetcode.com/problems/power-of-two/solutions/1638704/c-easy-to-solve-all-interview-approaches-with-detailed-explanations/
-//Constraints[-2 ^ 31 <= n <= 2 ^ 31 - 1] also 2 ^ 30 is 1073741824 (using math)
-//bool isPowerOfTwo(int n) {
-//	return (n > 0 && 1073741824 % n == 0);
-//}
-// using ceil-floor method O(logN) O(1)
-//bool isPowerOfTwo(int n) {
-//	if (n <= 0)
-//		return false;
-//
-//	return std::ceil(log2(n)) == std::floor(log2(n));
-//}
-// bit manipulation O(1) O(1)
-//bool isPowerOfTwo(int n) {
+//bool isPowerOfFour(int n) {
 //	if (n <= 0) return false;
-//	return ((n & (n - 1)) == 0);
+//
+//	return ((n == 1) || (n % 4 == 0) && isPowerOfFour(n / 4));
 //}
-// using recursive O(logN) O(logN)
-bool isPowerOfTwo(int n) {
-	if (n <= 0) return false;
-	return ((n == 1) || ((n % 2 == 0) && isPowerOfTwo(n / 2)));
+
+// https://leetcode.com/problems/power-of-four/solutions/3230200/best-c-4-solution-bit-manipulation-math-iterative-recursive-one-stop-solution/
+// bit manipulation
+// O(1) O(1)
+//bool isPowerOfFour(int n) {
+//	int evenPostion = 0x55555555; // 5 = 0101
+//	return ((n > 0) && ((n & (n - 1)) == 0) && (evenPostion & n) > 0);
+//
+//}
+// bit manipulation + math
+// O(1) O(1)
+bool isPowerOfFour(int n) {
+	return ((n > 0) && ((n & (n - 1)) == 0) && ((n % 3 == 1)));
 }
+
 
 int main()
 {
+	std::cout << std::boolalpha;
+	std::cout << isPowerOfFour(16) << '\n';
+	std::cout << isPowerOfFour(5) << '\n';
+	std::cout << isPowerOfFour(1) << '\n';
+	std::cout << isPowerOfFour(8) << '\n';
+
+
 
 	return 0;
 }

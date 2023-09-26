@@ -9,38 +9,25 @@
 #include <cstdint>
 #include <unordered_set>
 
-// O(n) O(n)
-//int findDuplicate(std::vector<int>& nums) {
-//	std::unordered_map<int, int> mp;
-//
-//	for (auto num : nums)
-//		mp[num]++;
-//
-//	for (auto x : mp)
-//		if (x.second >= 2)
-//			return x.first;
-//
-//	return {};
-//}
+std::vector<int> findErrorNums(std::vector<int>& nums) {
+	std::sort(nums.begin(), nums.end());
+	int n = nums.size(), dup = 0;
+	// from 1 to n, not duplicate
+	int sumElement = (n * (n + 1)) / 2;
 
-// https://leetcode.com/problems/find-the-duplicate-number/solutions/4062141/97-77-6-approaches-set-count-binary-search-fast-slow-mark-sort/
-// fast-slow pointer approach (Floyd's cycle detection) O(n) O(1)
-int findDuplicate(std::vector<int>& nums) {
-	int slow = nums[0], fast = nums[0];
-
-	do {
-		slow = nums[slow];
-		fast = nums[nums[fast]];
-	} while (slow != fast);
-
-	slow = nums[0];
-	while (slow != fast)
+	for (int i = 0; i < n - 1; i++)
 	{
-		slow = nums[slow];
-		fast = nums[fast];
+		if (nums[i] == nums[i + 1])
+		{
+			dup = nums[i];
+			break;
+		}
 	}
 
-	return slow;
+	for (auto num : nums)
+		sumElement -= num;
+
+	return { dup, sumElement + dup };
 }
 
 int main()

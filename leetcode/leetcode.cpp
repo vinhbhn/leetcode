@@ -8,106 +8,104 @@
 #include <bitset>
 #include <cstdint>
 #include <unordered_set>
+#include <set>
 
-//std::string addBinary(std::string a, std::string b) {
-//	bool carry{ false };
+// O(NlogN) O(logN)
+//int thirdMax(std::vector<int>& nums) {
+//	std::sort(nums.begin(), nums.end());
 //
-//	if (a.size() < b.size())
-//		std::swap(a, b);
-//
-//	while (b.size() < a.size())
-//		b = '0' + b;
-//
-//	std::string ans = a;
-//	for (int i = ans.size() - 1 ; i >= 0; i--)
+//	int iFirst = nums.size() - 1, maxSecond;
+//	int iSecond = iFirst, maxFirst = maxSecond = nums[iFirst];
+//	for (int i = iFirst; i >= 0; i--)
 //	{
-//		if (a[i] == '1')
+//		if (nums[i] != maxFirst)
 //		{
-//			if (b[i] == '1')
-//			{
-//				if (carry)
-//				{
-//					//ans[i] = '1'; = a[i]
-//					// carry still true
-//					continue;
-//				}
-//
-//				ans[i] = '0';
-//				carry = true;
-//			}
-//			else // b[i] = 0
-//			{
-//				if (carry)
-//				{
-//					ans[i] = '0';
-//					continue;
-//				}
-//
-//				//ans[i] = a[i];
-//			}
-//		}
-//
-//		// a[i] = '0'
-//		if (b[i] == '1')
-//		{
-//			if (carry)
-//			{
-//				//ans[i] = '0'; = a[i]
-//				// carry still true
-//				continue;
-//			}
-//
-//			ans[i] = b[i];
-//		}
-//		else // b[i] = 0
-//		{
-//			if (carry)
-//			{
-//				ans[i] = '1';
-//				carry = false;
-//				continue;
-//			}
-//
-//			//ans[i] = a[i]; // because init ans = a
+//			maxSecond = nums[i];
+//			iSecond = i;
+//			break;
 //		}
 //	}
 //
-//	if (carry)
-//		ans = '1' + ans;
+//	// ex: [1,2] or [1,1,2]
+//	if (iSecond == 0 || nums[0] == maxSecond)
+//		return maxFirst; // the third distinct maximum doesn't exist,
+//	// so return the first distinct maximum = max element in the nums vector
 //
-//	return ans;
+//	for (int index = iSecond; index >= 0; index--)
+//		if (nums[index] != maxSecond)
+//			return nums[index];
+//
+//	return 0; 
 //}
 
-// https://leetcode.com/problems/add-binary/solutions/3183205/1ms-beats-100-full-explanation-append-reverse-c-java-python3/
-std::string addBinary(std::string a, std::string b) {
-	std::string ans = "";
-	int carry = 0, i = a.length() - 1, j = b.length() - 1;
+//https://leetcode.com/problems/third-maximum-number/solutions/3343654/c-4-different-approach-solution-in-place-algorithm-max-heap-set-sorting/
+// using set O(n) O(n)
+//int thirdMax(std::vector<int>& nums) {
+//	std::set<int> s;
+//	for (int i = 0; i < nums.size(); i++)
+//	{
+//		s.insert(nums[i]);
+//	}
+//
+//	if (s.size() >= 3) // when std::set size >= 3 means 3rd maximum exist, because set doesn't contain duplicate element
+//	{
+//		int third_index_from_last = s.size() - 3;
+//		auto third_maximum = std::next(s.begin(), third_index_from_last);
+//		return *third_maximum;
+//	}
+//
+//	return *--s.end(); // return maximum if 3rd maximum not exist
+//}
 
-	while (i >= 0 || j >= 0 || carry)
+// https://leetcode.com/problems/third-maximum-number/solutions/4009099/c-beats-100-o-n-best-approach-so-far/
+// In place O(n) O(1)
+int thirdMax(std::vector<int>& nums) {
+	long long first = LLONG_MIN;
+	long long second = LLONG_MIN;
+	long long third = LLONG_MIN;
+
+	for (auto num : nums)
 	{
-		if (i >= 0)
-			carry += a[i--] - '0';
-		if (j >= 0)
-			carry += b[j--] - '0';
+		if (num == first || num == second || num == third)
+			continue; // skip duplicate
 
-		ans += carry % 2 + '0';
-		carry /= 2;
+		if (num > first)
+		{
+			third = second;
+			second = first;
+			first = num;
+		}
+		else if (num > second)
+		{
+			third = second;
+			second = num;
+		}
+		else if (num > third)
+		{
+			third = num;
+		}
 	}
 
-	std::reverse(ans.begin(), ans.end());
-	return ans;
+	return (third != LLONG_MIN) ? third : first;
 }
 
 int main()
 {
-	std::vector nums = { 1,3,4,2,2 };
-	std::cout << findDuplicate(nums) << '\n';
+	std::vector nums = { 3,2,1 };
+	std::cout << thirdMax(nums) << '\n';
 
-	nums = { 3,1,3,4,2 };
-	std::cout << findDuplicate(nums) << '\n';
+	nums = { 1,2 };
+	std::cout << thirdMax(nums) << '\n';
 
-	nums = { 2, 2, 2, 2, 2 };
-	std::cout << findDuplicate(nums) << '\n';
+	nums = { 2, 2, 3,1 };
+	std::cout << thirdMax(nums) << '\n';
+
+	nums = { 1,1,2 };
+	std::cout << thirdMax(nums) << '\n';
+
+	nums = { 1 };
+	std::cout << thirdMax(nums) << '\n';
+
 
 	return 0;
 }

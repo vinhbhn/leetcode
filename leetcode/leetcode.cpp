@@ -10,39 +10,72 @@
 #include <unordered_set>
 #include <set>
 
-//int findNonMinOrMax(std::vector<int>& nums) {
-//	if (nums.size() <= 2)
-//		return -1;
+//int firstUniqChar(std::string s) {
+//	std::unordered_map<char, int> mp;
+//	int pos = s.length() - 1;
+//	bool haveUniqueChar = false;
+//	for (auto &ch : s)
+//		mp[ch]++;
 //
-//	auto [min, max] = std::minmax_element(nums.begin(), nums.end());
-//
-//	for (int i = 0; i < nums.size(); i++)
+//	for (auto &x : mp)
 //	{
-//		if (nums[i] > *min && nums[i] < *max)
-//			return nums[i];
+//		if (x.second == 1)
+//		{
+//			haveUniqueChar = true;
+//			if (pos > s.find(x.first))
+//				pos = s.find(x.first);
+//		}
 //	}
+//
+//	if (haveUniqueChar)
+//		return pos;
 //
 //	return -1;
 //}
 
-int findNonMinOrMax(std::vector<int>& nums) {
-	std::sort(nums.begin(), nums.end());
-	if (nums.size() <= 2)
-		return -1;
-	else
-		return nums[1];
+//int firstUniqChar(std::string s) {
+//	std::unordered_map<char, int> mp;
+//	for (auto& ch : s)
+//		mp[ch]++;
+//
+//	for (int i = 0; i < s.length(); i++)
+//		if (mp.find(s[i])->second == 1)
+//			return i;
+//
+//	return -1;
+//}
+
+//https://leetcode.com/problems/first-unique-character-in-a-string/solutions/2976235/easy-c-solution-basic-approach-array-loop/
+// O(n) O(n)
+int firstUniqChar(std::string s) {
+	/*std::ios_base::sync_with_stdio(false);
+	std::cin.tie(NULL);*/
+
+	int arr[26] = { 0 };
+
+	// arr = {'a' -> 'z'};
+	for (int i = 0; i < s.length(); i++)
+		arr[s[i] - 'a']++;
+
+	for (int i = 0; i < s.length(); i++)
+		if (arr[s[i] - 'a'] == 1)
+			return i;
+
+	return -1;
 }
+
 
 int main()
 {
-	std::vector nums = { 3,2,1,4 };
-	std::cout << findNonMinOrMax(nums) << '\n';
+	std::string s = "leetcode";
+	std::cout << firstUniqChar(s) << '\n';
 
-	nums = { 1,2 };
-	std::cout << findNonMinOrMax(nums) << '\n';
+	s = "loveleetcode";
+	std::cout << firstUniqChar(s) << '\n';
 
-	nums = { 2,1,3 };
-	std::cout << findNonMinOrMax(nums) << '\n';
+	s = "aabb";
+	std::cout << firstUniqChar(s) << '\n';
+
 
 	return 0;
 }

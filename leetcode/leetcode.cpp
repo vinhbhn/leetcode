@@ -10,11 +10,8 @@
 #include <unordered_set>
 #include <set>
 
-int smallestEvenMultiple(int n) {
-	if (n % 2 == 0)
-		return n;
-	else
-		return n * 2;
+std::vector<double> convertTemperature(double celsius) {
+	return {celsius + 273.15, celsius * 1.80 + 32.00};
 }
 
 

@@ -10,43 +10,75 @@
 #include <unordered_set>
 #include <set>
 
-// O(n^2)
-//std::vector<int> sortArrayByParity(std::vector<int>&nums) {
-//	std::vector<int> v;
-//
+// even and odd Indices
+// O(N logN) O(N)
+//std::vector<int> sortEvenOdd(std::vector<int>& nums) {
+//	std::vector<int> even, odd, result;
 //	for (int i = 0; i < nums.size(); i++)
-//		if (nums[i] % 2 == 0)
-//			v.push_back(nums[i]);
+//	{
+//		if (i % 2 == 0)
+//			even.push_back(nums[i]);
+//		else
+//			odd.push_back(nums[i]);
+//	}
 //
-//	for (int i = 0; i < nums.size(); i++)
-//		if (nums[i] % 2 != 0)
-//			v.push_back(nums[i]);
+//	std::sort(even.begin(), even.end());
+//	std::sort(odd.begin(), odd.end(), std::greater());
 //
-//	return v;
+//	int i = 0, j = 0;
+//	while (i < even.size() || j < odd.size())
+//	{
+//		if (i < even.size())
+//			result.push_back(even[i++]);
+//		if (j < odd.size())
+//			result.push_back(odd[j++]);
+//	}
+//
+//	return result;
 //}
 
-// use lambda
-std::vector<int> sortArrayByParity(std::vector<int>& nums) {
-	std::sort(nums.begin(), nums.end(), [](int a, int b)
+//https://leetcode.com/problems/sort-even-and-odd-indices-independently/solutions/1751131/multiple-approaches-c-fast-solution/
+// O(N^2) O(1)
+std::vector<int> sortEvenOdd(std::vector<int>& nums) {
+	int minIndex = 0; 
+	// Here in this nested loop, we are sorting the elements at even indices in non-decreasing order.
+	for (int i = 0; i < nums.size(); i += 2)
+	{
+		minIndex = i;
+		for (int j = i + 2; j < nums.size(); j += 2) {
+			if (nums[j] < nums[minIndex])
+				minIndex = j;
+		}
+		std::swap(nums[i], nums[minIndex]);
+	}
+	// Here, we are trying to sort the elements at odd indices in non-increasing order.
+	for (int i = 1; i < nums.size(); i += 2)
+	{
+		minIndex = i;
+		for (int j = i + 2; j < nums.size(); j += 2)
 		{
-			return (a % 2) < (b % 2);
-		});
+			if (nums[j] > nums[minIndex])
+				minIndex = j;
+		}
+		std::swap(nums[i], nums[minIndex]);
+	}
 
-	return std::move(nums);
+	return nums;
 }
-
-
 
 int main()
 {
-	std::string str1 = "ABCABC", str2 = "ABC";
-	std::cout << gcdOfStrings(str1, str2) << '\n';
+	std::vector<int>  nums = { 4, 1, 2, 3 };
+	std::vector<int> ans = sortEvenOdd(nums);
+	for (auto num : ans)
+		std::cout << num << ' ';
+	std::cout << '\n';
 
-	str1 = "ABABAB", str2 = "ABAB";
-	std::cout << gcdOfStrings(str1, str2) << '\n';
-
-	str1 = "LEET", str2 = "CODE";
-	std::cout << gcdOfStrings(str1, str2) << '\n';
+	nums = { 2,1 };
+	ans = sortEvenOdd(nums);
+	for (auto num : ans)
+		std::cout << num << ' ';
+	std::cout << '\n';
 
 	return 0;
 }

@@ -10,15 +10,31 @@
 #include <unordered_set>
 #include <set>
 
-int numberOfCuts(int n) {
-	if (n == 1)
-		return 0;
+// O(n^2)
+//std::vector<int> sortArrayByParity(std::vector<int>&nums) {
+//	std::vector<int> v;
+//
+//	for (int i = 0; i < nums.size(); i++)
+//		if (nums[i] % 2 == 0)
+//			v.push_back(nums[i]);
+//
+//	for (int i = 0; i < nums.size(); i++)
+//		if (nums[i] % 2 != 0)
+//			v.push_back(nums[i]);
+//
+//	return v;
+//}
 
-	if (n % 2 == 0)
-		return n / 2;
-	else
-		return n;
+// use lambda
+std::vector<int> sortArrayByParity(std::vector<int>& nums) {
+	std::sort(nums.begin(), nums.end(), [](int a, int b)
+		{
+			return (a % 2) < (b % 2);
+		});
+
+	return std::move(nums);
 }
+
 
 
 int main()

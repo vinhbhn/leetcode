@@ -10,8 +10,14 @@
 #include <unordered_set>
 #include <set>
 
-std::vector<double> convertTemperature(double celsius) {
-	return {celsius + 273.15, celsius * 1.80 + 32.00};
+int numberOfCuts(int n) {
+	if (n == 1)
+		return 0;
+
+	if (n % 2 == 0)
+		return n / 2;
+	else
+		return n;
 }
 
 

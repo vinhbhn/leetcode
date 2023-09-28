@@ -10,28 +10,26 @@
 #include <unordered_set>
 #include <set>
 
-char repeatedCharacter(std::string s) {
-	std::unordered_set<char> seen;
+bool isThree(int n) {
+	// 0 1 2 3 false
+	if (n < 4)
+		return false;
 
-	for (int i = 0; i < s.length(); i++)
-	{
-		if (seen.count(s[i]))
-			return s[i];
-		else
-			seen.insert(s[i]);
-	}
+	int count = 1; // always n % n == 0
 
-	return {};
+	for (int i = 1; i <= n/2; i++)
+		if (n % i == 0)
+			++count;
+
+	return (count == 3);
 }
 
 
 int main()
 {
-	std::string s = "abccbaacz";
-	std::cout << repeatedCharacter(s) << '\n';
-
-	s = "abcdd";
-	std::cout << repeatedCharacter(s) << '\n';
+	std::cout << std::boolalpha;
+	std::cout << isThree(2) << '\n';
+	std::cout << isThree(4) << '\n';
 
 	return 0;
 }

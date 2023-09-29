@@ -10,27 +10,57 @@
 #include <unordered_set>
 #include <set>
 
-bool isMonotonic(std::vector<int>& nums) {
-	std::vector<int> incre = nums, decre = nums;
+// https://leetcode.com/problems/number-complement/solutions/1650071/one-line-solution-c/
+//int findComplement(int num) {
+//	return (pow(2,floor(log2(num))+1)-1) - num;
+//}
 
-	std::sort(incre.begin(), incre.end());
-	if (nums == incre)
-		return true;
-
-	std::sort(decre.begin(), decre.end(), std::greater());
-	if (nums == decre)
-		return true;
-
-	return false;
+// https://leetcode.com/problems/number-complement/solutions/1649574/c-easy-to-solve-different-variations-of-code-with-detailed-exaplanations/
+// using bit masking O(log(num)) = O(1) SC:O(1)
+int findComplement(int num) {
+	unsigned mask = ~0;
+	while (mask & num) mask = mask << 1;
+	return ~num ^ mask;
 }
-
-bool isMonotonic(std::vector<int>& nums) {
-	return std::is_sorted(nums.begin(), nums.end()) || std::is_sorted(nums.begin(), nums.end(), std::greater<int>());
+// using xor
+//int findComplement(int num) {
+//	long powerof2s = 2, temp = num;
+//
+//	while (temp >> 1) {
+//		temp >>= 1;
+//		powerof2s <<= 1;
+//	}
+//
+//	return powerof2s - num - 1;
+//}
+// without bit manipulation
+int findComplement(int num) {
+	std::vector<int> temp;
+	// convert to binary representation
+	while (num != 0)
+	{
+		temp.push_back(num % 2);
+		num /= 2;
+	}
+	// make complement
+	for (int i = 0; i < temp.size(); i++)
+	{
+		if (temp[i] == 1) temp[i] = 0;
+		else if (temp[i] == 0) temp[i] = 1;
+	}
+	int res = 0;
+	for (int i = temp.size() - 1; i >= 0; i--)
+		res = res * 2 + temp[i];
+	return res;
 }
 
 int main()
 {
-	std::vector<int>  nums = { 1,2,2,3 };
+	std::cout << findComplement(5) << '\n';
+	std::cout << findComplement(1) << '\n';
+
+
+	/*std::vector<int>  nums = { 1,2,2,3 };
 	std::cout << std::boolalpha;
 	std::cout << isMonotonic(nums) << '\n';
 
@@ -38,7 +68,7 @@ int main()
 	std::cout << isMonotonic(nums) << '\n';
 
 	nums = { 1,3,2 };
-	std::cout << isMonotonic(nums) << '\n';
+	std::cout << isMonotonic(nums) << '\n';*/
 
 	return 0;
 }

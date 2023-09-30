@@ -11,35 +11,44 @@
 #include <set>
 #include <numeric>
 
-// use gcd O(N) O(N)
-bool hasGroupsSizeX(std::vector<int>& deck) {
-	std::unordered_map<int, int> mp;
-	for (auto card : deck)
-		mp[card]++;
+// O(n^2) 
+bool selfDiving(int num)
+{
+	int number = num, digit = 0;
+	while (number)
+	{
+		digit = number % 10;
+		if (digit == 0)
+			return false;
+		if (num % digit != 0)
+			return false;
 
-	int gcd_val = mp.begin()->second;
-	for (auto it = mp.begin(); it != mp.end(); it++)
-		// std::gcd in numeric header
-		gcd_val = std::gcd(gcd_val, it->second); // doing gcd with the frequency of all the cards
-	return gcd_val != 1; // if gcd is not equal to 1 it means we can create groups of size >= 2.
+		number /= 10;
+	}
+	return true;
+}
+std::vector<int> selfDividingNumbers(int left, int right) {
+	std::vector<int> sDN;
+	for (int i = left; i <= right; i++)
+		if (selfDiving(i))
+			sDN.push_back(i);
+
+	return sDN;
 }
 
 int main()
 {
 	std::cout << std::boolalpha;
 
-	std::vector nums = { 1,2,3,4,4,3,2,1 };
-	std::cout << hasGroupsSizeX(nums) << '\n';
+	std::vector nums = selfDividingNumbers(1, 22);
+	for (auto n : nums)
+		std::cout << n << ',';
+	std::cout << '\n';
 
-	nums = { 1,1,1,2,2,2,3,3 };
-	std::cout << hasGroupsSizeX(nums) << '\n';
-
-	nums = { 0,0,0,1,1,1,2,2,2 };
-	std::cout << hasGroupsSizeX(nums) << '\n';
-
-	nums = { 1,1,2,2,2,2 };
-	std::cout << hasGroupsSizeX(nums) << '\n';
-
+	nums = selfDividingNumbers(47, 85);
+	for (auto n : nums)
+		std::cout << n << ',';
+	std::cout << '\n';
 
 	return 0;
 }

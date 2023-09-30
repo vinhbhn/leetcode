@@ -10,69 +10,35 @@
 #include <unordered_set>
 #include <set>
 
-int largestInteger(int num) {
-	std::vector<int> v;
-	int num1 = num;
-	while (num1)
+// O(logN) O(n)
+int dominantIndex(std::vector<int>& numbers) {
+	std::vector<int> nums = numbers;
+	std::sort(nums.begin(), nums.end(), std::greater<int>());
+
+	int largest = nums[0];
+	nums.erase(nums.begin());
+
+	// since secondLargest < largest
+	// the vector's is sorted
+	int secondLargest = nums[0];
+
+	if (largest >= (secondLargest * 2))
 	{
-		v.push_back(num1 % 10);
-		num1 /= 10;
+		for (int i = 0; i < numbers.size(); i++)
+			if (numbers[i] == largest)
+				return i;
 	}
 
-	if (v.size() < 3)
-		return num;
-
-	std::reverse(v.begin(), v.end());
-
-	std::vector<int> even, odd;
-	for (int i = 0; i < v.size(); i++)
-	{
-		if (v[i] % 2 == 0)
-			even.push_back(v[i]);
-		else
-			odd.push_back(v[i]);
-	}
-
-	std::sort(even.begin(), even.end(), std::greater<int>());
-	std::sort(odd.begin(), odd.end(), std::greater<int>());
-
-	int result = 0;
-	for (int i = 0; i < v.size(); i++)
-	{
-		if (v[i] % 2 == 0)
-		{
-			result = result * 10 + even[0];
-			even.erase(even.begin());
-		}
-		else
-		{
-			result = result * 10 + odd[0];
-			odd.erase(odd.begin());
-		}
-	}
-
-	return result;
+	return -1;
 }
 
 int main()
 {
-	std::cout << largestInteger(1234) << '\n';
-	std::cout << largestInteger(65875) << '\n';
-	std::cout << largestInteger(27) << '\n';
-	std::cout << largestInteger(247) << '\n';
+	std::vector nums = { 3,6,1,0 };
+	std::cout << dominantIndex(nums) << '\n';
 
-
-
-
-	/*std::vector<int>  nums = { 1,2,2,3 };
-	std::cout << std::boolalpha;
-	std::cout << isMonotonic(nums) << '\n';
-
-	nums = { 6,5,4,4 };
-	std::cout << isMonotonic(nums) << '\n';
-
-	nums = { 1,3,2 };
-	std::cout << isMonotonic(nums) << '\n';*/
+	nums = { 1,2,3,4 };
+	std::cout << dominantIndex(nums) << '\n';
 
 	return 0;
 }

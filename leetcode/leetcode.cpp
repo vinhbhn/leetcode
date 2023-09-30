@@ -10,35 +10,25 @@
 #include <unordered_set>
 #include <set>
 
-// O(logN) O(n)
-int dominantIndex(std::vector<int>& numbers) {
-	std::vector<int> nums = numbers;
-	std::sort(nums.begin(), nums.end(), std::greater<int>());
+int findFinalValue(std::vector<int>& nums, int original) {
+	std::sort(nums.begin(), nums.end());
 
-	int largest = nums[0];
-	nums.erase(nums.begin());
-
-	// since secondLargest < largest
-	// the vector's is sorted
-	int secondLargest = nums[0];
-
-	if (largest >= (secondLargest * 2))
+	for (int i = 0; i < nums.size(); i++)
 	{
-		for (int i = 0; i < numbers.size(); i++)
-			if (numbers[i] == largest)
-				return i;
+		if (nums[i] == original)
+			original *= 2;
 	}
 
-	return -1;
+	return original;
 }
 
 int main()
 {
-	std::vector nums = { 3,6,1,0 };
-	std::cout << dominantIndex(nums) << '\n';
+	std::vector nums = { 5,3,6,1,12 };
+	std::cout << findFinalValue(nums, 3) << '\n';
 
-	nums = { 1,2,3,4 };
-	std::cout << dominantIndex(nums) << '\n';
+	nums = { 2,7,9 };
+	std::cout << findFinalValue(nums, 2) << '\n';
 
 	return 0;
 }

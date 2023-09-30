@@ -10,25 +10,29 @@
 #include <unordered_set>
 #include <set>
 
-int findFinalValue(std::vector<int>& nums, int original) {
-	std::sort(nums.begin(), nums.end());
-
-	for (int i = 0; i < nums.size(); i++)
+bool checkIfExist(std::vector<int>& arr) {
+	for (int i = 0; i < arr.size() - 1; i++)
 	{
-		if (nums[i] == original)
-			original *= 2;
+		for (int j = i + 1; j < arr.size(); j++)
+			if (arr[i] == (arr[j] * 2) || (arr[i] * 2) == arr[j])
+				return true;
 	}
 
-	return original;
+	return false;
 }
 
 int main()
 {
-	std::vector nums = { 5,3,6,1,12 };
-	std::cout << findFinalValue(nums, 3) << '\n';
+	std::cout << std::boolalpha;
 
-	nums = { 2,7,9 };
-	std::cout << findFinalValue(nums, 2) << '\n';
+	std::vector nums = { 10,2,5,3 };
+	std::cout << checkIfExist(nums) << '\n';
+
+	nums = { 3,1,7,11 };
+	std::cout << checkIfExist(nums) << '\n';
+
+	nums = { 7, 1, 14, 11 };
+	std::cout << checkIfExist(nums) << '\n';
 
 	return 0;
 }

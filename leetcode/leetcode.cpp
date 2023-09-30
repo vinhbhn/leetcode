@@ -11,44 +11,43 @@
 #include <set>
 #include <numeric>
 
-// O(n^2) 
-bool selfDiving(int num)
-{
-	int number = num, digit = 0;
-	while (number)
+// https://leetcode.com/problems/132-pattern/solutions/4107421/99-35-stack-left-approach-binary-search/?envType=daily-question&envId=2023-09-30
+// stack-based O(n) O(n)
+bool find132pattern(std::vector<int>& nums) {
+	std::stack<int> s;
+	int third = INT_MIN;
+
+	for (int i = nums.size() - 1; i >= 0; i--)
 	{
-		digit = number % 10;
-		if (digit == 0)
-			return false;
-		if (num % digit != 0)
-			return false;
+		if (nums[i] < third)
+			return true;
 
-		number /= 10;
+		while (!s.empty() && s.top() < nums[i])
+		{
+			third = s.top();
+			s.pop();
+		}
+		s.push(nums[i]);
 	}
-	return true;
+	return false;
 }
-std::vector<int> selfDividingNumbers(int left, int right) {
-	std::vector<int> sDN;
-	for (int i = left; i <= right; i++)
-		if (selfDiving(i))
-			sDN.push_back(i);
 
-	return sDN;
-}
 
 int main()
 {
 	std::cout << std::boolalpha;
+	std::vector nums = { 1,2,3,4 };
+	std::cout << find132pattern(nums) << '\n';
 
-	std::vector nums = selfDividingNumbers(1, 22);
-	for (auto n : nums)
-		std::cout << n << ',';
-	std::cout << '\n';
+	nums = { 3,1,4,2 };
+	std::cout << find132pattern(nums) << '\n';
 
-	nums = selfDividingNumbers(47, 85);
-	for (auto n : nums)
-		std::cout << n << ',';
-	std::cout << '\n';
+	nums = { -1,3,2,0 };
+	std::cout << find132pattern(nums) << '\n';
+
+	nums = { 3,5,0,3,4 };
+	std::cout << find132pattern(nums) << '\n';
+
 
 	return 0;
 }

@@ -10,63 +10,58 @@
 #include <unordered_set>
 #include <set>
 
-// https://leetcode.com/problems/number-complement/solutions/1650071/one-line-solution-c/
-//int findComplement(int num) {
-//	return (pow(2,floor(log2(num))+1)-1) - num;
-//}
-
-// https://leetcode.com/problems/number-complement/solutions/1649574/c-easy-to-solve-different-variations-of-code-with-detailed-exaplanations/
-// using bit masking O(log(num)) = O(1) SC:O(1)
-int findComplement(int num) {
-	unsigned mask = ~0;
-	while (mask & num) mask = mask << 1;
-	return ~num ^ mask;
-}
-// using xor
-//int findComplement(int num) {
-//	long powerof2s = 2, temp = num;
-//
-//	while (temp >> 1) {
-//		temp >>= 1;
-//		powerof2s <<= 1;
-//	}
-//
-//	return powerof2s - num - 1;
-//}
-// without bit manipulation
-int findComplement(int num) {
-	std::vector<int> temp;
-	// convert to binary representation
-	while (num != 0)
+int largestInteger(int num) {
+	std::vector<int> v;
+	int num1 = num;
+	while (num1)
 	{
-		temp.push_back(num % 2);
-		num /= 2;
+		v.push_back(num1 % 10);
+		num1 /= 10;
 	}
-	// make complement
-	for (int i = 0; i < temp.size(); i++)
+
+	if (v.size() < 3)
+		return num;
+
+	std::reverse(v.begin(), v.end());
+
+	std::vector<int> even, odd;
+	for (int i = 0; i < v.size(); i++)
 	{
-		if (temp[i] == 1) temp[i] = 0;
-		else if (temp[i] == 0) temp[i] = 1;
+		if (v[i] % 2 == 0)
+			even.push_back(v[i]);
+		else
+			odd.push_back(v[i]);
 	}
-	int res = 0;
-	for (int i = temp.size() - 1; i >= 0; i--)
-		res = res * 2 + temp[i];
-	return res;
-}
 
-int bitwiseComplement(int n) {
-	if (n == 0)
-		return 1;
+	std::sort(even.begin(), even.end(), std::greater<int>());
+	std::sort(odd.begin(), odd.end(), std::greater<int>());
 
-	unsigned mask = ~0;
-	while (mask & n) mask = mask << 1;
-	return (~n ^ mask);
+	int result = 0;
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (v[i] % 2 == 0)
+		{
+			result = result * 10 + even[0];
+			even.erase(even.begin());
+		}
+		else
+		{
+			result = result * 10 + odd[0];
+			odd.erase(odd.begin());
+		}
+	}
+
+	return result;
 }
 
 int main()
 {
-	std::cout << findComplement(5) << '\n';
-	std::cout << findComplement(1) << '\n';
+	std::cout << largestInteger(1234) << '\n';
+	std::cout << largestInteger(65875) << '\n';
+	std::cout << largestInteger(27) << '\n';
+	std::cout << largestInteger(247) << '\n';
+
+
 
 
 	/*std::vector<int>  nums = { 1,2,2,3 };

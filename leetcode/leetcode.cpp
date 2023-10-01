@@ -11,42 +11,37 @@
 #include <set>
 #include <numeric>
 
-// https://leetcode.com/problems/132-pattern/solutions/4107421/99-35-stack-left-approach-binary-search/?envType=daily-question&envId=2023-09-30
-// stack-based O(n) O(n)
-bool find132pattern(std::vector<int>& nums) {
-	std::stack<int> s;
-	int third = INT_MIN;
+//bool checkPerfectNumber(int num) {
+//	int sum = 0;
+//
+//	for (int i = 1; i <= num / 2; i++)
+//	{
+//		if (num % i == 0)
+//			sum += i;
+//	}
+//
+//	return (sum == num);
+//}
 
-	for (int i = nums.size() - 1; i >= 0; i--)
-	{
-		if (nums[i] < third)
-			return true;
+bool checkPerfectNumber(int num) {
+	if (num == 1) return false;
 
-		while (!s.empty() && s.top() < nums[i])
-		{
-			third = s.top();
-			s.pop();
-		}
-		s.push(nums[i]);
-	}
-	return false;
+	int sum = 1;
+	for (int i = 2; i*i <= num; i++)
+		if (num % i == 0)
+			// example: 28 = 1 + 2*14 + 4*7
+			sum += i + num / i;
+
+	return (sum == num);
 }
 
 
 int main()
 {
 	std::cout << std::boolalpha;
-	std::vector nums = { 1,2,3,4 };
-	std::cout << find132pattern(nums) << '\n';
-
-	nums = { 3,1,4,2 };
-	std::cout << find132pattern(nums) << '\n';
-
-	nums = { -1,3,2,0 };
-	std::cout << find132pattern(nums) << '\n';
-
-	nums = { 3,5,0,3,4 };
-	std::cout << find132pattern(nums) << '\n';
+	std::cout << checkPerfectNumber(28) << '\n';
+	std::cout << checkPerfectNumber(7) << '\n';
+	std::cout << checkPerfectNumber(1) << '\n';
 
 
 	return 0;

@@ -11,38 +11,37 @@
 #include <set>
 #include <numeric>
 
-//bool checkPerfectNumber(int num) {
-//	int sum = 0;
-//
-//	for (int i = 1; i <= num / 2; i++)
+//int countDigits(int num) {
+//	int number = num, count = 0;
+//	while (number)
 //	{
-//		if (num % i == 0)
-//			sum += i;
+//		int digit = number % 10;
+//		if (num % digit == 0)
+//			++count;
+//		number /= 10;
 //	}
 //
-//	return (sum == num);
+//	return count;
 //}
 
-bool checkPerfectNumber(int num) {
-	if (num == 1) return false;
+int countDigits(int num) {
+	int number = num, count = 0;
+	while (number)
+	{
+		if (num % (number % 10) == 0)
+			++count;
+		number /= 10;
+	}
 
-	int sum = 1;
-	for (int i = 2; i*i <= num; i++)
-		if (num % i == 0)
-			// example: 28 = 1 + 2*14 + 4*7
-			sum += i + num / i;
-
-	return (sum == num);
+	return count;
 }
 
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << checkPerfectNumber(28) << '\n';
-	std::cout << checkPerfectNumber(7) << '\n';
-	std::cout << checkPerfectNumber(1) << '\n';
-
+	std::cout << countDigits(7) << '\n';
+	std::cout << countDigits(121) << '\n';
+	std::cout << countDigits(1248) << '\n';
 
 	return 0;
 }

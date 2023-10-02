@@ -12,66 +12,39 @@
 #include <numeric>
 #include <sstream>
 
-//std::string reverseWords(std::string s) {
-//	std::size_t m_pos = 0;
-//	std::vector<std::string> v;
-//	std::string result;
-//	for (std::size_t i = 0; i < s.size(); i++)
-//	{
-//		if ((s[i] == ' '))
-//		{
-//			v.push_back(s.substr(m_pos, i - m_pos));
-//			m_pos = i + 1;
-//		}
-//
-//		if (i == s.size() - 1)
-//			v.push_back(s.substr(m_pos, i + 1 - m_pos));
-//	}
-//
-//	for (auto& sv : v)
-//	{
-//		std::reverse(sv.begin(), sv.end());
-//		result += sv + ' ';
-//	}
-//	result.pop_back(); // remove ' ' in the end of string
-//
-//	return result;
-//}
-
-// from web: using two pointers
-//std::string reverseWords(std::string s) {
-//	std::size_t l = 0, r = 0;
+// https://leetcode.com/problems/reverse-string-ii/solutions/2627754/c-world-s-fastest-solution-with-approach/
+// using two pointers O(n) O(n)
+//std::string reverseStr(std::string s, int k) {
+//	std::size_t l = 0, r = std::min((std::size_t)k, s.length());
 //	while (l < s.length())
 //	{
-//		while (r < s.length() && s[r] != ' ')
-//			r++;
-//
 //		std::reverse(s.begin() + l, s.begin() + r);
-//		l = r + 1;
-//		r = l;
+//		l += (std::size_t)2 * k;
+//		r = std::min((std::size_t)k + l, s.length());
 //	}
 //
 //	return s;
 //}
 
-// https://leetcode.com/problems/reverse-words-in-a-string-iii/solutions/4111458/91-55-easy-solution-reverse-join/?envType=daily-question&envId=2023-10-01
-std::string reverseWords(std::string s) {
-	std::stringstream ss(s);
-	std::string temp, ans;
-	while (ss >> temp)
+// https://leetcode.com/problems/reverse-string-ii/solutions/3750157/easy-0ms-solution-c/
+std::string reverseStr(std::string s, int k) {
+	for (int i = 0; i < s.length(); i += 2 * k)
 	{
-		std::reverse(temp.begin(), temp.end());
-		ans += temp + ' ';
+		if (i + k <= s.length())
+			std::reverse(s.begin() + i, s.begin() + i + k);
+		else
+			std::reverse(s.begin() + i, s.end());
 	}
-
-	return ans.substr(0, ans.size() - 1);
+	return s;
 }
+
+
 
 int main()
 {
-	std::cout << reverseWords("Let's take LeetCode contest") << '\n';
-	std::cout << reverseWords("God Ding") << '\n';
-
+	std::cout << reverseStr("abcdefg", 2) << '\n';
+	std::cout << reverseStr("abcd", 2) << '\n';
+	std::cout << reverseStr("abcdefg", 8) << '\n';
 	return 0;
 }
 

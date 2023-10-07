@@ -12,23 +12,15 @@
 #include <numeric>
 #include <sstream>
 
-//int minimizedStringLength(std::string s) {
-//	std::unordered_set<char> st;
-//	for (auto ch : s)
-//		st.insert(ch);
-//
-//	return st.size();
-//}
-
-int minimizedStringLength(std::string s) {
-	return std::unordered_set<char>(s.begin(), s.end()).size();
+bool divisorGame(int n) {
+	return (n % 2 == 0);
 }
 
 int main()
 {
-	std::cout << minimizedStringLength("aaabc") << '\n';
-	std::cout << minimizedStringLength("cbbd") << '\n';
-	std::cout << minimizedStringLength("dddaaa") << '\n';
+	std::cout << std::boolalpha;
+	std::cout << divisorGame(2) << '\n';
+	std::cout << divisorGame(3) << '\n';
 
 	return 0;
 }

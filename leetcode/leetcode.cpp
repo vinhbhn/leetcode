@@ -12,25 +12,70 @@
 #include <numeric>
 #include <sstream>
 
-std::string finalString(std::string s) {
-	for (auto it = s.begin(); it != s.end();)
+bool isVowel(char& ch)
+{
+	if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'
+		|| ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U')
+		return true;
+
+	return false;
+}
+//std::string reverseVowels(std::string s) {
+//	std::stack<char> st;  // stack is LIFO means we don't need reverse the vowels
+//	for (int i = 0; i < s.length(); i++)
+//	{
+//		if (isVowel(s[i]))
+//			st.push(s[i]);
+//	}
+//
+//	if (st.empty())
+//		return s;
+//
+//	for (int i = 0; i < s.length(); i++)
+//	{
+//		if (isVowel(s[i]))
+//		{
+//			s[i] = st.top();
+//			st.pop();
+//		}
+//	}
+//
+//	return s;
+//}
+
+// web: using two pointers O(n) O(1)
+std::string reverseVowels(std::string s) {
+	int l = 0, r = s.length() - 1;
+	while (l < r)
 	{
-		if (*it == 'i')
+		if (isVowel(s[l]) && isVowel(s[r]))
 		{
-			std::reverse(s.begin(), it);
-			it = s.erase(it); //  remove 'i'
+			std::swap(s[l], s[r]);
+			l++;
+			r--;
 		}
+		else if (isVowel(s[l]))
+			r--;
+		else if (isVowel(s[r]))
+			l++;
 		else
-			++it;
+		{
+			l++;
+			r--;
+		}
+
 	}
+
 	return s;
 }
 
 
+
 int main()
 {
-	std::cout << finalString("string") << '\n';
-	std::cout << finalString("poiinter") << '\n';
+	std::cout << reverseVowels("hello") << '\n';
+	std::cout << reverseVowels("leetcode") << '\n';
+	std::cout << reverseVowels("aA") << '\n';
 
 	return 0;
 }

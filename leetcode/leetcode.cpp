@@ -12,70 +12,54 @@
 #include <numeric>
 #include <sstream>
 
-bool isVowel(char& ch)
-{
-	if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'
-		|| ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U')
-		return true;
-
-	return false;
-}
-//std::string reverseVowels(std::string s) {
-//	std::stack<char> st;  // stack is LIFO means we don't need reverse the vowels
-//	for (int i = 0; i < s.length(); i++)
-//	{
-//		if (isVowel(s[i]))
-//			st.push(s[i]);
-//	}
-//
-//	if (st.empty())
-//		return s;
-//
-//	for (int i = 0; i < s.length(); i++)
-//	{
-//		if (isVowel(s[i]))
-//		{
-//			s[i] = st.top();
-//			st.pop();
-//		}
-//	}
-//
-//	return s;
-//}
-
-// web: using two pointers O(n) O(1)
-std::string reverseVowels(std::string s) {
-	int l = 0, r = s.length() - 1;
-	while (l < r)
+// O(n) O(n)
+std::string removeDuplicates(std::string s) {
+	std::stack<char> st;
+	std::string str = "";
+	for (int i = 0; i < s.length(); i++)
 	{
-		if (isVowel(s[l]) && isVowel(s[r]))
-		{
-			std::swap(s[l], s[r]);
-			l++;
-			r--;
-		}
-		else if (isVowel(s[l]))
-			r--;
-		else if (isVowel(s[r]))
-			l++;
+		if (st.empty())
+			st.push(s[i]);
 		else
 		{
-			l++;
-			r--;
+			if (st.top() == s[i])
+				st.pop();
+			else
+				st.push(s[i]);
 		}
-
 	}
 
-	return s;
+	while (!st.empty())
+	{
+		str += st.top();
+		st.pop();
+	}
+	std::reverse(str.begin(), str.end());
+	return str;
 }
 
-
+// https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/solutions/3655668/simple-c-approach-using-basic-strings-no-stack-with-detailed-explanation/
+// with no use stack
+//std::string removeDuplicates(std::string s) {
+//	std::string temp = "";
+//	int i = 0;
+//	while (i < s.length())
+//	{
+//		if (temp.empty() || s[i] != temp.back())
+//			temp.push_back(s[i]);
+//		else
+//			temp.pop_back();
+//
+//		i++;
+//	}
+//
+//	return temp;
+//}
 
 int main()
 {
-	std::cout << reverseVowels("hello") << '\n';
-	std::cout << reverseVowels("leetcode") << '\n';
-	std::cout << reverseVowels("aA") << '\n';
+	std::cout << removeDuplicates("abbaca") << '\n';
+	std::cout << removeDuplicates("azxxzy") << '\n';
 
 	return 0;
 }

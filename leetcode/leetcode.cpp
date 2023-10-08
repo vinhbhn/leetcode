@@ -12,19 +12,9 @@
 #include <numeric>
 #include <sstream>
 
-int heightChecker(std::vector<int>& heights) {
-	std::vector<int> expected = heights;
-	int count = 0;
-
-	std::sort(expected.begin(), expected.end());
-
-	for (int i = 0; i < heights.size(); i++)
-	{
-		if (heights[i] != expected[i])
-			++count;
-	}
-
-	return count;
+// area of triangle > 0
+bool isBoomerang(std::vector<std::vector<int>>& points) {
+	return (std::abs(((points[1][0] - points[0][0]) * (points[2][1] - points[0][1])) - ((points[2][0] - points[0][0]) * (points[1][1] - points[0][1]))) / 2.0) > 0;
 }
 
 int main()

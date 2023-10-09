@@ -12,18 +12,32 @@
 #include <numeric>
 #include <sstream>
 
-int sumOfUnique(std::vector<int>& nums) {
-	std::unordered_map<int, int> mp;
-	for (auto num : nums)
-		mp[num]++;
+bool isGood(std::vector<int>& nums) {
+	// sort and find max element in nums vector
+	std::sort(nums.begin(), nums.end());
+	int max = nums[nums.size() - 1];
 
-	int sum = 0;
-	for (auto &x : mp)
-		if (x.second == 1)
-			sum += x.first;
+	// generate base[max] = [1,2,...,max-1,max,max]
+	std::vector<int> expected;
+	for (int i = 1; i <= max; i++)
+		expected.push_back(i);
+	// then push one more max
+	expected.push_back(max);
 
-	return sum;
+	// check size to avoid overflow
+	if (nums.size() != expected.size())
+		return false;
+	// if size is equal then check element in two vectors
+	for (int i = expected.size() - 1 ; i >= 0; i--)
+	{
+		if (nums[i] != expected[i])
+			return false;
+	}
+
+	return true;
 }
+
+
 
 int main()
 {

@@ -12,25 +12,66 @@
 #include <numeric>
 #include <sstream>
 
-// area of triangle > 0
-bool isBoomerang(std::vector<std::vector<int>>& points) {
-	// area(ABC) = |(xB - xA)(yC-yA) - (xC-xA)(yB-yA)| / 2
-	return (std::abs(((points[1][0] - points[0][0]) * (points[2][1] - points[0][1])) - ((points[2][0] - points[0][0]) * (points[1][1] - points[0][1]))) / 2.0) > 0;
+// slow because use vector to save sum
+//double findMaxAverage(std::vector<int>& nums, int k) {
+//	std::vector<int> result;
+//	int sum = 0, count = 0, j = 0;
+//	for (int i = 0; i <= nums.size() - k; i++)
+//	{
+//		j = i;
+//		while (count < k)
+//		{
+//			sum += nums[j++];
+//			++count;
+//		}
+//
+//		// reset
+//		result.push_back(sum);
+//		sum = 0;
+//		count = 0;
+//	}
+//
+//	int max = INT_MIN;
+//	for (auto x : result)
+//		if (max < x)
+//			max = x;
+//
+//	return static_cast<double>(max) / k;
+//}
+
+double findMaxAverage(std::vector<int>& nums, int k) {
+	int sum = 0, i = 0;
+
+	// init
+	while (i < k)
+		sum += nums[i++];
+
+	int max_sum = sum;
+	for(i = k; i < nums.size(); i++)
+	{
+		sum += nums[i] - nums[i-k];
+		max_sum = std::max(sum, max_sum);
+	}
+
+	return static_cast<double>(max_sum) / k;
 }
 
 int main()
 {
-	std::vector heights{ 1,1,4,2,1,3 };
-	std::cout << heightChecker(heights) << '\n';
+	std::vector nums = { 1,12,-5,-6,50,3 };
+	int k = 4;
+	std::cout << findMaxAverage(nums, k) << '\n';
 
-	heights = { 5,1,2,3,4 };
-	std::cout << heightChecker(heights) << '\n';
+	nums = { 5 };
+	k = 1;
+	std::cout << findMaxAverage(nums, k) << '\n';
 
-	heights = { 1,2,3,4,5 };
-	std::cout << heightChecker(heights) << '\n';
+	nums = { -1 };
+	std::cout << findMaxAverage(nums, k) << '\n';
 
 	return 0;
 }
 
 /*ios_base::sync_with_stdio(false);
-	cin.tie(NULL);*/
+	cin.tie(nullptr);
+	cout.tie(nullptr);*/

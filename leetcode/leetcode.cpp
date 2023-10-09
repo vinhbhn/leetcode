@@ -12,32 +12,16 @@
 #include <numeric>
 #include <sstream>
 
-bool isGood(std::vector<int>& nums) {
-	// sort and find max element in nums vector
-	std::sort(nums.begin(), nums.end());
-	int max = nums[nums.size() - 1];
-
-	// generate base[max] = [1,2,...,max-1,max,max]
-	std::vector<int> expected;
-	for (int i = 1; i <= max; i++)
-		expected.push_back(i);
-	// then push one more max
-	expected.push_back(max);
-
-	// check size to avoid overflow
-	if (nums.size() != expected.size())
-		return false;
-	// if size is equal then check element in two vectors
-	for (int i = expected.size() - 1 ; i >= 0; i--)
+int sumOfSquares(std::vector<int>& nums) {
+	int sum = 0, n = nums.size();
+	for (int i = 0; i < n; i++)
 	{
-		if (nums[i] != expected[i])
-			return false;
+		if (n % (i+1) == 0)
+			sum += nums[i] * nums[i];
 	}
 
-	return true;
+	return sum;
 }
-
-
 
 int main()
 {

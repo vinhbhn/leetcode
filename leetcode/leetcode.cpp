@@ -13,24 +13,62 @@
 #include <sstream>
 #include <queue>
 
-bool isAcronym(std::vector<std::string>& words, std::string s) {
-	if (words.size() != s.size())
-		return false;
-	for(int i = 0; i < words.size(); i++)
+//int countPoints(std::string rings) {
+//	int sum = 0;
+//	std::string numbers = "0123456789";
+//	bool r = false, g = false, b = false;
+//	for (auto rod : numbers)
+//	{
+//		for (std::string::size_type j = 1; j < rings.length(); j += 2)
+//		{
+//			if (rings[j] == rod)
+//			{
+//				if (rings[j - 1] == 'R')
+//					r = true;
+//				if (rings[j - 1] == 'G')
+//					g = true;
+//				if (rings[j - 1] == 'B')
+//					b = true;
+//			}
+//		}
+//
+//		// rod have 3 rings color
+//		if (r && g && b)
+//			sum++;
+//
+//		// reset
+//		r = false;
+//		g = false;
+//		b = false;
+//	}
+//
+//	return sum;
+//}
+
+// web
+int countPoints(std::string rings) {
+	int count = 0;
+	std::unordered_map<char, std::vector<char>> mp;
+	for (std::string::size_type i = 0; i < rings.size(); i += 2)
 	{
-		if (words[i][0] != s[i])
-			return false;
+		mp[rings[i+1]].push_back(rings[i]);
+	}
+	for (auto &it : mp)
+	{
+		std::set<char> st(it.second.begin(), it.second.end());
+		count += (st.size() == 3);
 	}
 
-	return true;
+	return count;
 }
 
 
 int main()
 {
-	std::cout << balancedStringSplit("RLRRLLRLRL") << '\n';
-	std::cout << balancedStringSplit("RLRRRLLRLL") << '\n';
-	std::cout << balancedStringSplit("LLLLRRRR") << '\n';
+	std::cout << std::boolalpha;
+	std::cout << countPoints("B0B6G0R6R0R6G9") << '\n';
+	std::cout << countPoints("B0R0G0R9R0B0G0") << '\n';
+	std::cout << countPoints("G4") << '\n';
 
 
 	return 0;

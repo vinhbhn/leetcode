@@ -13,20 +13,16 @@
 #include <sstream>
 #include <queue>
 
-int balancedStringSplit(std::string s) {
-	int balance = 0, sum = 0;
-	for (int i = 0; i < s.length(); i++)
+bool isAcronym(std::vector<std::string>& words, std::string s) {
+	if (words.size() != s.size())
+		return false;
+	for(int i = 0; i < words.size(); i++)
 	{
-		if (s[i] == 'R')
-			++balance;
-		else
-			--balance;
-		
-		if (balance == 0)
-			++sum;
+		if (words[i][0] != s[i])
+			return false;
 	}
 
-	return sum;
+	return true;
 }
 
 

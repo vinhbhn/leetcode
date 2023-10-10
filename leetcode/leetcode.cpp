@@ -13,41 +13,29 @@
 #include <sstream>
 #include <queue>
 
-// https://leetcode.com/problems/split-strings-by-separator/solutions/3804389/easy-and-clean-code-c/
-std::vector<std::string> splitWordsBySeparator(std::vector<std::string>& words, char separator) {
-	std::vector<std::string> result;
-	for (int i = 0; i < words.size(); i++)
+int balancedStringSplit(std::string s) {
+	int balance = 0, sum = 0;
+	for (int i = 0; i < s.length(); i++)
 	{
-		std::string s = words[i];
-		std::string temp = "";
-		for (auto a : s)
-		{
-			if (a == separator && temp != "")
-			{
-				result.push_back(temp);
-				temp = "";
-			}
-			if (a != separator)
-				temp += a;
-		}
-		// the last string if not separator in the end
-		if (temp != "")
-			result.push_back(temp);
+		if (s[i] == 'R')
+			++balance;
+		else
+			--balance;
+		
+		if (balance == 0)
+			++sum;
 	}
 
-	return result;
+	return sum;
 }
 
 
 int main()
 {
-	std::vector<std::string> words = { "one.two.three","four.five","six" };
-	char separator = '.';
-	splitWordsBySeparator(words, separator);
+	std::cout << balancedStringSplit("RLRRLLRLRL") << '\n';
+	std::cout << balancedStringSplit("RLRRRLLRLL") << '\n';
+	std::cout << balancedStringSplit("LLLLRRRR") << '\n';
 
-	 words = { "$easy$","$problem$" };
-	separator = '$';
-	splitWordsBySeparator(words, separator);
 
 	return 0;
 }

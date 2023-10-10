@@ -13,25 +13,40 @@
 #include <sstream>
 #include <queue>
 
-// Win[1] -> Win[2] -> Win[3] -> Lose[4]
-bool canWinNim(int n) {
-	return n % 4;
+std::vector<std::string> splitWordsBySeparator(std::vector<std::string>& words, char separator) {
+	std::vector<std::string> result;
+	for (int i = 0; i < words.size(); i++)
+	{
+		std::string s = words[i];
+		std::string temp = "";
+		for (auto a : s)
+		{
+			if (a == separator && temp != "")
+			{
+				result.push_back(temp);
+				temp = "";
+			}
+			if (a != separator)
+				temp += a;
+		}
+		// the last string if not separator in the end
+		if (temp != "")
+			result.push_back(temp);
+	}
+
+	return result;
 }
 
 
 int main()
 {
-	std::vector g = { 1,2,3 }, s = { 1,1 };
-	std::cout << findContentChildren(g, s) << '\n';
+	std::vector<std::string> words = { "one.two.three","four.five","six" };
+	char separator = '.';
+	splitWordsBySeparator(words, separator);
 
-	g = { 1,2 }, s = { 1,2,3 };
-	std::cout << findContentChildren(g, s) << '\n';
-
-	g = { 1,2, 3 }, s = { 3 };
-	std::cout << findContentChildren(g, s) << '\n';
-
-	g = { 10,9,8,7 }, s = { 5,6,7,8 };
-	std::cout << findContentChildren(g, s) << '\n';
+	 words = { "$easy$","$problem$" };
+	separator = '$';
+	splitWordsBySeparator(words, separator);
 
 	return 0;
 }

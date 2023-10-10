@@ -13,6 +13,7 @@
 #include <sstream>
 #include <queue>
 
+// https://leetcode.com/problems/split-strings-by-separator/solutions/3804389/easy-and-clean-code-c/
 std::vector<std::string> splitWordsBySeparator(std::vector<std::string>& words, char separator) {
 	std::vector<std::string> result;
 	for (int i = 0; i < words.size(); i++)

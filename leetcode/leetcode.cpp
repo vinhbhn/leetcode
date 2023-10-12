@@ -14,104 +14,48 @@
 #include <queue>
 #include<map>
 
-// O(n logN) O(n log N)
-//std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
-//	std::vector<int> result, vk;
-//	while (k > 0)
-//	{
-//		vk.push_back(k % 10);
-//		k /= 10;
-//	}
-//
-//	std::reverse(num.begin(), num.end());
-//	int i = 0, j = 0, carry = 0, sum = 0;
-//	while (i < num.size() || j < vk.size() || carry)
-//	{
-//		if (i < num.size())
-//			sum += num[i++];
-//		if (j < vk.size())
-//			sum += vk[j++];
-//		sum += carry;
-//
-//		result.push_back(sum % 10);
-//		carry = sum / 10;
-//		sum = 0;
-//	}
-//
-//	std::reverse(result.begin(), result.end());
-//	return result;
-//}
+struct ListNode {
+	int val;
+	ListNode* next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode* next) : val(x), next(next) {}
+};
 
-// fastest in four ways
-// O(n logN) O(n log N)
-std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
-	std::vector<int> result;
-	std::reverse(num.begin(), num.end());
-	int i = 0, carry = 0, sum = 0;
-	while (i < num.size() || k > 0 || carry)
+// https://leetcode.com/problems/add-two-numbers/solutions/3675747/beats-100-c-java-python-beginner-friendly/
+// O(max|l1,l2|) O(n)
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+	int sum = 0, carry = 0;
+	ListNode* dummy = new ListNode();
+	ListNode* temp = dummy;
+
+	while (l1 || l2 || carry)
 	{
-		if (i < num.size())
-			sum += num[i++];
-		if (k > 0)
+		if (l1)
 		{
-			sum += k % 10;
-			k /= 10;
+			sum += l1->val;
+			l1 = l1->next;
 		}
-
+		if (l2)
+		{
+			sum += l2->val;
+			l2 = l2->next;
+		}
 		sum += carry;
-
-		result.push_back(sum % 10);
 		carry = sum / 10;
+
+		ListNode* newNode = new ListNode(sum % 10);
+		temp->next = newNode;
+		temp = temp->next;
+
 		sum = 0;
 	}
 
-	std::reverse(result.begin(), result.end());
+	ListNode* result = dummy->next;
+	delete dummy;
+
 	return result;
 }
-
-// https://leetcode.com/problems/add-to-array-form-of-integer/solutions/3187080/simplest-solution-full-explanation-c-python3-java/
-// O(n) O(1)
-//std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
-//	for (int i = num.size() - 1; i >= 0; i--)
-//	{
-//		num[i] += k;
-//		k = num[i] / 10;
-//		num[i] %= 10;
-//	}
-//	while (k > 0) // still carry
-//	{
-//		num.insert(num.begin(), k % 10);
-//		k /= 10;
-//	}
-//	return num;
-//}
-
-// https://leetcode.com/problems/add-to-array-form-of-integer/solutions/3187149/c-faster-than-95-no-shortcut-mehthod-self-explanatory-code/
-//std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
-//	int carry = 0, i = num.size() - 1, sum = 0;
-//	while (i >= 0)
-//	{
-//		sum = num[i] + (k % 10) + carry;
-//		k /= 10;
-//
-//		num[i--] = sum % 10;
-//		carry = sum / 10;
-//	}
-//
-//	while (k > 0)
-//	{
-//		sum = (k % 10) + carry;
-//		k /= 10;
-//
-//		num.insert(num.begin(), sum % 10);
-//		carry = sum / 10;
-//	}
-//
-//	if (carry > 0)
-//		num.insert(num.begin(), carry);
-//
-//	return num;
-//}
 
 int main()
 {

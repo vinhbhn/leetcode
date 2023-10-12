@@ -14,57 +14,124 @@
 #include <queue>
 #include<map>
 
-//https://leetcode.com/problems/add-strings/solutions/2808140/c-grade-1-addition-technique/
-std::string addStrings(std::string num1, std::string num2) {
-	// accessing last digit of the num1 string and num2 string
-	int i = num1.size() - 1, j = num2.size() - 1;
+// O(n logN) O(n log N)
+//std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
+//	std::vector<int> result, vk;
+//	while (k > 0)
+//	{
+//		vk.push_back(k % 10);
+//		k /= 10;
+//	}
+//
+//	std::reverse(num.begin(), num.end());
+//	int i = 0, j = 0, carry = 0, sum = 0;
+//	while (i < num.size() || j < vk.size() || carry)
+//	{
+//		if (i < num.size())
+//			sum += num[i++];
+//		if (j < vk.size())
+//			sum += vk[j++];
+//		sum += carry;
+//
+//		result.push_back(sum % 10);
+//		carry = sum / 10;
+//		sum = 0;
+//	}
+//
+//	std::reverse(result.begin(), result.end());
+//	return result;
+//}
 
-	// declared a integer variable carry and assigned it 0
-	int carry = 0;
-
-	// declared an empty string
-	std::string ans = "";
-
-	// traversing the num1 and num2 string till the leftmost digit
-	// and till carry > 0
-	while (i >= 0 || j >= 0 || carry)
+// fastest in four ways
+// O(n logN) O(n log N)
+std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
+	std::vector<int> result;
+	std::reverse(num.begin(), num.end());
+	int i = 0, carry = 0, sum = 0;
+	while (i < num.size() || k > 0 || carry)
 	{
-		// declared an int var sum and assigned 0 to it
-		long sum = 0;
+		if (i < num.size())
+			sum += num[i++];
+		if (k > 0)
+		{
+			sum += k % 10;
+			k /= 10;
+		}
 
-		// convert the char to int and add it to sum variable
-		if (i >= 0)
-			sum += num1[i--] - '0';
-		if (j >= 0)
-			sum += num2[j--] - '0';
-
-		// add carry to the sum
 		sum += carry;
-		// carry is always the leftmost digit of a number
-		carry = sum / 10;
 
-		// concatenate the last digit of the sum after converting
-		// it into string using to_string function
-		ans += std::to_string(sum % 10);
+		result.push_back(sum % 10);
+		carry = sum / 10;
+		sum = 0;
 	}
 
-	// as the required sum is obtained in the reverse manner,
-	// reverse the sum to obtain the actual answer
-	std::reverse(ans.begin(), ans.end());
-	return ans;
+	std::reverse(result.begin(), result.end());
+	return result;
 }
 
+// https://leetcode.com/problems/add-to-array-form-of-integer/solutions/3187080/simplest-solution-full-explanation-c-python3-java/
+// O(n) O(1)
+//std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
+//	for (int i = num.size() - 1; i >= 0; i--)
+//	{
+//		num[i] += k;
+//		k = num[i] / 10;
+//		num[i] %= 10;
+//	}
+//	while (k > 0) // still carry
+//	{
+//		num.insert(num.begin(), k % 10);
+//		k /= 10;
+//	}
+//	return num;
+//}
+
+// https://leetcode.com/problems/add-to-array-form-of-integer/solutions/3187149/c-faster-than-95-no-shortcut-mehthod-self-explanatory-code/
+//std::vector<int> addToArrayForm(std::vector<int>& num, int k) {
+//	int carry = 0, i = num.size() - 1, sum = 0;
+//	while (i >= 0)
+//	{
+//		sum = num[i] + (k % 10) + carry;
+//		k /= 10;
+//
+//		num[i--] = sum % 10;
+//		carry = sum / 10;
+//	}
+//
+//	while (k > 0)
+//	{
+//		sum = (k % 10) + carry;
+//		k /= 10;
+//
+//		num.insert(num.begin(), sum % 10);
+//		carry = sum / 10;
+//	}
+//
+//	if (carry > 0)
+//		num.insert(num.begin(), carry);
+//
+//	return num;
+//}
 
 int main()
 {
-	std::cout << addStrings("11", "123") << '\n';
-	std::cout << addStrings("456", "77") << '\n';
-	std::cout << addStrings("0", "0") << '\n';
-	std::cout << addStrings("1", "9") << '\n';
-	std::cout << addStrings("9", "99") << '\n';
+	std::vector<int> num = { 1,2,0,0 };
+	int k = 34;
+	for (auto& x : addToArrayForm(num, k))
+		std::cout << x << ' ';
+	std::cout << '\n';
 
+	num = { 2,7,4 };
+	k = 181;
+	for (auto& x : addToArrayForm(num, k))
+		std::cout << x << ' ';
+	std::cout << '\n';
 
-
+	num = { 2,1,5 };
+	k = 806;
+	for (auto& x : addToArrayForm(num, k))
+		std::cout << x << ' ';
+	std::cout << '\n';
 
 	return 0;
 }

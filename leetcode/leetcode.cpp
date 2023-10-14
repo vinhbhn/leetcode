@@ -15,50 +15,48 @@
 #include<map>
 #include <charconv>
 
-// two pointers O(n) 
-bool isSubsequence(std::string s, std::string t) {
-	int i = 0, j = 0;
-	while (j < t.length())
+// https://leetcode.com/problems/valid-palindrome-ii/solutions/1324407/c-solution-two-pointer-approach/
+// two pointers O(n) O(1)
+bool isPalindrome(std::string s, int i, int j)
+{
+	while (i < j)
 	{
-		if (s[i] == t[j])
-		{
-			i++;
-		}
-		j++;
+		if (s.at(i) != s.at(j))
+			return false;
+
+		i++;
+		j--;
 	}
 
-	return (i == s.length());
+	return true;
+
 }
+bool validPalindrome(std::string s) {
+	int i = 0, j = s.size() - 1;
+	while (i < j)
+	{
+		if (s.at(i) == s.at(j))
+		{
+			i++;
+			j--;
+		}
+		else
+			return (isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1));
+	}
 
-// https://leetcode.com/problems/is-subsequence/solutions/1811177/c-recursion-and-two-pointer/
-// recursion right to left (slow)
-int isSub(std::string& s1, std::string s2, int i, int j)
-{
-	if (i == 0 || j == 0)
-		return 0;
+	return true;
 
-	if (s1[i - 1] == s2[j - 1])
-		return 1 + isSub(s1, s2, i - 1, j - 1);
-	else
-		return isSub(s1, s2, i, j - 1);
 }
-bool isSubsequence(std::string s, std::string t) {
-	int m = s.size();
-	int n = t.size();
-	if (m > n)
-		return false;
-
-	return (isSub(s, t, m, n) == m);
-}
-
 
 int main()
 {
 	std::cout << std::boolalpha;
-	std::cout << isSubsequence("abc", "ahbgdc") << '\n';
-	std::cout << isSubsequence("axc", "ahbgdc") << '\n';
-
-
+	std::cout << validPalindrome("aba") << '\n';
+	std::cout << validPalindrome("abca") << '\n';
+	std::cout << validPalindrome("abc") << '\n';
+	std::cout << validPalindrome("deeee") << '\n';
+	std::cout << validPalindrome("cbbcc") << '\n';
+	std::cout << validPalindrome("bebeb") << '\n';
 
 	return 0;
 }

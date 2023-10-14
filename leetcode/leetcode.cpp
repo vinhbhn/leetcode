@@ -15,61 +15,49 @@
 #include<map>
 #include <charconv>
 
-//bool digitCount(std::string num) {
-//	std::map<char, int> mp;
-//	char iChar = '0';
-//	for (int i = 0; i < num.length(); i++)
-//	{
-//		mp[num[i]]++;
-//
-//		iChar = i + '0';
-//		if (mp.find(iChar) == mp.end())
-//			mp[iChar] = 0;
-//	}
-//
-//	/*for (auto& x : mp)
-//		std::cout << x.first << ' ' << x.second << '\n';*/
-//
-//
-//	for (int i = 0; i < num.length(); i++)
-//	{
-//		// iChar = i in num[i]
-//		iChar = i + '0';
-//		// convert char num[i] to int
-//		int occurNumTimes = num[i] - '0';
-//		if (mp.find(iChar)->second != occurNumTimes)
-//			return false;
-//
-//		/*std::cout << iChar << ' ' << occurNumTimes << '\n';*/
-//	}
-//
-//	return true;
-//}
-
-bool digitCount(std::string num) {
-	std::unordered_map<int, int> mp;
-	for (auto ele : num)
+// two pointers O(n) 
+bool isSubsequence(std::string s, std::string t) {
+	int i = 0, j = 0;
+	while (j < t.length())
 	{
-		ele -= '0';
-		mp[ele]++;
+		if (s[i] == t[j])
+		{
+			i++;
+		}
+		j++;
 	}
 
-	for (int i = 0; i < num.length(); i++)
-	{
-		// convert num[i] to int
-		if (mp[i] != num[i] - '0')
-			return false;
-	}
-
-	return true;
+	return (i == s.length());
 }
+
+// https://leetcode.com/problems/is-subsequence/solutions/1811177/c-recursion-and-two-pointer/
+// recursion right to left (slow)
+int isSub(std::string& s1, std::string s2, int i, int j)
+{
+	if (i == 0 || j == 0)
+		return 0;
+
+	if (s1[i - 1] == s2[j - 1])
+		return 1 + isSub(s1, s2, i - 1, j - 1);
+	else
+		return isSub(s1, s2, i, j - 1);
+}
+bool isSubsequence(std::string s, std::string t) {
+	int m = s.size();
+	int n = t.size();
+	if (m > n)
+		return false;
+
+	return (isSub(s, t, m, n) == m);
+}
+
 
 int main()
 {
 	std::cout << std::boolalpha;
-	std::cout << digitCount("1210") << '\n';
-	std::cout << digitCount("030") << '\n';
-	std::cout << digitCount("1") << '\n';
+	std::cout << isSubsequence("abc", "ahbgdc") << '\n';
+	std::cout << isSubsequence("axc", "ahbgdc") << '\n';
+
 
 
 	return 0;

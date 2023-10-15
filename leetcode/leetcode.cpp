@@ -15,39 +15,43 @@
 #include<map>
 #include <charconv>
 
-//int fib(int n) {
+//int tribonacci(int n) {
 //	if (n == 0) return 0;
-//	if (n == 1) return 1;
+//	if (n == 1 || n == 2) return 1;
 //
-//	return fib(n - 1) + fib(n - 2);
+//	int i = 3;
+//	//	n0			n1			n2
+//	int first = 0, second = 1, third = 1, temp = 0;
+//	while (i <= n)
+//	{
+//		temp = first + second + third;
+//		first = second;
+//		second = third;
+//		third = temp;
+//
+//		i++;
+//	}
+//
+//	return third;
 //}
-int fib(int n) {
-	if (n == 0) return 0;
-	if (n == 1) return 1;
+int tribonacci(int n) {
+	std::vector<int> tri(38, 0);
+	tri[0] = 0;
+	tri[1] = tri[2] = 1;
 
-	int i = 2, prev = 0, curr = 1, temp = 0;
-	while (i <= n)
+	for (int i = 3; i <= n; i++)
 	{
-		temp = prev + curr;
-		prev = curr;
-		curr = temp;
-
-		i++;
+		tri[i] = tri[i - 1] + tri[i - 2] + tri[i - 3];
 	}
 
-	return curr;
+	return tri[n];
 }
 
 
 int main()
 {
-	std::cout << fib(2) << '\n';
-	std::cout << fib(3) << '\n';
-	std::cout << fib(4) << '\n';
-	std::cout << fib(5) << '\n';
-	std::cout << fib(6) << '\n';
-	std::cout << fib(7) << '\n';
-	std::cout << fib(30) << '\n';
+	std::cout << tribonacci(4) << '\n';
+	std::cout << tribonacci(25) << '\n';
 
 	return 0;
 }

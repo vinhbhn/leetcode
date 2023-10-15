@@ -15,8 +15,14 @@
 #include<map>
 #include <charconv>
 
+//int accountBalanceAfterPurchase(int purchaseAmount) {
+//	int roundedAmount = std::floor((purchaseAmount + 5) / 10) * 10;
+//
+//	return 100 - roundedAmount;
+//}
 int accountBalanceAfterPurchase(int purchaseAmount) {
-	int roundedAmount = std::floor((purchaseAmount + 5) / 10) * 10;
+	int roundedAmount = (purchaseAmount + 5) / 10;
+	roundedAmount *= 10;
 
 	return 100 - roundedAmount;
 }

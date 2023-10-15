@@ -15,29 +15,59 @@
 #include<map>
 #include <charconv>
 
-// O(n)
-int minCostClimbingStairs(std::vector<int>& cost) {
-	int n = cost.size();
-	
-	// at the top, cost[n] = 0
-	cost.push_back(0);
+// 1 -> 2 -> 3 -> 5 -> 8 -> 13
+//	s[i] = s[i-1] + s[i-2]		
+// or total = prev + curr	
+// use vector to use more space
+//int climbStairs(int n) {
+//	if (n == 1) return 1;
+//	if (n == 2) return 2;
+//
+//	std::vector<int> stairs = { 0,1,2 };
+//	int i = 3;
+//	while (i <= n)
+//	{
+//		stairs.push_back(stairs.at(i - 1) + stairs.at(i - 2));
+//		i++;
+//	}
+//
+//	return stairs[stairs.size() - 1];
+//}
+//int climbStairs(int n) {
+//	if (n == 1) return 1;
+//
+//	int i = 3;
+//	int prev = 1, curr = 2, temp = 0;
+//	while (i <= n)
+//	{
+//		temp = prev + curr;
+//		prev = curr;
+//		curr = temp;
+//		i++;
+//	}
+//
+//	return curr;
+//}
 
-	// start from end, calculate cost from one step to two steps
-	for (int i = n - 3; i >= 0; i--)
-	{
-		cost[i] = cost[i] + std::min(cost[i + 1], cost[i + 2]);
-	}
+// recursion but TC: O(2^n)
+int climbStairs(int n) {
+	if (n == 0 || n == 1)
+		return 1;
 
-	return std::min(cost[0], cost[1]);
+	return climbStairs(n - 1) + climbStairs(n - 2);
 }
 
 int main()
 {
-	std::vector cost = { 10, 15, 20 };
-	std::cout << minCostClimbingStairs(cost) << '\n';
+	std::cout << climbStairs(2) << '\n';
+	std::cout << climbStairs(3) << '\n';
+	std::cout << climbStairs(4) << '\n';
+	std::cout << climbStairs(5) << '\n';
+	std::cout << climbStairs(6) << '\n';
+	std::cout << climbStairs(7) << '\n';
+	std::cout << climbStairs(45) << '\n';
 
-	cost = { 1, 100, 1, 1, 1, 100, 1, 1, 100, 1 };
-	std::cout << minCostClimbingStairs(cost) << '\n';
+
 
 	return 0;
 }

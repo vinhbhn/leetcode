@@ -15,48 +15,29 @@
 #include<map>
 #include <charconv>
 
-// https://leetcode.com/problems/valid-palindrome-ii/solutions/1324407/c-solution-two-pointer-approach/
-// two pointers O(n) O(1)
-bool isPalindrome(std::string s, int i, int j)
-{
-	while (i < j)
-	{
-		if (s.at(i) != s.at(j))
-			return false;
+// O(n)
+int minCostClimbingStairs(std::vector<int>& cost) {
+	int n = cost.size();
+	
+	// at the top, cost[n] = 0
+	cost.push_back(0);
 
-		i++;
-		j--;
+	// start from end, calculate cost from one step to two steps
+	for (int i = n - 3; i >= 0; i--)
+	{
+		cost[i] = cost[i] + std::min(cost[i + 1], cost[i + 2]);
 	}
 
-	return true;
-
-}
-bool validPalindrome(std::string s) {
-	int i = 0, j = s.size() - 1;
-	while (i < j)
-	{
-		if (s.at(i) == s.at(j))
-		{
-			i++;
-			j--;
-		}
-		else
-			return (isPalindrome(s, i + 1, j) || isPalindrome(s, i, j - 1));
-	}
-
-	return true;
-
+	return std::min(cost[0], cost[1]);
 }
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << validPalindrome("aba") << '\n';
-	std::cout << validPalindrome("abca") << '\n';
-	std::cout << validPalindrome("abc") << '\n';
-	std::cout << validPalindrome("deeee") << '\n';
-	std::cout << validPalindrome("cbbcc") << '\n';
-	std::cout << validPalindrome("bebeb") << '\n';
+	std::vector cost = { 10, 15, 20 };
+	std::cout << minCostClimbingStairs(cost) << '\n';
+
+	cost = { 1, 100, 1, 1, 1, 100, 1, 1, 100, 1 };
+	std::cout << minCostClimbingStairs(cost) << '\n';
 
 	return 0;
 }

@@ -15,37 +15,29 @@
 #include<map>
 #include <charconv>
 
-std::vector<int> separateDigits(std::vector<int>&nums) {
-	std::vector<int> result;
+std::string thousandSeparator(int n) {
+	std::string result = std::to_string(n);
 
-	for (int i = nums.size() - 1; i >= 0; i--)
-	{
-		while (nums[i])
-		{
-			result.push_back(nums[i] % 10);
-			nums[i] /= 10;
-		}
-	}
+	if (n < 1000)
+		return result;
 
-	std::reverse(result.begin(), result.end());
-	return result;
-}
+	for (int i = result.length() - 3; i >= 0; i -= 3)
+		result.insert(result.begin() + i, '.');
 
-//https://leetcode.com/problems/separate-the-digits-in-an-array/solutions/3141479/c-easy-string-conversion/
-std::vector<int> separateDigits(std::vector<int>& nums) {
-	std::vector<int> result;
-	for (auto& it : nums)
-	{
-		std::string temp = std::to_string(it);
-		for (auto& s : temp)
-			result.push_back(s - '0');
-	}
+	if (result[0] == '.')
+		result.erase(result.begin());
 
 	return result;
 }
+
 
 int main()
 {
+	std::cout << thousandSeparator(987) << '\n';
+	std::cout << thousandSeparator(1234) << '\n';
+	std::cout << thousandSeparator(123456789) << '\n';
+	std::cout << thousandSeparator(0) << '\n';
+	std::cout << thousandSeparator(51040) << '\n';
 
 	return 0;
 }

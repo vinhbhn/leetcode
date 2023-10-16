@@ -15,47 +15,11 @@
 #include<map>
 #include <charconv>
 
-//int convertLowerLetterToInt(char ch)
-//{
-//	switch (ch)
-//	{
-//		case 'a': return 1;
-//		case 'b': return 2;
-//		case 'c': return 3;
-//		case 'd': return 4;
-//		case 'e': return 5;
-//		case 'f': return 6;
-//		case 'g': return 7;
-//		case 'h': return 8;
-//		case 'i': return 9;
-//		case 'j': return 10;
-//		case 'k': return 11;
-//		case 'l': return 12;
-//		case 'm': return 13;
-//		case 'n': return 14;
-//		case 'o': return 15;
-//		case 'p': return 16;
-//		case 'q': return 17;
-//		case 'r': return 18;
-//		case 's': return 19;
-//		case 't': return 20;
-//		case 'u': return 21;
-//		case 'v': return 22;
-//		case 'w': return 23;
-//		case 'x': return 24;
-//		case 'y': return 25;
-//		case 'z': return 26;
-//	}
-//
-//	return 0;
-//}
-//int convertLowerLetterToInt(char ch)
-//{
-//	// 97 is 'a', and with 'a' = 1
-//	return ch - 96;
-//}
 int sumOfDigit(int number)
 {
+	if (number < 10)
+		return number;
+
 	int sum = 0;
 	while (number)
 	{
@@ -64,33 +28,39 @@ int sumOfDigit(int number)
 	}
 	return sum;
 }
-int getLucky(std::string s, int k) {
-	int i = 0, result = 0;
+int countEven(int num) {
+	int count = 0;
 
-	// transform #1
-	while (i < s.length())
+	for (int i = 2; i <= num; i++)
 	{
-		// 97 is 'a', and with 'a' = 1
-		result += sumOfDigit(s[i++] - 96);
+		if (sumOfDigit(i) % 2 == 0)
+			count++;
 	}
-
-	// Transform #2 to k
-	k -= 1;
-	while (k--)
-		result = sumOfDigit(result);
-
-	return result;
+	
+	return count;
 }
 
+//https://leetcode.com/problems/count-integers-with-even-digit-sum/solutions/3176256/easy-c-most-optimal-explanation-100-fast/
+//int countEven(int num) {
+//	int currSum = 0; // for storing sum of each digit in num
+//	int store = num; // storing value of num for further checking
+//	while (num)
+//	{
+//		currSum += num % 10;
+//		num /= 10;
+//	}
+//
+//	if (currSum & 1) // i.e sum is odd
+//		return (store - 1) / 2;
+//	else
+//		return store / 2;
+//}
 
 int main()
 {
-	std::cout << getLucky("zbax", 2) << '\n';
-	std::cout << getLucky("iiii", 1) << '\n';
-	std::cout << getLucky("leetcode", 2) << '\n';
+	std::cout << countEven(4) << '\n';
+	std::cout << countEven(30) << '\n';
 
-	//std::cout << convertLowerLetterToInt('a') << '\n';
-	//std::cout << convertLowerLetterToInt('z') << '\n';
 
 
 	return 0;

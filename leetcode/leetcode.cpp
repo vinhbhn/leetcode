@@ -15,73 +15,82 @@
 #include<map>
 #include <charconv>
 
-// O(n^2)
-//bool isHappy(int n) {
-//	int sum = 0, digit = 0;
-//
-//	while (n > 9)
+//int convertLowerLetterToInt(char ch)
+//{
+//	switch (ch)
 //	{
-//		while (n)
-//		{
-//			digit = n % 10;
-//			sum += digit * digit;
-//
-//			n /= 10;
-//		}
-//
-//		n = sum;
-//		sum = 0;
+//		case 'a': return 1;
+//		case 'b': return 2;
+//		case 'c': return 3;
+//		case 'd': return 4;
+//		case 'e': return 5;
+//		case 'f': return 6;
+//		case 'g': return 7;
+//		case 'h': return 8;
+//		case 'i': return 9;
+//		case 'j': return 10;
+//		case 'k': return 11;
+//		case 'l': return 12;
+//		case 'm': return 13;
+//		case 'n': return 14;
+//		case 'o': return 15;
+//		case 'p': return 16;
+//		case 'q': return 17;
+//		case 'r': return 18;
+//		case 's': return 19;
+//		case 't': return 20;
+//		case 'u': return 21;
+//		case 'v': return 22;
+//		case 'w': return 23;
+//		case 'x': return 24;
+//		case 'y': return 25;
+//		case 'z': return 26;
 //	}
 //
-//
-//	// 7 is happy number
-//	return ((n == 1) || (n == 7));
+//	return 0;
 //}
-
-// https://leetcode.com/problems/happy-number/solutions/3236759/best-c-2-solution-floyd-s-cycle-finding-algorithm-hash-table-one-stop-solution/
-int nextNumber(int n)
+//int convertLowerLetterToInt(char ch)
+//{
+//	// 97 is 'a', and with 'a' = 1
+//	return ch - 96;
+//}
+int sumOfDigit(int number)
 {
-	int newNumber = 0;
-	while (n)
+	int sum = 0;
+	while (number)
 	{
-		int digit = n % 10;
-		newNumber += digit * digit;
-		n /= 10;
+		sum += number % 10;
+		number /= 10;
 	}
-	return newNumber;
+	return sum;
 }
-// math + hash table O(log N) O(log N)
-//bool isHappy(int n) {
-//	std::unordered_set<int> set;
-//	while (n != 1 && !set.count(n))
-//	{
-//		set.insert(n);
-//		n = nextNumber(n);
-//	}
-//
-//	return (n == 1);
-//}
-// Floyd's cycle finding algorithm O(log N) O(1)
-bool isHappy(int n) {
-	int slowPointer = n, fastPointer = nextNumber(n);
-	while (fastPointer != 1 && fastPointer != slowPointer)
+int getLucky(std::string s, int k) {
+	int i = 0, result = 0;
+
+	// transform #1
+	while (i < s.length())
 	{
-		slowPointer = nextNumber(slowPointer);
-		fastPointer = nextNumber(nextNumber(fastPointer));
+		// 97 is 'a', and with 'a' = 1
+		result += sumOfDigit(s[i++] - 96);
 	}
-	
-	return fastPointer == 1;
+
+	// Transform #2 to k
+	k -= 1;
+	while (k--)
+		result = sumOfDigit(result);
+
+	return result;
 }
 
 
 int main()
 {
-	std::cout << std::boolalpha;
-	std::cout << isHappy(19) << '\n';
-	std::cout << isHappy(2) << '\n';
-	std::cout << isHappy(7) << '\n';
-	std::cout << isHappy(1111111) << '\n';
+	std::cout << getLucky("zbax", 2) << '\n';
+	std::cout << getLucky("iiii", 1) << '\n';
+	std::cout << getLucky("leetcode", 2) << '\n';
 
+	//std::cout << convertLowerLetterToInt('a') << '\n';
+	//std::cout << convertLowerLetterToInt('z') << '\n';
 
 
 	return 0;

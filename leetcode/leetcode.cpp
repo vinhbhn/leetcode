@@ -15,53 +15,37 @@
 #include<map>
 #include <charconv>
 
-int sumOfDigit(int number)
-{
-	if (number < 10)
-		return number;
+std::vector<int> separateDigits(std::vector<int>&nums) {
+	std::vector<int> result;
 
-	int sum = 0;
-	while (number)
+	for (int i = nums.size() - 1; i >= 0; i--)
 	{
-		sum += number % 10;
-		number /= 10;
+		while (nums[i])
+		{
+			result.push_back(nums[i] % 10);
+			nums[i] /= 10;
+		}
 	}
-	return sum;
-}
-int countEven(int num) {
-	int count = 0;
 
-	for (int i = 2; i <= num; i++)
-	{
-		if (sumOfDigit(i) % 2 == 0)
-			count++;
-	}
-	
-	return count;
+	std::reverse(result.begin(), result.end());
+	return result;
 }
 
-//https://leetcode.com/problems/count-integers-with-even-digit-sum/solutions/3176256/easy-c-most-optimal-explanation-100-fast/
-//int countEven(int num) {
-//	int currSum = 0; // for storing sum of each digit in num
-//	int store = num; // storing value of num for further checking
-//	while (num)
-//	{
-//		currSum += num % 10;
-//		num /= 10;
-//	}
-//
-//	if (currSum & 1) // i.e sum is odd
-//		return (store - 1) / 2;
-//	else
-//		return store / 2;
-//}
+//https://leetcode.com/problems/separate-the-digits-in-an-array/solutions/3141479/c-easy-string-conversion/
+std::vector<int> separateDigits(std::vector<int>& nums) {
+	std::vector<int> result;
+	for (auto& it : nums)
+	{
+		std::string temp = std::to_string(it);
+		for (auto& s : temp)
+			result.push_back(s - '0');
+	}
+
+	return result;
+}
 
 int main()
 {
-	std::cout << countEven(4) << '\n';
-	std::cout << countEven(30) << '\n';
-
-
 
 	return 0;
 }

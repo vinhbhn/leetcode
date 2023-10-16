@@ -15,29 +15,30 @@
 #include<map>
 #include <charconv>
 
-std::string thousandSeparator(int n) {
-	std::string result = std::to_string(n);
+int alternateDigitSum(int n) {
+	int sum = 0;
+	std::vector<int> v;
+	while (n)
+	{
+		v.push_back(n % 10);
+		n /= 10;
+	}
 
-	if (n < 1000)
-		return result;
+	std::reverse(v.begin(), v.end());
+	for (int i = 0; i < v.size(); i++)
+		sum += (i & 1) ? -v[i] : v[i];
 
-	for (int i = result.length() - 3; i >= 0; i -= 3)
-		result.insert(result.begin() + i, '.');
-
-	if (result[0] == '.')
-		result.erase(result.begin());
-
-	return result;
+	return sum;
 }
 
 
 int main()
 {
-	std::cout << thousandSeparator(987) << '\n';
-	std::cout << thousandSeparator(1234) << '\n';
-	std::cout << thousandSeparator(123456789) << '\n';
-	std::cout << thousandSeparator(0) << '\n';
-	std::cout << thousandSeparator(51040) << '\n';
+	std::cout << alternateDigitSum(521) << '\n';
+	std::cout << alternateDigitSum(111) << '\n';
+	std::cout << alternateDigitSum(886996) << '\n';
+	std::cout << alternateDigitSum(10) << '\n';
+
 
 	return 0;
 }

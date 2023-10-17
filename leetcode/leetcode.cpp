@@ -15,66 +15,45 @@
 #include<map>
 #include <charconv>
 
-//std::string reverseOnlyLetters(std::string s) {
-//	int i = 0, j = s.length() - 1;
-//	while (i < j)
-//	{
-//		if (isalpha(s[i]) && isalpha(s[j]))
-//			std::swap(s[i++], s[j--]);
-//		else if (!isalpha(s[i]))
-//			i++;
-//		else
-//			j--;
-//	}
+// using unordered_set
+//int getCommon(std::vector<int>& nums1, std::vector<int>& nums2) {
+//	std::unordered_set<int> set1;
 //
-//	return s;
-//}
-
-//https://leetcode.com/problems/reverse-only-letters/solutions/842716/3-approaches-faster-than-100-easy-understanding-c/
-//std::string reverseOnlyLetters(std::string s) {
-//	std::stack<char> letters;
-//	for (char c : s)
-//		if (isalpha(c))
-//			letters.push(c);
+//	for (auto number : nums1)
+//		set1.insert(number);
 //
-//	std::string result;
-//	for (char c : s)
-//	{
-//		if (isalpha(c))
-//		{
-//			result += letters.top();
-//			letters.pop();
-//		}
-//		else
-//			result += c;
-//	}
-//	return result;
+//	for (int x : nums2)
+//		if (set1.contains(x))
+//			return x;
+//
+//	return -1;
 //}
-std::string reverseOnlyLetters(std::string s) {
-	std::vector<char> res;
-	std::map<int, char> m;
-
-	for (int i = 0; i < s.size(); i++)
+// using two pointers
+int getCommon(std::vector<int>& nums1, std::vector<int>& nums2) {
+	int i = 0, j = 0;
+	while (i < nums1.size() && j < nums2.size())
 	{
-		if (!isalpha(s[i]))
-			m[i] = s[i];
+		if (nums1[i] == nums2[j])
+			return nums1[i];
+		else if (nums1[i] < nums2[j])
+			i++;
 		else
-			res.push_back(s[i]);
+			j++;
 	}
-	std::reverse(res.begin(), res.end());
-	for (auto& i : m)
-		res.insert(res.begin() + i.first, i.second);
-	std::string result(res.begin(), res.end());
-	return result;
-}
 
+	return -1;
+}
 
 int main()
 {
-	std::cout << reverseOnlyLetters("ab-cd") << '\n';
-	std::cout << reverseOnlyLetters("a-bC-dEf-ghIj") << '\n';
-	std::cout << reverseOnlyLetters("Test1ng-Leet=code-Q!") << '\n';
-	std::cout << reverseOnlyLetters("7_28]") << '\n';
+	std::vector nums1 = { 1,2,3 };
+	std::vector nums2 = { 2,4 };
+	std::cout << getCommon(nums1, nums2) << '\n';
+
+	nums1 = { 1,2,3,6 };
+	nums2 = { 2,3,4,5 };
+	std::cout << getCommon(nums1, nums2) << '\n';
+
 
 	return 0;
 }

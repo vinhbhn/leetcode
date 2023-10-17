@@ -15,30 +15,66 @@
 #include<map>
 #include <charconv>
 
-int alternateDigitSum(int n) {
-	int sum = 0;
-	std::vector<int> v;
-	while (n)
+//std::string reverseOnlyLetters(std::string s) {
+//	int i = 0, j = s.length() - 1;
+//	while (i < j)
+//	{
+//		if (isalpha(s[i]) && isalpha(s[j]))
+//			std::swap(s[i++], s[j--]);
+//		else if (!isalpha(s[i]))
+//			i++;
+//		else
+//			j--;
+//	}
+//
+//	return s;
+//}
+
+//https://leetcode.com/problems/reverse-only-letters/solutions/842716/3-approaches-faster-than-100-easy-understanding-c/
+//std::string reverseOnlyLetters(std::string s) {
+//	std::stack<char> letters;
+//	for (char c : s)
+//		if (isalpha(c))
+//			letters.push(c);
+//
+//	std::string result;
+//	for (char c : s)
+//	{
+//		if (isalpha(c))
+//		{
+//			result += letters.top();
+//			letters.pop();
+//		}
+//		else
+//			result += c;
+//	}
+//	return result;
+//}
+std::string reverseOnlyLetters(std::string s) {
+	std::vector<char> res;
+	std::map<int, char> m;
+
+	for (int i = 0; i < s.size(); i++)
 	{
-		v.push_back(n % 10);
-		n /= 10;
+		if (!isalpha(s[i]))
+			m[i] = s[i];
+		else
+			res.push_back(s[i]);
 	}
-
-	std::reverse(v.begin(), v.end());
-	for (int i = 0; i < v.size(); i++)
-		sum += (i & 1) ? -v[i] : v[i];
-
-	return sum;
+	std::reverse(res.begin(), res.end());
+	for (auto& i : m)
+		res.insert(res.begin() + i.first, i.second);
+	std::string result(res.begin(), res.end());
+	return result;
 }
 
 
 int main()
 {
-	std::cout << alternateDigitSum(521) << '\n';
-	std::cout << alternateDigitSum(111) << '\n';
-	std::cout << alternateDigitSum(886996) << '\n';
-	std::cout << alternateDigitSum(10) << '\n';
-
+	std::cout << reverseOnlyLetters("ab-cd") << '\n';
+	std::cout << reverseOnlyLetters("a-bC-dEf-ghIj") << '\n';
+	std::cout << reverseOnlyLetters("Test1ng-Leet=code-Q!") << '\n';
+	std::cout << reverseOnlyLetters("7_28]") << '\n';
 
 	return 0;
 }

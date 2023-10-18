@@ -17,43 +17,31 @@
 
 using namespace std;
 
-//https://leetcode.com/problems/find-common-characters/solutions/3540699/solution/
-vector<string> commonChars(vector<string>& words) {
-	vector<string> res;
-
-	for (char c : words[0])
-	{
-		bool common = true;
-
-		for (int i = 1; i < words.size(); i++)
-		{
-			if (words[i].find(c) == string::npos)
-			{
-				common = false;
-				break;
-			}
-			else
-				words[i].erase(words[i].find(c), 1);
-		}
-
-		if (common)
-			res.push_back(string(1, c));
-	}
+//string generateTheString(int n) {
+//	string res = "";
+//	int i = n;
+//
+//	while (i--)
+//		res += 'a';
+//
+//	if (n % 2 == 0)
+//		res[n - 1] = 'b';
+//
+//	return res;
+//}
+string generateTheString(int n) {
+	string res(n-1, 'a');
+	res += (n % 2 == 0) ? 'b' : 'a';
 
 	return res;
 }
 
 int main()
 {
-	vector<string> words = { "bella","label","roller" };
-	for (auto &x : commonChars(words))
-		cout << x << ' ';
-	cout << '\n';
+	cout << generateTheString(4) << '\n';
+	cout << generateTheString(2) << '\n';
+	cout << generateTheString(7) << '\n';
 
-	words = { "acabcddd","bcbdbcbd","baddbadb","cbdddcac","aacbcccd","ccccddda","cababaab","addcaccd" };
-	for (auto& x : commonChars(words))
-		cout << x << ' ';
-	cout << '\n';
 
 	return 0;
 }

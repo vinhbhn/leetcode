@@ -17,54 +17,62 @@
 
 using namespace std;
 
-//int minimumRecolors(string blocks, int k) {
-//	string temp(k, 'B');
-//	vector<int> v;
+//bool strongPasswordCheckerII(string password) {
+//	// check it does not contain 2 of the same character in adjacent position
+//	// and it must have at least 8 letters 
+//	// contains at least one lowercase, one uppercase, one digit, one special character.
+//	string special_characters = "!@#$%^&*()-+";
+//	if ((password.length() < 8)
+//		|| (adjacent_find(password.begin(), password.end()) != password.end())
+//		|| (find_first_of(password.begin(), password.end(), special_characters.begin(), special_characters.end()) == password.end()))
+//		return false;
 //
-//	if (search(blocks.begin(), blocks.end(), temp.begin(), temp.end()) == blocks.end())
+//	bool l = false, u = false, d = false;
+//	for (auto &ch : password)
 //	{
-//		// have blocks.size() == k
-//		for (int i = 0; i <= blocks.size() - k; i++)
-//		{
-//			int a = i;
-//			int count = 0;
-//			for (int j = 0; j < temp.size();)
-//			{
-//				if (temp[j++] != blocks[a++])
-//					count++;
-//			}
-//			v.push_back(count);
-//		}
+//		if (islower(ch))
+//			l = true;
+//
+//		if (isupper(ch))
+//			u = true;
+//
+//		if (isdigit(ch))
+//			d = true;
+//
+//		if (l && u && d)
+//			return true;
 //	}
-//
-//	if (!v.empty())
-//		return *min_element(v.begin(), v.end());
-//
-//	// if 'B' have adjacent and size equal k
-//	return 0;
+//	
+//	return false;
 //}
 
-//https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/solutions/2454159/c-using-sliding-window-very-simple-and-easy-to-understand-solution/
-int minimumRecolors(string blocks, int k) {
-    int back = 0, front = 0, count_w = 0, ans = INT_MAX;
-    while (front < blocks.size()) {
-        if (blocks[front] == 'W') { count_w++; }
-        if (front - back + 1 == k) {
-            ans = min(ans, count_w);
-            if (blocks[back] == 'W') count_w--;
-            back++;
-        }
-        front++;
-    }
-    return ans;
+// because input only have special characters, not all special characters in ASCII
+bool strongPasswordCheckerII(string password) {
+	if ((password.length() < 8) || (adjacent_find(password.begin(), password.end()) != password.end()))
+		return false;
+
+	bool l = false, u = false, d = false, sp = false;
+	for (auto& ch : password)
+	{
+		if (islower(ch))
+			l = true;
+		else if (isupper(ch))
+			u = true;
+		else if (isdigit(ch))
+			d = true;
+		else
+			sp = true;
+	}
+
+	return (l && u && d && sp);
 }
 
 int main()
 {
-	cout << minimumRecolors("WBBWWBBWBW", 7) << '\n';
-	cout << minimumRecolors("WBWBBBW", 2) << '\n';
-	cout << minimumRecolors("BWWWBB", 6) << '\n';
-
+	cout << boolalpha;
+	cout << strongPasswordCheckerII("IloveLe3tcode!") << '\n';
+	cout << strongPasswordCheckerII("Me+You--IsMyDream") << '\n';
+	cout << strongPasswordCheckerII("1aB!") << '\n';
 
 	return 0;
 }

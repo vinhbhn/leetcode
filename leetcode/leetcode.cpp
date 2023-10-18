@@ -16,41 +16,44 @@
 #include <charconv>
 
 using namespace std;
-vector<int> intersection(vector<vector<int>>& nums) {
-	map<int, int> mp;
-	int n = nums.size();
 
-	for (int i = 0; i < n; i++)
-		for (auto num : nums[i])
-			mp[num]++;
-	
-	vector<int> result;
-	for (auto& x : mp)
-		if (x.second == n)
-			result.push_back(x.first);
+//https://leetcode.com/problems/find-common-characters/solutions/3540699/solution/
+vector<string> commonChars(vector<string>& words) {
+	vector<string> res;
 
-	return result;
+	for (char c : words[0])
+	{
+		bool common = true;
+
+		for (int i = 1; i < words.size(); i++)
+		{
+			if (words[i].find(c) == string::npos)
+			{
+				common = false;
+				break;
+			}
+			else
+				words[i].erase(words[i].find(c), 1);
+		}
+
+		if (common)
+			res.push_back(string(1, c));
+	}
+
+	return res;
 }
 
 int main()
 {
-	std::vector nums1 = { 1,2,2,1 };
-	std::vector nums2 = { 2,2 };
-	for (auto x : intersect(nums1, nums2))
-		std::cout << x << ' ';
-	std::cout << '\n';
+	vector<string> words = { "bella","label","roller" };
+	for (auto &x : commonChars(words))
+		cout << x << ' ';
+	cout << '\n';
 
-	nums1 = { 1,2,2,1 };
-	nums2 = { 2 };
-	for (auto x : intersect(nums1, nums2))
-		std::cout << x << ' ';
-	std::cout << '\n';
-
-	nums1 = { 4,9,5 };
-	nums2 = { 9,4,9,8,4 };
-	for (auto x : intersect(nums1, nums2))
-		std::cout << x << ' ';
-	std::cout << '\n';
+	words = { "acabcddd","bcbdbcbd","baddbadb","cbdddcac","aacbcccd","ccccddda","cababaab","addcaccd" };
+	for (auto& x : commonChars(words))
+		cout << x << ' ';
+	cout << '\n';
 
 	return 0;
 }

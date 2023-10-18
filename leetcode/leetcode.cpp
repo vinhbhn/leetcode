@@ -17,30 +17,53 @@
 
 using namespace std;
 
-//string generateTheString(int n) {
-//	string res = "";
-//	int i = n;
+//int minimumRecolors(string blocks, int k) {
+//	string temp(k, 'B');
+//	vector<int> v;
 //
-//	while (i--)
-//		res += 'a';
+//	if (search(blocks.begin(), blocks.end(), temp.begin(), temp.end()) == blocks.end())
+//	{
+//		// have blocks.size() == k
+//		for (int i = 0; i <= blocks.size() - k; i++)
+//		{
+//			int a = i;
+//			int count = 0;
+//			for (int j = 0; j < temp.size();)
+//			{
+//				if (temp[j++] != blocks[a++])
+//					count++;
+//			}
+//			v.push_back(count);
+//		}
+//	}
 //
-//	if (n % 2 == 0)
-//		res[n - 1] = 'b';
+//	if (!v.empty())
+//		return *min_element(v.begin(), v.end());
 //
-//	return res;
+//	// if 'B' have adjacent and size equal k
+//	return 0;
 //}
-string generateTheString(int n) {
-	string res(n-1, 'a');
-	res += (n % 2 == 0) ? 'b' : 'a';
 
-	return res;
+//https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/solutions/2454159/c-using-sliding-window-very-simple-and-easy-to-understand-solution/
+int minimumRecolors(string blocks, int k) {
+    int back = 0, front = 0, count_w = 0, ans = INT_MAX;
+    while (front < blocks.size()) {
+        if (blocks[front] == 'W') { count_w++; }
+        if (front - back + 1 == k) {
+            ans = min(ans, count_w);
+            if (blocks[back] == 'W') count_w--;
+            back++;
+        }
+        front++;
+    }
+    return ans;
 }
 
 int main()
 {
-	cout << generateTheString(4) << '\n';
-	cout << generateTheString(2) << '\n';
-	cout << generateTheString(7) << '\n';
+	cout << minimumRecolors("WBBWWBBWBW", 7) << '\n';
+	cout << minimumRecolors("WBWBBBW", 2) << '\n';
+	cout << minimumRecolors("BWWWBB", 6) << '\n';
 
 
 	return 0;

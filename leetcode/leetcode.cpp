@@ -16,64 +16,23 @@
 #include <charconv>
 
 using namespace std;
-
-// tested
-//bool backspaceCompare(string s, string t) {
-//	stack<char> st1, st2;
-//	for (int i = 0; i < s.length(); i++)
-//	{
-//		if (s[i] == '#')
-//		{
-//			if (!st1.empty())
-//				st1.pop();
-//			// if st.empty() then ignore '#'
-//		}
-//		else
-//			st1.push(s[i]);
-//	}
-//	for (int i = 0; i < t.length(); i++)
-//	{
-//		if (t[i] == '#')
-//		{
-//			if (!st2.empty())
-//				st2.pop();
-//		}
-//		else
-//			st2.push(t[i]);
-//	}
-//	string a = "", b = "";
-//	while (!st1.empty())
-//	{
-//		a += st1.top();
-//		st1.pop();
-//	}
-//	while (!st2.empty())
-//	{
-//		b += st2.top();
-//		st2.pop();
-//	}
-//	return (a == b);
-//}
-
-bool backspaceCompare(string s, string t) {
-	string s1, t1;
-	for (char c : s)
+// tested, worked
+string toLowerCase(string s) {
+	for (int i = 0; i < s.length(); i++)
 	{
-		if (c == '#' && !s1.empty())
-			s1.pop_back();
-		else if (c != '#')
-			s1 += c;
-	}
-	for (char c : t)
-	{
-		if (c == '#' && !t1.empty())
-			t1.pop_back();
-		else if (c != '#')
-			t1 += c;
+		if (isupper(s[i]))
+			s[i] += 32;
 	}
 
-	return (s1 == t1);
+	return s;
 }
+// https://leetcode.com/problems/to-lower-case/solutions/3373745/c-beats-100-time-using-transform/
+// using stl
+string toLowerCase(string s) {
+	transform(s.begin(), s.end(), s.begin(), ::tolower);
+	return s;
+}
+
 
 int main()
 {

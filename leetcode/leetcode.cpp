@@ -17,32 +17,75 @@
 
 using namespace std;
 
-vector<int> findIndices(vector<int>& nums, int indexDifference, int valueDifference) {
-	if (nums.size() < indexDifference)
-		return { -1, -1 };
+// tested
+//bool backspaceCompare(string s, string t) {
+//	stack<char> st1, st2;
+//	for (int i = 0; i < s.length(); i++)
+//	{
+//		if (s[i] == '#')
+//		{
+//			if (!st1.empty())
+//				st1.pop();
+//			// if st.empty() then ignore '#'
+//		}
+//		else
+//			st1.push(s[i]);
+//	}
+//	for (int i = 0; i < t.length(); i++)
+//	{
+//		if (t[i] == '#')
+//		{
+//			if (!st2.empty())
+//				st2.pop();
+//		}
+//		else
+//			st2.push(t[i]);
+//	}
+//	string a = "", b = "";
+//	while (!st1.empty())
+//	{
+//		a += st1.top();
+//		st1.pop();
+//	}
+//	while (!st2.empty())
+//	{
+//		b += st2.top();
+//		st2.pop();
+//	}
+//	return (a == b);
+//}
 
-	for (int i = 0; i < nums.size() - indexDifference; i++)
+bool backspaceCompare(string s, string t) {
+	string s1, t1;
+	for (char c : s)
 	{
-		for (int j = i + indexDifference; j < nums.size(); j++)
-		{
-			if (abs(nums[i] - nums[j]) >= valueDifference)
-				return { i, j };
-		}
+		if (c == '#' && !s1.empty())
+			s1.pop_back();
+		else if (c != '#')
+			s1 += c;
+	}
+	for (char c : t)
+	{
+		if (c == '#' && !t1.empty())
+			t1.pop_back();
+		else if (c != '#')
+			t1 += c;
 	}
 
-	return { -1, -1 };
+	return (s1 == t1);
 }
 
 int main()
 {
-	{
-		vector<int> nums = { {0,1}, {1,0} };
-		cout << differenceOfSum(nums) << '\n';
-		nums = { 1,2,3,4 };
-		cout << differenceOfSum(nums) << '\n';
+	cout << boolalpha;
+	cout << backspaceCompare("ab#c", "ad#c") << '\n';
+	cout << backspaceCompare("ab##", "c#d#") << '\n';
+	cout << backspaceCompare("a#c", "b") << '\n';
+	cout << backspaceCompare("a##c", "#a#c") << '\n';
+	cout << backspaceCompare("y#fo##f", "y#f#o##f") << '\n';
 
-		return 0;
-	}
+	return 0;
+
 }
 
 //#define need_for_speed ios_base::sync_with_stdio(false); cin.tie(NULL);

@@ -17,62 +17,26 @@
 
 using namespace std;
 
-//bool strongPasswordCheckerII(string password) {
-//	// check it does not contain 2 of the same character in adjacent position
-//	// and it must have at least 8 letters 
-//	// contains at least one lowercase, one uppercase, one digit, one special character.
-//	string special_characters = "!@#$%^&*()-+";
-//	if ((password.length() < 8)
-//		|| (adjacent_find(password.begin(), password.end()) != password.end())
-//		|| (find_first_of(password.begin(), password.end(), special_characters.begin(), special_characters.end()) == password.end()))
-//		return false;
-//
-//	bool l = false, u = false, d = false;
-//	for (auto &ch : password)
-//	{
-//		if (islower(ch))
-//			l = true;
-//
-//		if (isupper(ch))
-//			u = true;
-//
-//		if (isdigit(ch))
-//			d = true;
-//
-//		if (l && u && d)
-//			return true;
-//	}
-//	
-//	return false;
-//}
-
-// because input only have special characters, not all special characters in ASCII
-bool strongPasswordCheckerII(string password) {
-	if ((password.length() < 8) || (adjacent_find(password.begin(), password.end()) != password.end()))
-		return false;
-
-	bool l = false, u = false, d = false, sp = false;
-	for (auto& ch : password)
+int minimumSum(int num) {
+	vector<int> v;
+	while (num)
 	{
-		if (islower(ch))
-			l = true;
-		else if (isupper(ch))
-			u = true;
-		else if (isdigit(ch))
-			d = true;
-		else
-			sp = true;
+		v.push_back(num % 10);
+		num /= 10;
 	}
 
-	return (l && u && d && sp);
+	sort(v.begin(), v.end());
+	int n1 = v[0] * 10 + v[2];
+	int n2 = v[1] * 10 + v[3];
+
+	return n1 + n2;
 }
 
 int main()
 {
-	cout << boolalpha;
-	cout << strongPasswordCheckerII("IloveLe3tcode!") << '\n';
-	cout << strongPasswordCheckerII("Me+You--IsMyDream") << '\n';
-	cout << strongPasswordCheckerII("1aB!") << '\n';
+	cout << minimumSum(2932) << '\n';
+	cout << minimumSum(4009) << '\n';
+
 
 	return 0;
 }

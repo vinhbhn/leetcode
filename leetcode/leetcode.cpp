@@ -17,26 +17,27 @@
 
 using namespace std;
 
-int minimumSum(int num) {
-	vector<int> v;
-	while (num)
+int differenceOfSum(vector<int>& nums) {
+	int ele_sum = 0, d_sum = 0;
+	for (auto num : nums)
 	{
-		v.push_back(num % 10);
-		num /= 10;
+		ele_sum += num;
+		while (num)
+		{
+			d_sum += num % 10;
+			num /= 10;
+		}
 	}
 
-	sort(v.begin(), v.end());
-	int n1 = v[0] * 10 + v[2];
-	int n2 = v[1] * 10 + v[3];
-
-	return n1 + n2;
+	return abs(ele_sum - d_sum);
 }
 
 int main()
 {
-	cout << minimumSum(2932) << '\n';
-	cout << minimumSum(4009) << '\n';
-
+	vector<int> nums = { 1, 15, 6, 3 };
+	cout << differenceOfSum(nums) << '\n';
+	nums = { 1,2,3,4 };
+	cout << differenceOfSum(nums) << '\n';
 
 	return 0;
 }

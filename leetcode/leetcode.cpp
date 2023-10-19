@@ -16,32 +16,45 @@
 #include <charconv>
 
 using namespace std;
-// tested, worked
-string toLowerCase(string s) {
-	for (int i = 0; i < s.length(); i++)
+
+string capitalizeTitle(string title) {
+	vector<string> v;
+	stringstream ss(title);
+	string word;
+
+	while (getline(ss, word, ' '))
+		v.push_back(word);
+
+	//for (auto& i : v)
+	//	std::cout << i << ' ';
+	//std::cout << '\n';
+
+	string result = "";
+	for (auto& letter : v)
 	{
-		if (isupper(s[i]))
-			s[i] += 32;
+		if (letter.size() <= 2)
+			transform(letter.begin(), letter.end(), letter.begin(), ::tolower);
+		else
+		{
+			letter[0] = toupper(letter[0]);
+			for (int i = 1; i < letter.size(); i++)
+				letter[i] = tolower(letter[i]);
+		}
+
+		result += letter + ' ';
 	}
 
-	return s;
-}
-// https://leetcode.com/problems/to-lower-case/solutions/3373745/c-beats-100-time-using-transform/
-// using stl
-string toLowerCase(string s) {
-	transform(s.begin(), s.end(), s.begin(), ::tolower);
-	return s;
+	// remove ' ' in last string
+	result.pop_back();
+	return result;
 }
 
 
 int main()
 {
-	cout << boolalpha;
-	cout << backspaceCompare("ab#c", "ad#c") << '\n';
-	cout << backspaceCompare("ab##", "c#d#") << '\n';
-	cout << backspaceCompare("a#c", "b") << '\n';
-	cout << backspaceCompare("a##c", "#a#c") << '\n';
-	cout << backspaceCompare("y#fo##f", "y#f#o##f") << '\n';
+	cout << capitalizeTitle("capiTalIze tHe titLe") << '\n';
+	cout << capitalizeTitle("First leTTeR of EACH Word") << '\n';
+	cout << capitalizeTitle("i lOve leetcode") << '\n';
 
 	return 0;
 

@@ -17,44 +17,25 @@
 
 using namespace std;
 
-string capitalizeTitle(string title) {
-	vector<string> v;
-	stringstream ss(title);
-	string word;
-
-	while (getline(ss, word, ' '))
-		v.push_back(word);
-
-	//for (auto& i : v)
-	//	std::cout << i << ' ';
-	//std::cout << '\n';
-
-	string result = "";
-	for (auto& letter : v)
+bool detectCapitalUse(string word) {
+	int count = 0;
+	for (int i = 0; i < word.length(); i++)
 	{
-		if (letter.size() <= 2)
-			transform(letter.begin(), letter.end(), letter.begin(), ::tolower);
-		else
-		{
-			letter[0] = toupper(letter[0]);
-			for (int i = 1; i < letter.size(); i++)
-				letter[i] = tolower(letter[i]);
-		}
-
-		result += letter + ' ';
+		if (islower(word[i]))
+			count++;
 	}
-
-	// remove ' ' in last string
-	result.pop_back();
-	return result;
+	//		all upper		upper only first letter								all not capital		
+	return (count == 0 || ((count == word.length() - 1) && isupper(word[0])) || count == word.length());
 }
 
 
 int main()
 {
-	cout << capitalizeTitle("capiTalIze tHe titLe") << '\n';
-	cout << capitalizeTitle("First leTTeR of EACH Word") << '\n';
-	cout << capitalizeTitle("i lOve leetcode") << '\n';
+	cout << boolalpha;
+	cout << detectCapitalUse("USA") << '\n';
+	cout << detectCapitalUse("FlaG") << '\n';
+	cout << detectCapitalUse("leetcode") << '\n';
+	cout << detectCapitalUse("ffffffffffffffffffffF") << '\n';
 
 	return 0;
 

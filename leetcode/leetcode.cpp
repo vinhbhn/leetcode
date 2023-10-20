@@ -16,93 +16,147 @@
 #include <charconv>
 
 using namespace std;
-
+// three ways worked same runtime and approximately memory
 // worked
-//string capitalizeTitle(string title) {
-//    vector<string> v;
-//    stringstream ss(title);
-//    string word;
+//vector<string> uncommonFromSentences(string s1, string s2) {
+//	vector<string> v, v1, v2;
+//	stringstream ss1(s1), ss2(s2);
+//	string word;
+//	unordered_map<string, int> mp1, mp2;
 //
-//    while (getline(ss, word, ' '))
-//        v.push_back(word);
-//
-//    //for (auto& i : v)
-//    //	std::cout << i << ' ';
-//    //std::cout << '\n';
-//
-//    string result = "";
-//    for (auto& letter : v)
-//    {
-//        if (letter.size() <= 2)
-//            transform(letter.begin(), letter.end(), letter.begin(), ::tolower);
-//        else
-//        {
-//            letter[0] = toupper(letter[0]);
-//            for (int i = 1; i < letter.size(); i++)
-//                letter[i] = tolower(letter[i]);
-//        }
-//
-//        result += letter + ' ';
-//    }
-//
-//    // remove ' ' in last string
-//    result.pop_back();
-//    return result;
-//}
-
-//https://leetcode.com/problems/capitalize-the-title/solutions/1675922/java-c-2-approaches-pictorial-explanation-faster-than-100/
-// basic idea
-//string capitalizeTitle(string title) {
-//	int len = title.length();
-//
-//	for (int i = 0; i < len; i++)
+//	while (getline(ss1, word, ' '))
 //	{
-//		int firstIndex = i; // store the first index of the word
-//
-//		while (i < len && title[i] != ' ')
-//		{
-//			title[i] = tolower(title[i]); // converting the character at ith index to lower case only by one
-//			++i;
-//		}
-//
-//		// if word is of length greater than 2, then turn the first character of the word to upper case
-//		if (i - firstIndex > 2)
-//			title[firstIndex] = toupper(title[firstIndex]); // converting the first character of the word to upper case
+//		v1.push_back(word);
+//		mp1[word]++;
+//	}
+//	while (getline(ss2, word, ' '))
+//	{
+//		v2.push_back(word);
+//		mp2[word]++;
 //	}
 //
-//	return title; // return the final result
+//	int i = 0, j = 0;
+//	string temp1 = "", temp2 = "";
+//	while (i < v1.size() || j < v2.size())
+//	{
+//		temp1 = (i < v1.size()) ? v1[i] : "";
+//		temp2 = (j < v2.size()) ? v2[j] : "";
+//
+//		if (temp1 != temp2)
+//		{
+//			// a word is uncommon if it appears exactly once in one of the sentences, and does not appear in the other sentence.
+//			if ((mp1[temp1] == 1) && mp2.find(temp1) == mp2.end())
+//				v.push_back(v1[i]);
+//			if (mp2[temp2] == 1 && mp1.find(temp2) == mp1.end())
+//				v.push_back(v2[j]);
+//		}
+//
+//		i++;
+//		j++;
+//
+//	}
+//
+//	return v;
 //}
-// O(n) O(1)
-string capitalizeTitle(string title) {
-	int len = title.length();
 
-	for (int i = 0; i < len; i++)
+// web
+//vector<string> uncommonFromSentences(string s1, string s2) {
+//	vector<string> v;
+//	unordered_map<string, int> mp1, mp2;
+//
+//	string temp = "";
+//	for (int i = 0; i < s1.length(); i++)
+//	{
+//		if (s1[i] == ' ')
+//		{
+//			mp1[temp]++;
+//			temp = "";
+//		}
+//		else
+//			temp += s1[i];
+//	}
+//	mp1[temp]++;
+//	temp = "";
+//	for (int i = 0; i < s2.length(); i++)
+//	{
+//		if (s2[i] == ' ')
+//		{
+//			mp2[temp]++;
+//			temp = "";
+//		}
+//		else
+//			temp += s2[i];
+//	}
+//	mp2[temp]++;
+//
+//	// a word is uncommon if it appears exactly once in one of the sentences, and does not appear in the other sentence.
+//	for (auto& x : mp1)
+//	{
+//		if ((x.second == 1) && mp2.find(x.first) == mp2.end())
+//			v.push_back(x.first);
+//	}
+//	for (auto& y : mp2)
+//	{
+//		if ((y.second == 1) && mp1.find(y.first) == mp1.end())
+//			v.push_back(y.first);
+//	}
+//
+//	return v;
+//}
+
+// https://leetcode.com/problems/uncommon-words-from-two-sentences/solutions/374545/c-easy-solution-0ms-faster-than-100-8-6-mb-less-than-100/
+vector<string> uncommonFromSentences(string s1, string s2) {
+	vector<string> v;
+	unordered_map<string, int> mp;
+
+	string temp = "";
+	for (auto ch : s1)
 	{
-		int firstIndex = i; // store the first index of the word
-
-		while (i < len && title[i] != ' ')
+		if (ch == ' ')
 		{
-			title[i] |= 32; // converting the character at ith index to lower case only by one
-			++i;
+			mp[temp]++;
+			temp = "";
 		}
-
-		// if word is of length greater than 2, then turn the first character of the word to upper case
-		if (i - firstIndex > 2)
-			title[firstIndex] &= ~32; // converting the first character of the word to upper case
+		else
+			temp += ch;
 	}
+	// because last character is not ' ', then manual add temp in map
+	mp[temp]++;
+	temp = "";
+	for (auto ch : s2)
+	{
+		if (ch == ' ')
+		{
+			mp[temp]++;
+			temp = "";
+		}
+		else
+			temp += ch;
+	}
+	mp[temp]++;
 
-	return title; // return the final result
+	// a word is uncommon if it appears exactly once in one of the sentences, and does not appear in the other sentence.
+	for (auto& x : mp)
+		if (x.second == 1)
+			v.push_back(x.first);
+
+	return v;
 }
-
-
 
 int main()
 {
 	cout << boolalpha;
-	cout << detectCapitalUse("USA") << '\n';
-	cout << detectCapitalUse("FlaG") << '\n';
-	cout << detectCapitalUse("leetcode") << '\n';
-	cout << detectCapitalUse("ffffffffffffffffffffF") << '\n';
+	for (auto& x : uncommonFromSentences("this apple is sweet", "this apple is sour"))
+		cout << x << ' ';
+	cout << '\n';
+
+	for (auto& x : uncommonFromSentences("apple apple", "banana"))
+		cout << x << ' ';
+	cout << '\n';
+
+	for (auto& x : uncommonFromSentences("fd kss fd", "fd fd kss"))
+		cout << x << ' ';
+	cout << '\n';
 
 	return 0;
 

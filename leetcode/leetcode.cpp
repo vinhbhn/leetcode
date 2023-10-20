@@ -17,28 +17,32 @@
 
 using namespace std;
 
-int countWords(vector<string>& words1, vector<string>& words2) {
-	unordered_map<string, int> mp1, mp2;
-	for (auto &word : words1)
-		mp1[word]++;
-
-	for (auto& word : words2)
-		mp2[word]++;
+// https://leetcode.com/problems/kth-distinct-string-in-an-array/solutions/3938530/easy-to-understand-100-fast-c/
+string kthDistinct(vector<string>& arr, int k) {
+	unordered_map<string, int> mp;
+	for (auto& str : arr)
+		mp[str]++;
 
 	int count = 0;
-	for (auto& x : mp1)
+	for (auto& str : arr)
 	{
-		// string appear exactly once in each of the two arrays
-		if (x.second == 1 && mp2[x.first] == 1)
+		if (mp[str] == 1)
+		{
 			count++;
+			if (count == k)
+				return str;
+		}
 	}
 
-	return count;
+	return "";
 }
+
 
 int main()
 {
 	cout << boolalpha;
+	vector<string> arr = { "y","napli","jfqjc","mbl","oeush" };
+	cout << kthDistinct(arr, 3) << '\n';
 
 	return 0;
 

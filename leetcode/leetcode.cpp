@@ -17,31 +17,73 @@
 
 using namespace std;
 
-//int valueOfStr(string s)
-//{
+// worked but slow
+//int countCharacters(vector<string>& words, string chars) {
+//	unordered_map<char, int> mpc, mpw;
 //	int sum = 0;
-//	reverse(s.begin(), s.end());
-//	for (int i = s.length() - 1; i >= 0; i--)
-//		sum += (s[i] - 97) * pow(10, i);
+//
+//	for (auto ch : chars)
+//		mpc[ch]++;
+//
+//	for(int i = 0; i < words.size(); i++)
+//	{
+//		bool fail = false;
+//		for (auto c : words[i])
+//		{
+//			mpw[c]++;
+//		}
+//
+//		for (auto c : words[i])
+//		{
+//			if (mpc[c] < mpw[c])
+//			{
+//				fail = true;
+//				break;
+//			}
+//		}
+//
+//		if (!fail)
+//			sum += words[i].size();
+//
+//		// reset
+//		mpw.clear();
+//	}
 //
 //	return sum;
 //}
-int valueOfStr(string s)
-{
-	int num = 0;
-	for (auto ch : s)
-		num = num * 10 + (ch - 'a');
 
-	return num;
-}
-bool isSumEqual(string firstWord, string secondWord, string targetWord) {
-	return (valueOfStr(firstWord) + valueOfStr(secondWord) == valueOfStr(targetWord));
+// web
+int countCharacters(vector<string>& words, string chars) {
+	int freqhash[26] = {}, res = 0;
+	for (auto x : chars)
+		++freqhash[x - 'a'];
+
+	for (auto& w : words)
+	{
+		int hash[26] = {}, match = true;
+
+		for (auto ch : w)
+		{
+			// compare character have from words but it's not present in chars
+			if (++hash[ch - 'a'] > freqhash[ch - 'a'])
+			{
+				match = false;
+				break;
+			}
+		}
+
+		if (match)
+			res += w.size();
+	}
+
+	return res;
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << isSumEqual("acb", "cba", "cdb") << '\n';
+	vector<string> words = { "cat","bt","hat","tree" };
+	cout << countCharacters(words, "atach") << '\n';
 
 	return 0;
 

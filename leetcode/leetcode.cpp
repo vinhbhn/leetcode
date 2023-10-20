@@ -17,32 +17,31 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/kth-distinct-string-in-an-array/solutions/3938530/easy-to-understand-100-fast-c/
-string kthDistinct(vector<string>& arr, int k) {
-	unordered_map<string, int> mp;
-	for (auto& str : arr)
-		mp[str]++;
+//int valueOfStr(string s)
+//{
+//	int sum = 0;
+//	reverse(s.begin(), s.end());
+//	for (int i = s.length() - 1; i >= 0; i--)
+//		sum += (s[i] - 97) * pow(10, i);
+//
+//	return sum;
+//}
+int valueOfStr(string s)
+{
+	int num = 0;
+	for (auto ch : s)
+		num = num * 10 + (ch - 'a');
 
-	int count = 0;
-	for (auto& str : arr)
-	{
-		if (mp[str] == 1)
-		{
-			count++;
-			if (count == k)
-				return str;
-		}
-	}
-
-	return "";
+	return num;
 }
-
+bool isSumEqual(string firstWord, string secondWord, string targetWord) {
+	return (valueOfStr(firstWord) + valueOfStr(secondWord) == valueOfStr(targetWord));
+}
 
 int main()
 {
 	cout << boolalpha;
-	vector<string> arr = { "y","napli","jfqjc","mbl","oeush" };
-	cout << kthDistinct(arr, 3) << '\n';
+	cout << isSumEqual("acb", "cba", "cdb") << '\n';
 
 	return 0;
 

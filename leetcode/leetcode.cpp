@@ -17,7 +17,6 @@
 
 using namespace std;
 
-// work partially and lower because use more memory
 int countPrefixes(vector<string>& words, string s) {
 	int count = 0;
 	for (auto& word : words)

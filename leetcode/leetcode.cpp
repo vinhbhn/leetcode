@@ -17,16 +17,16 @@
 
 using namespace std;
 
-int countPrefixes(vector<string>& words, string s) {
-	int count = 0;
-	for (auto& word : words)
-	{
-		// check word if it is prefix in s
-		if (s.substr(0, word.length()) == word)
-			count++;
-	}
+bool isPrefixString(string s, vector<string>& words) {
+    string temp = "";
+    for (int i = 0; i < words.size(); i++)
+    {
+        temp += words[i];
+        if (temp == s)
+            return true;
+    }
 
-	return count;
+    return false;
 }
 
 int main()

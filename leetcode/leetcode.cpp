@@ -17,40 +17,17 @@
 
 using namespace std;
 
-//bool check(string temp, string searchWord)
-//{
-//	int i = 0;
-//	while (i < searchWord.length())
-//	{
-//		if (searchWord[i] != temp[i])
-//			return false;
-//
-//		i++;
-//	}
-//
-//	return true;
-//}
-int isPrefixOfWord(string sentence, string searchWord) {
-	string temp = "";
-	int whiteSpace = 0;
-	for (auto ch : sentence)
+int prefixCount(vector<string>& words, string pref) {
+	int count = 0;
+	for (auto& word : words)
 	{
-		if (ch == ' ')
-		{
-			whiteSpace++;
-			if (searchWord == temp.substr(0, searchWord.length()))
-				return whiteSpace;
-
-			temp = "";
-		}
-		else
-			temp += ch;
+		// prefix in a word
+		if (word.substr(0, pref.length()) == pref)
+			count++;
 	}
 
-	// last word of sentence
-	return (searchWord == temp.substr(0, searchWord.length())) ? ++whiteSpace : -1;
+	return count;
 }
-
 
 int main()
 {

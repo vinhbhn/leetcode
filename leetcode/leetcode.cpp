@@ -18,67 +18,62 @@
 using namespace std;
 
 // worked
-//bool checkAlmostEquivalent(string word1, string word2) {
-//	unordered_map<char, int> mp1, mp2;
-//	for (auto ch : word1)
-//		mp1[ch]++;
-//	for (auto ch : word2)
-//		mp2[ch]++;
-//
-//	// check all letters of 2 strings
-//	for (auto &a : mp1)
-//		if (abs(a.second - mp2[a.first]) > 3)
-//			return false;
-//	for (auto& a : mp2)
-//		if (abs(a.second - mp1[a.first]) > 3)
-//			return false;
-//
-//	return true;
-//}
-
-//bool checkAlmostEquivalent(string word1, string word2) {
-//	int h1[27] = { 0 }, h2[27] = { 0 };
-//	set<char> s;
-//	for (auto ch : word1)
+//bool rotateString(string s, string goal) {
+//	int count = 0;
+//	while (count < goal.size())
 //	{
-//		h1[ch - 'a']++;
-//		s.insert(ch);
-//	}
-//	for (auto ch : word2)
-//	{
-//		h2[ch - 'a']++;
-//		s.insert(ch);
+//		s.push_back(s[0]);
+//		s.erase(s.begin());
+//
+//		if (s == goal)
+//			return true;
+//
+//		count++;
 //	}
 //
-//	for (auto ch : s)
-//		if (abs(h1[ch - 'a'] - h2[ch - 'a']) > 3)
-//			return false;
-//
-//	return true;
+//	return (s == goal);
 //}
 
-bool checkAlmostEquivalent(string word1, string word2) {
-	//int h1[27] = { 0 }, h2[27] = { 0 };
-	vector<int> h1(26, 0), h2(26, 0);
-	for (auto ch : word1)
-		h1[ch - 'a']++;
-	for (auto ch : word2)
-		h2[ch - 'a']++;
-
-	for (char ch = 'a'; ch <= 'z'; ch++)
-		if (abs(h1[ch - 'a'] - h2[ch - 'a']) > 3)
+//https://leetcode.com/problems/rotate-string/solutions/3199751/best-c-2-solution-string-matching-string-one-stop-solution/
+// using strings with extra space O(n^2) O(n) because s+s
+//bool rotateString(string s, string goal) {
+//	if (s.size() != goal.size())
+//		return false;
+//
+//	string check = s + s;
+//	return check.find(goal) != string::npos;
+//}
+// using strings without extra space O(n^2) O(1)
+bool rotateString(string a, string b, int rotation)
+{
+	for (int i = 0; i < a.length(); i++)
+	{
+		if (a[i] != b[(i + rotation) % b.length()])
 			return false;
+	}
 
 	return true;
+}
+bool rotateString(string s, string goal) {
+	if (s.size() != goal.size())
+		return false;
+
+	if (s.length() == 0)
+		return true;
+
+	for (int i = 0; i < s.length(); i++)
+		if (rotateString(s, goal, i))
+			return true;
+
+	return false;
 }
 
 
 int main()
 {
 	cout << boolalpha;
-	cout << checkAlmostEquivalent("aaaa", "bccb") << '\n';
-	cout << checkAlmostEquivalent("abcdeef", "abaaacc") << '\n';
-	cout << checkAlmostEquivalent("cccddabba", "babababab") << '\n';
+	cout << rotateString("abcde", "cdeab") << '\n';
+	cout << rotateString("abcde", "abced") << '\n';
 
 	return 0;
 

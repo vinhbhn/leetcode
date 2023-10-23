@@ -17,63 +17,48 @@
 
 using namespace std;
 
-// worked
-//bool rotateString(string s, string goal) {
-//	int count = 0;
-//	while (count < goal.size())
-//	{
-//		s.push_back(s[0]);
-//		s.erase(s.begin());
-//
-//		if (s == goal)
-//			return true;
-//
-//		count++;
-//	}
-//
-//	return (s == goal);
-//}
-
-//https://leetcode.com/problems/rotate-string/solutions/3199751/best-c-2-solution-string-matching-string-one-stop-solution/
-// using strings with extra space O(n^2) O(n) because s+s
-//bool rotateString(string s, string goal) {
-//	if (s.size() != goal.size())
-//		return false;
-//
-//	string check = s + s;
-//	return check.find(goal) != string::npos;
-//}
-// using strings without extra space O(n^2) O(1)
-bool rotateString(string a, string b, int rotation)
+bool check(string temp, string searchWord)
 {
-	for (int i = 0; i < a.length(); i++)
+	int i = 0;
+	while (i < searchWord.length())
 	{
-		if (a[i] != b[(i + rotation) % b.length()])
+		if (searchWord[i] != temp[i])
 			return false;
+
+		i++;
 	}
 
 	return true;
 }
-bool rotateString(string s, string goal) {
-	if (s.size() != goal.size())
-		return false;
+int isPrefixOfWord(string sentence, string searchWord) {
+	string temp = "";
+	int whiteSpace = 0;
+	for (auto ch : sentence)
+	{
+		if (ch == ' ')
+		{
+			whiteSpace++;
+			if (check(temp, searchWord))
+				return whiteSpace;
 
-	if (s.length() == 0)
-		return true;
+			temp = "";
+		}
+		else
+			temp += ch;
+	}
 
-	for (int i = 0; i < s.length(); i++)
-		if (rotateString(s, goal, i))
-			return true;
-
-	return false;
+	// last word of sentence
+	return (check(temp, searchWord)) ? ++whiteSpace : -1;
 }
 
 
 int main()
 {
 	cout << boolalpha;
-	cout << rotateString("abcde", "cdeab") << '\n';
-	cout << rotateString("abcde", "abced") << '\n';
+	cout << isPrefixOfWord("i love eating burger", "burg") << '\n';
+	cout << isPrefixOfWord("this problem is an easy problem", "pro") << '\n';
+	cout << isPrefixOfWord("i am tired", "you") << '\n';
+
 
 	return 0;
 

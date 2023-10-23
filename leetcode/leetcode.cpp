@@ -17,12 +17,13 @@
 
 using namespace std;
 
-int prefixCount(vector<string>& words, string pref) {
+// work partially and lower because use more memory
+int countPrefixes(vector<string>& words, string s) {
 	int count = 0;
 	for (auto& word : words)
 	{
-		// prefix in a word
-		if (word.substr(0, pref.length()) == pref)
+		// check word if it is prefix in s
+		if (s.substr(0, word.length()) == word)
 			count++;
 	}
 

@@ -17,19 +17,19 @@
 
 using namespace std;
 
-bool check(string temp, string searchWord)
-{
-	int i = 0;
-	while (i < searchWord.length())
-	{
-		if (searchWord[i] != temp[i])
-			return false;
-
-		i++;
-	}
-
-	return true;
-}
+//bool check(string temp, string searchWord)
+//{
+//	int i = 0;
+//	while (i < searchWord.length())
+//	{
+//		if (searchWord[i] != temp[i])
+//			return false;
+//
+//		i++;
+//	}
+//
+//	return true;
+//}
 int isPrefixOfWord(string sentence, string searchWord) {
 	string temp = "";
 	int whiteSpace = 0;
@@ -38,7 +38,7 @@ int isPrefixOfWord(string sentence, string searchWord) {
 		if (ch == ' ')
 		{
 			whiteSpace++;
-			if (check(temp, searchWord))
+			if (searchWord == temp.substr(0, searchWord.length()))
 				return whiteSpace;
 
 			temp = "";
@@ -48,7 +48,7 @@ int isPrefixOfWord(string sentence, string searchWord) {
 	}
 
 	// last word of sentence
-	return (check(temp, searchWord)) ? ++whiteSpace : -1;
+	return (searchWord == temp.substr(0, searchWord.length())) ? ++whiteSpace : -1;
 }
 
 

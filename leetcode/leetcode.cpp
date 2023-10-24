@@ -17,52 +17,62 @@
 
 using namespace std;
 
-//int unequalTriplets(vector<int>& nums) {
+// worked but slow 69ms O(n^3)
+//int countTriples(int n) {
+//    int count = 0;
+//    for (int a = 3; a < n; a++)
+//    {
+//        for (int b = a + 1; b < n; b++)
+//        {
+//            for (int c = b + 1; c <= n; c++)
+//            {
+//                if (a * a + b * b == c * c)
+//                    count++;
+//            }
+//        }
+//    }
+//
+//    // a <-> b
+//    return count * 2;
+//}
+
+// https://leetcode.com/problems/count-square-sum-triples/solutions/1329929/c-brute-force-vs-logarithmic-solution-100-time-100-space/
+// 10ms
+//int countTriples(int n) {
 //	int count = 0;
-//	for (int i = 0; i < nums.size() - 2; i++)
+//	for (int a = 3; a < n; a++)
 //	{
-//		for (int j = i + 1; j < nums.size() - 1; j++)
+//		for (int b = 3; b < n; b++)
 //		{
-//			if (nums[i] != nums[j])
-//			{
-//				for (int k = j + 1; k < nums.size(); k++)
-//				{
-//					if (nums[i] != nums[k] && nums[j] != nums[k])
-//						count++;
-//				}
-//			}
+//			int sqc = a * a + b * b;
+//			int c = sqrt(sqc);
+//			if (c * c == sqc && c <= n)
+//				count++;
 //		}
 //	}
 //
 //	return count;
 //}
-
-//https://leetcode.com/problems/number-of-unequal-triplets-in-array/solutions/2832078/python-c-javascript-o-n-beats-100/
-// O(n) O(n) Calculate the sum of prev freq & next freq and sum them: 0ms
-int unequalTriplets(vector<int>& nums) {
-	int count = 0, prev = 0, nxt = nums.size();
-	unordered_map<int, int> frequency;
-
-	for (auto n : nums)
-		frequency[n]++;
-
-	for (auto &[n, freq] : frequency)
-	{
-		nxt -= freq;
-		count += prev * freq * nxt;
-		prev += freq;
-	}
-	
-	return count;
+// optimize than above: 0ms
+int countTriples(int n) {
+    int res = 0;
+    for (int a = 3; a < n; a++) {
+        for (int b = a + 1, sqc, c; b < n; b++) {
+            sqc = a * a + b * b;
+            c = sqrt(sqc);
+            if (c > n) break;
+            res += (c * c == sqc) << 1;
+        }
+    }
+    return res;
 }
-
 
 int main()
 {
 	cout << boolalpha;
 
-	vector<int> num = { 4,4,2,4,3 };
-	cout << unequalTriplets(num) << '\n';
+	cout << countTriples(5) << '\n';
+	cout << countTriples(10) << '\n';
 
 	return 0;
 

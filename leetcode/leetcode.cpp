@@ -17,40 +17,39 @@
 
 using namespace std;
 
-vector<string> findOcurrences(string text, string first, string second) {
-	vector<string> words, res;
-	stringstream ss(text);
-	string word;
-	while (getline(ss, word, ' '))
-		words.push_back(word);
+// https://leetcode.com/problems/destination-city/solutions/1192311/c-easy-two-methods-map-set/
+//string destCity(vector<vector<string>>& paths) {
+//	unordered_map<string, int> mp;
+//
+//	for (int i = 0; i < paths.size(); i++)
+//		mp[paths[i][0]]++;
+//
+//	for (int i = 0; i < paths.size(); i++)
+//		if (mp[paths[i][1]] == 0)
+//			return paths[i][1];
+//
+//	return "";
+//}
+string destCity(vector<vector<string>>& paths) {
+	unordered_set<string> st;
 
-	for (string::size_type i = 0; i < words.size() - 2; i++)
-	{
-		if ((words[i] == first) && (words[i + 1] == second))
-		{
-			// third
-			res.push_back(words[i + 2]);
-		}
-	}
+	for (int i = 0; i < paths.size(); i++)
+		st.insert(paths[i][0]);
 
-	return res;
+	for (int i = 0; i < paths.size(); i++)
+		if (st.find(paths[i][1]) == st.end())
+			return paths[i][1];
+
+	return "";
 }
+
 
 int main()
 {
 	cout << boolalpha;
 
-	for (auto& a : findOcurrences("alice is a good girl she is a good student", "a", "good"))
-		cout << a << ' ';
-	cout << '\n';
-
-	for (auto& a : findOcurrences("we will we will rock you", "we", "will"))
-		cout << a << ' ';
-	cout << '\n';
-
-	for (auto& a : findOcurrences("jkypmsxd jkypmsxd kcyxdfnoa jkypmsxd kcyxdfnoa jkypmsxd kcyxdfnoa kcyxdfnoa jkypmsxd kcyxdfnoa", "kcyxdfnoa", "jkypmsxd"))
-		cout << a << ' ';
-	cout << '\n';
+	vector<vector<string>> paths = { {"London","New York"} ,{"New York","Lima"},{"Lima","Sao Paulo"} };
+	cout << destCity(paths) << '\n';
 
 	return 0;
 

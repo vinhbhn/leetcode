@@ -17,30 +17,47 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/destination-city/solutions/1192311/c-easy-two-methods-map-set/
-//string destCity(vector<vector<string>>& paths) {
-//	unordered_map<string, int> mp;
+// worked but slow
+//vector<vector<int>> mergeSimilarItems(vector<vector<int>>& items1, vector<vector<int>>& items2) {
+//	// merge items2 into items1
+//	for (auto& i : items2)
+//		items1.push_back(i);
 //
-//	for (int i = 0; i < paths.size(); i++)
-//		mp[paths[i][0]]++;
+//	set<int> st;
+//	for (int i = 0; i < items1.size(); i++)
+//		st.insert(items1[i][0]);
 //
-//	for (int i = 0; i < paths.size(); i++)
-//		if (mp[paths[i][1]] == 0)
-//			return paths[i][1];
 //
-//	return "";
+//	vector<vector<int>> res;
+//	for (auto ele : st)
+//	{
+//		int sum = 0;
+//		for (int i = 0; i < items1.size(); i++)
+//		{
+//			if (ele == items1[i][0])
+//				sum += items1[i][1];
+//		}
+//
+//		res.push_back({ ele, sum });
+//	}
+//
+//	return res;
 //}
-string destCity(vector<vector<string>>& paths) {
-	unordered_set<string> st;
 
-	for (int i = 0; i < paths.size(); i++)
-		st.insert(paths[i][0]);
+// web, using map, 14ms, result: 25ms O(nlogn+mlogm) O(n+m) array + hash table
+vector<vector<int>> mergeSimilarItems(vector<vector<int>>& items1, vector<vector<int>>& items2) {
+	map<int, int> m;
+	for (int i = 0; i < items1.size(); i++)
+		m[items1[i][0]] = items1[i][1];
 
-	for (int i = 0; i < paths.size(); i++)
-		if (st.find(paths[i][1]) == st.end())
-			return paths[i][1];
+	for (int j = 0; j < items2.size(); j++)
+		m[items2[j][0]] += items2[j][1];
 
-	return "";
+	vector<vector<int>> res;
+	for (auto& e : m)
+		res.push_back({ e.first, e.second });
+
+	return res;
 }
 
 

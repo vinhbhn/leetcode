@@ -17,25 +17,40 @@
 
 using namespace std;
 
-bool isPrefixString(string s, vector<string>& words) {
-    string temp = "";
-    for (int i = 0; i < words.size(); i++)
-    {
-        temp += words[i];
-        if (temp == s)
-            return true;
-    }
+vector<string> findOcurrences(string text, string first, string second) {
+	vector<string> words, res;
+	stringstream ss(text);
+	string word;
+	while (getline(ss, word, ' '))
+		words.push_back(word);
 
-    return false;
+	for (string::size_type i = 0; i < words.size() - 2; i++)
+	{
+		if ((words[i] == first) && (words[i + 1] == second))
+		{
+			// third
+			res.push_back(words[i + 2]);
+		}
+	}
+
+	return res;
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << isPrefixOfWord("i love eating burger", "burg") << '\n';
-	cout << isPrefixOfWord("this problem is an easy problem", "pro") << '\n';
-	cout << isPrefixOfWord("i am tired", "you") << '\n';
 
+	for (auto& a : findOcurrences("alice is a good girl she is a good student", "a", "good"))
+		cout << a << ' ';
+	cout << '\n';
+
+	for (auto& a : findOcurrences("we will we will rock you", "we", "will"))
+		cout << a << ' ';
+	cout << '\n';
+
+	for (auto& a : findOcurrences("jkypmsxd jkypmsxd kcyxdfnoa jkypmsxd kcyxdfnoa jkypmsxd kcyxdfnoa kcyxdfnoa jkypmsxd kcyxdfnoa", "kcyxdfnoa", "jkypmsxd"))
+		cout << a << ' ';
+	cout << '\n';
 
 	return 0;
 

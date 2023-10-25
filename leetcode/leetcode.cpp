@@ -17,62 +17,22 @@
 
 using namespace std;
 
-// worked but slow 69ms O(n^3)
-//int countTriples(int n) {
-//    int count = 0;
-//    for (int a = 3; a < n; a++)
-//    {
-//        for (int b = a + 1; b < n; b++)
-//        {
-//            for (int c = b + 1; c <= n; c++)
-//            {
-//                if (a * a + b * b == c * c)
-//                    count++;
-//            }
-//        }
-//    }
-//
-//    // a <-> b
-//    return count * 2;
-//}
+int sumOfMultiples(int n) {
+	int sum = 0;
+	for (int i = 3; i <= n; i++)
+		if (i % 3 == 0 || i % 5 == 0 || i % 7 == 0)
+			sum += i;
 
-// https://leetcode.com/problems/count-square-sum-triples/solutions/1329929/c-brute-force-vs-logarithmic-solution-100-time-100-space/
-// 10ms
-//int countTriples(int n) {
-//	int count = 0;
-//	for (int a = 3; a < n; a++)
-//	{
-//		for (int b = 3; b < n; b++)
-//		{
-//			int sqc = a * a + b * b;
-//			int c = sqrt(sqc);
-//			if (c * c == sqc && c <= n)
-//				count++;
-//		}
-//	}
-//
-//	return count;
-//}
-// optimize than above: 0ms
-int countTriples(int n) {
-    int res = 0;
-    for (int a = 3; a < n; a++) {
-        for (int b = a + 1, sqc, c; b < n; b++) {
-            sqc = a * a + b * b;
-            c = sqrt(sqc);
-            if (c > n) break;
-            res += (c * c == sqc) << 1;
-        }
-    }
-    return res;
+	return sum;
 }
 
 int main()
 {
 	cout << boolalpha;
 
-	cout << countTriples(5) << '\n';
-	cout << countTriples(10) << '\n';
+	cout << sumOfMultiples(7) << '\n';
+	cout << sumOfMultiples(10) << '\n';
+	cout << sumOfMultiples(9) << '\n';
 
 	return 0;
 

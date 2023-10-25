@@ -17,44 +17,17 @@
 
 using namespace std;
 
-// 15ms 18.2MB
-//long long maximumTripletValue(vector<int>& nums) {
-//	long long maxV = 0, n = nums.size();
-//	for (int i = 0; i < n - 2; i++)
-//	{
-//		for (int j = i + 1; j < n - 1; j++)
-//		{
-//			for (int k = j + 1; k < n; k++)
-//			{
-//				maxV = max(maxV, (long long)(nums[i] - nums[j]) *nums[k]);
-//			}
-//		}
-//	}
-//
-//	return maxV;
-//}
-
-// web 6ms, 18.4MB
-long long maximumTripletValue(vector<int>& nums) {
-	int n = nums.size();
-	vector<int> left(n);
-	left[0] = nums[0];
-	for (int i = 1; i < n; i++)
-		left[i] = max(left[i - 1], nums[i]);
-
-	vector<int> right(n);
-	right[n - 1] = nums[n - 1];
-	for (int i = n - 2; i >= 0; i--)
-		right[i] = max(right[i + 1], nums[i]);
-
-	long res = 0;
-	for (int i = 1; i < n - 1; i++)
+int differenceOfSums(int n, int m) {
+	int sum = 0;
+	for (int i = 1; i <= n; i++)
 	{
-		long val = (long)(left[i - 1] - nums[i]) * (long)(right[i + 1]);
-		res = max(res, val);
+		if (i % m != 0)
+			sum += i;
+		else
+			sum -= i;
 	}
 
-	return res;
+	return sum;
 }
 
 int main()

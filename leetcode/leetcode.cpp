@@ -17,43 +17,32 @@
 
 using namespace std;
 
-// worked, 4ms 8.8MB
-//int arithmeticTriplets(vector<int>& nums, int diff) {
-//	int count = 0;
-//	for (int i = 0; i < nums.size() - 2; i++)
+// 7ms 21.1MB
+//int minimumSum(vector<int>& nums) {
+//	int minSum = INT_MAX, sum = 0, n = nums.size();
+//	bool haveTriplet = false;
+//	for (int i = 0; i < n - 2; i++)
 //	{
-//		for (int j = i + 1; j < nums.size() - 1; j++)
+//		for (int j = i + 1; j < n - 1; j++)
 //		{
-//			if (nums[j] - nums[i] == diff)
+//			if (nums[i] < nums[j])
 //			{
-//				for (int k = j + 1; k < nums.size(); k++)
+//				for (int k = j + 1; k < n; k++)
 //				{
-//					if (nums[k] - nums[j] == diff)
-//						count++;
+//					if (nums[k] < nums[j])
+//					{
+//						haveTriplet = true;
+//						sum = nums[i] + nums[j] + nums[k];
+//						minSum = min(minSum, sum);
+//					}
 //				}
 //			}
 //		}
 //	}
 //
-//	return count;
+//
+//	return haveTriplet ? minSum : -1;
 //}
-
-//https://leetcode.com/problems/number-of-arithmetic-triplets/solutions/2392136/c-easy-hashmap-solution-with-explanation/
-// 3ms 9.6MB
-int arithmeticTriplets(vector<int>& nums, int diff) {
-	int count = 0;
-	unordered_map<int, bool> mp;
-	for (auto num : nums)
-		mp[num] = true;
-
-	// For every element say 'elm' check if there exist both number,
-	// (elm + diff) and (elm - diff) inside map. If yes then increment count
-	for (auto num : nums)
-		if (mp[num - diff] && mp[num + diff])
-			count++;
-
-	return count;
-}
 
 
 int main()

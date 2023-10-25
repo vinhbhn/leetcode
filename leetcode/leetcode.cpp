@@ -17,24 +17,44 @@
 
 using namespace std;
 
-int countGoodTriplets(vector<int>& arr, int a, int b, int c) {
-	int count = 0, n = arr.size();
-	for (int i = 0; i < n - 2; i++)
-	{
-		for (int j = i + 1; j < n - 1; j++)
+// 121ms 11MB
+//int countQuadruplets(vector<int>& nums) {
+//	int count = 0, n = nums.size();
+//	for (int i = 0; i < n - 3; i++)
+//	{
+//		for (int j = i + 1; j < n - 2; j++)
+//		{
+//			for (int k = j + 1; k < n - 1; k++)
+//			{
+//				for (int l = k + 1; l < n; l++)
+//				{
+//					if (nums[i] + nums[j] + nums[k] == nums[l])
+//						count++;
+//				}
+//			}
+//		}
+//	}
+//
+//	return count;
+//}
+
+// web 4ms 10.9MB
+int countQuadruplets(vector<int>& nums) {
+		int res = 0, n = nums.size();
+		vector<int> sum(201, 0);
+		for (int i = 1; i < n - 2; i++)
 		{
-			if (abs(arr[i] - arr[j]) <= a)
+			for (int j = 0; j < i; j++)
+				sum[nums[i] + nums[j]]++;
+
+			for (int j = i + 2; j < n; j++)
 			{
-				for (int k = j + 1; k < n; k++)
-				{
-					if (abs(arr[j] - arr[k]) <= b && abs(arr[i] - arr[k]) <= c)
-						count++;
-				}
+				int diff = nums[j] - nums[i + 1];
+				res = diff > 0 ? res + sum[diff] : res;
 			}
 		}
-	}
 
-	return count;
+		return res;
 }
 
 int main()

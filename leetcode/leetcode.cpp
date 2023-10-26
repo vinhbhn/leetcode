@@ -17,43 +17,19 @@
 
 using namespace std;
 
-// 0ms 7.2MB
-vector<int> sumZero(int n) {
-	vector<int> v;
-	if (n % 2 != 0)
+string mergeAlternately(string word1, string word2) {
+	string res = "";
+	int i = 0, j = 0;
+	while (i < word1.size() || j < word2.size())
 	{
-		v.push_back(0);
-		n--;
+		if (i < word1.size())
+			res += word1[i++];
+
+		if (j < word2.size())
+			res += word2[j++];
 	}
 
-	int i = 1;
-	while (n)
-	{
-		v.push_back(i);
-		v.insert(v.begin(), -i);
-		i++;
-		n -= 2;
-	}
-
-	return v;
-}
-
-// 0ms 7.2MB
-vector<int> sumZero(int n) {
-	vector<int> v;
-	if (n % 2 != 0)
-	{
-		v.push_back(0);
-		n--;
-	}
-
-	for(int i = 1; i <= n; i+=2)
-	{
-		v.push_back(i);
-		v.push_back(-i);
-	}
-
-	return v;
+	return res;
 }
 
 int main()

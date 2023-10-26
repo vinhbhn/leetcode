@@ -17,59 +17,49 @@
 
 using namespace std;
 
-// worked, fastest 7ms 6.2MB
-//int distanceTraveled(int mainTank, int additionalTank) {
-//	int res = 0;
-//	bool consume5l = false;
-//	while (mainTank > 0)
+// 2ms 6.3MB
+//int maximum69Number(int num) {
+//	string s = to_string(num);
+//	cout << s << '\n';
+//	for (int i = 0; i < s.size(); i++)
 //	{
-//		if (mainTank >= 5)
+//		if (s[i] == '6')
 //		{
-//			res += 50;
-//			mainTank -= 5;
-//			consume5l = true;
-//		}
-//		else
-//		{
-//			res += mainTank * 10;
-//			mainTank = 0;
-//		}
-//
-//
-//		if (additionalTank > 0 && consume5l)
-//		{
-//			additionalTank--;
-//			mainTank++;
-//			consume5l = false;
+//			s[i] = '9';
+//			break;
 //		}
 //	}
 //
-//	return res;
+//	return stoi(s);
 //}
 
-// a bit slower 12ms 6.6MB
-int distanceTraveled(int mainTank, int additionalTank) {
-	int ans = 0, used = 0;
-	while (mainTank > 0)
+// https://leetcode.com/problems/maximum-69-number/solutions/2786958/without-string-conversion-written-explanation-easy-to-understand/
+// 0ms 6.6MB
+int maximum69Number(int num) {
+	// first encountered '6' from left = last encountered '6' from right
+
+	int rightDigCount = -1; // number of digits to right of last encountered '6'
+	int digCount = 0; // number of digits to right of any dig at some instance
+	int temp = num;
+
+	while (temp > 0)
 	{
-		used++;
-		if (used % 5 == 0 && additionalTank > 0)
-		{
-			additionalTank--;
-			mainTank++;
-		}
-		mainTank--;
-		ans += 10;
+		int dig = temp % 10;
+		if (dig == 6)
+			rightDigCount = digCount; // record the rightDigCount when a '6' is encountered
+
+		digCount++;
+		temp /= 10;
 	}
 
-	return ans;
+	if (rightDigCount == -1) return num;
+	return num + (3 * pow(10, rightDigCount));
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << distanceTraveled(5, 10) << '\n';
-	cout << distanceTraveled(1, 2) << '\n';
+	cout << maximum69Number(9669) << '\n';
 
 
 	return 0;

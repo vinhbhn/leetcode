@@ -17,43 +17,43 @@
 
 using namespace std;
 
-// 2ms 6.3MB
-//int maximum69Number(int num) {
-//	string s = to_string(num);
-//	cout << s << '\n';
-//	for (int i = 0; i < s.size(); i++)
-//	{
-//		if (s[i] == '6')
-//		{
-//			s[i] = '9';
-//			break;
-//		}
-//	}
-//
-//	return stoi(s);
-//}
-
-// https://leetcode.com/problems/maximum-69-number/solutions/2786958/without-string-conversion-written-explanation-easy-to-understand/
-// 0ms 6.6MB
-int maximum69Number(int num) {
-	// first encountered '6' from left = last encountered '6' from right
-
-	int rightDigCount = -1; // number of digits to right of last encountered '6'
-	int digCount = 0; // number of digits to right of any dig at some instance
-	int temp = num;
-
-	while (temp > 0)
+// 0ms 7.2MB
+vector<int> sumZero(int n) {
+	vector<int> v;
+	if (n % 2 != 0)
 	{
-		int dig = temp % 10;
-		if (dig == 6)
-			rightDigCount = digCount; // record the rightDigCount when a '6' is encountered
-
-		digCount++;
-		temp /= 10;
+		v.push_back(0);
+		n--;
 	}
 
-	if (rightDigCount == -1) return num;
-	return num + (3 * pow(10, rightDigCount));
+	int i = 1;
+	while (n)
+	{
+		v.push_back(i);
+		v.insert(v.begin(), -i);
+		i++;
+		n -= 2;
+	}
+
+	return v;
+}
+
+// 0ms 7.2MB
+vector<int> sumZero(int n) {
+	vector<int> v;
+	if (n % 2 != 0)
+	{
+		v.push_back(0);
+		n--;
+	}
+
+	for(int i = 1; i <= n; i+=2)
+	{
+		v.push_back(i);
+		v.push_back(-i);
+	}
+
+	return v;
 }
 
 int main()

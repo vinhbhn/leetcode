@@ -17,37 +17,60 @@
 
 using namespace std;
 
-// O(n) O(1) 1628ms 6.4MB
-int countOdds(int low, int high) {
-	int count = 0;
-	for (int i = low; i <= high; i++)
-		if (i % 2 != 0)
-			count++;
+// worked, fastest 7ms 6.2MB
+//int distanceTraveled(int mainTank, int additionalTank) {
+//	int res = 0;
+//	bool consume5l = false;
+//	while (mainTank > 0)
+//	{
+//		if (mainTank >= 5)
+//		{
+//			res += 50;
+//			mainTank -= 5;
+//			consume5l = true;
+//		}
+//		else
+//		{
+//			res += mainTank * 10;
+//			mainTank = 0;
+//		}
+//
+//
+//		if (additionalTank > 0 && consume5l)
+//		{
+//			additionalTank--;
+//			mainTank++;
+//			consume5l = false;
+//		}
+//	}
+//
+//	return res;
+//}
 
-	return count;
-}
+// a bit slower 12ms 6.6MB
+int distanceTraveled(int mainTank, int additionalTank) {
+	int ans = 0, used = 0;
+	while (mainTank > 0)
+	{
+		used++;
+		if (used % 5 == 0 && additionalTank > 0)
+		{
+			additionalTank--;
+			mainTank++;
+		}
+		mainTank--;
+		ans += 10;
+	}
 
-// O(1) O(1) 2ms 6.5MB
-// Total odd number between 1 and low - 1 is low/2.
-//Total odd number between 1 and high is(high + 1) / 2.
-int countOdds(int low, int high) {
-	return ((high + 1) / 2 - (low / 2));
-}
-
-//https://leetcode.com/problems/count-odd-numbers-in-an-interval-range/solutions/3178012/o-1-tc-super-easy-solution-c-python3-java-commented/
-// O(1) O(1) 2ms 6.3MB
-int countOdds(int low, int high) {
-	int odd = (high - low) / 2;
-
-	if (low % 2 || high % 2)
-		odd++;
-
-	return odd;
+	return ans;
 }
 
 int main()
 {
 	cout << boolalpha;
+	cout << distanceTraveled(5, 10) << '\n';
+	cout << distanceTraveled(1, 2) << '\n';
+
 
 	return 0;
 

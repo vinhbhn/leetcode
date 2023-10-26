@@ -17,56 +17,116 @@
 
 using namespace std;
 
-// 4ms 7.8MB O(n^2) O(1)
-//int numIdenticalPairs(vector<int>& nums) {
-//	int count = 0;
-//	for (int i = 0; i < nums.size() - 1; i++)
-//	{
-//		for (int j = i + 1; j < nums.size(); j++)
-//		{
-//			if (nums[i] == nums[j])
-//				count++;
-//		}
-//	}
-//
-//	return count;
-//}
+// longer than bottom
+string formatMonth(string m)
+{
+	string res = "";
+	if (m == "Jan")
+		res = "-01-";
+	else if (m == "Feb")
+		res = "-02-";
+	else if (m == "Mar")
+		res = "-03-";
+	else if (m == "Apr")
+		res = "-04-";
+	else if (m == "May")
+		res = "-05-";
+	else if (m == "Jun")
+		res = "-06-";
+	else if (m == "Jul")
+		res = "-07-";
+	else if (m == "Aug")
+		res = "-08-";
+	else if (m == "Sep")
+		res = "-09-";
+	else if (m == "Oct")
+		res = "-10-";
+	else if (m == "Nov")
+		res = "-11-";
+	else if (m == "Dec")
+		res = "-12-";
 
-// 0ms 7.8MB O(n) O(n)
-int numIdenticalPairs(vector<int>& nums) {
-	int count = 0;
-	unordered_map<int, int> mp;
-	for (auto num : nums)
-		mp[num]++;
-
-	// If a number appears n times, then n * (n – 1) / 2 good pairs can be made with this number.
-	for (auto& x : mp)
-		count += x.second * (x.second - 1) / 2;
-
-	return count;
+	return res;
 }
+string formatDay(string d)
+{
+	// remove 2 words in the last
+	d.pop_back();
+	d.pop_back();
+	// or
+	//d.substr(0, d.length() - 2);
+	if (d.size() == 1)
+		d = '0' + d;
 
-//https://leetcode.com/problems/number-of-good-pairs/solutions/4121915/one-line-beats-100-runtime-explanation/
-// O(n) O(n)
-int numIdenticalPairs(vector<int>& nums) {
-	return accumulate(nums.begin(), nums.end(), 0, [count = unordered_map<int, int>{}](auto x, auto y) mutable
+	return d;
+}
+string reformatDate(string date) {
+	string temp = "", res = "";
+	vector<string> v;
+	for (auto ch : date)
+	{
+		if (ch == ' ')
 		{
-			return x + count[y]++;
-		});
-}
-int numIdenticalPairs(vector<int>& nums) {
-	int count = 0;
-	unordered_map<int, int> mp;
-	for (auto num : nums)
-		count += mp[num]++;
+			v.push_back(temp);
+			temp = "";
+		}
+		else
+			temp += ch;
+	}
+	v.push_back(temp);
 
-	return count;
+	res += v[2]; // year
+	res += formatMonth(v[1]); // month
+	res += formatDay(v[0]); // day
+
+	return res;
+}
+
+
+
+string formatMonth(string m)
+{
+	if (m == "Jan")
+		return  "01";
+	else if (m == "Feb")
+		return  "02";
+	else if (m == "Mar")
+		return  "03";
+	else if (m == "Apr")
+		return  "04";
+	else if (m == "May")
+		return  "05";
+	else if (m == "Jun")
+		return  "06";
+	else if (m == "Jul")
+		return  "07";
+	else if (m == "Aug")
+		return  "08";
+	else if (m == "Sep")
+		return  "09";
+	else if (m == "Oct")
+		return  "10";
+	else if (m == "Nov")
+		return  "11";
+	else if (m == "Dec")
+		return  "12";
+
+	return "";
+}
+string reformatDate(string date) {
+	string res = "";
+	// date.length() == 13 <-> day >= 10th
+	if (date.length() == 13)
+		res = date.substr(9, 4) + '-' + formatMonth(date.substr(5, 3)) + '-' + date.substr(0, 2);
+	else
+		res = date.substr(8, 4) + '-' + formatMonth(date.substr(4, 3)) + '-' + '0' + date.substr(0, 1);
+
+	return res;
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << pivotInteger(8) << '\n';
 
 	return 0;
 

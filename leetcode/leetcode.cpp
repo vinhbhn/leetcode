@@ -17,30 +17,57 @@
 
 using namespace std;
 
-// 0ms 8.7MB
-//int pivotInteger(int n) {
-//	vector<int> v(1001, 0);
-//	for (int i = 1; i <= n; i++)
-//		v[i] = v[i - 1] + i;
+// 4ms 7.8MB O(n^2) O(1)
+//int numIdenticalPairs(vector<int>& nums) {
+//	int count = 0;
+//	for (int i = 0; i < nums.size() - 1; i++)
+//	{
+//		for (int j = i + 1; j < nums.size(); j++)
+//		{
+//			if (nums[i] == nums[j])
+//				count++;
+//		}
+//	}
 //
-//	int center = sqrt(v[n]);
-//
-//	return  (v[n] - v[center] == v[center - 1]) ? center : - 1;
+//	return count;
 //}
 
-// 3ms 6.5MB
-int pivotInteger(int n) {
-	double x = sqrt(n * (n + 1) / 2);
-	
-	return (int(x) == x) ? x : -1;
+// 0ms 7.8MB O(n) O(n)
+int numIdenticalPairs(vector<int>& nums) {
+	int count = 0;
+	unordered_map<int, int> mp;
+	for (auto num : nums)
+		mp[num]++;
+
+	// If a number appears n times, then n * (n – 1) / 2 good pairs can be made with this number.
+	for (auto& x : mp)
+		count += x.second * (x.second - 1) / 2;
+
+	return count;
 }
 
+//https://leetcode.com/problems/number-of-good-pairs/solutions/4121915/one-line-beats-100-runtime-explanation/
+// O(n) O(n)
+int numIdenticalPairs(vector<int>& nums) {
+	return accumulate(nums.begin(), nums.end(), 0, [count = unordered_map<int, int>{}](auto x, auto y) mutable
+		{
+			return x + count[y]++;
+		});
+}
+int numIdenticalPairs(vector<int>& nums) {
+	int count = 0;
+	unordered_map<int, int> mp;
+	for (auto num : nums)
+		count += mp[num]++;
+
+	return count;
+}
 
 int main()
 {
 	cout << boolalpha;
 	cout << pivotInteger(8) << '\n';
-	
+
 	return 0;
 
 }

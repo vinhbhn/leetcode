@@ -17,25 +17,14 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/excel-sheet-column-title/solutions/3943321/c-beats100-step-by-step-full-explanation/
-// O(log(columnNumber)) O(log(columnNumber))
-string convertToTitle(int columnNumber) {
-	string res = "";
-
-	while (columnNumber > 0)
+// 4ms O(n) O(1)
+int titleToNumber(string columnTitle) {
+	int res = 0;
+	for (auto ch : columnTitle)
 	{
-		// conver the column number to 0-based index
-		columnNumber--;
-
-		// calculate the remainder to determine the character
-		char character = 'A' + (columnNumber % 26);
-
-		// Append the character to the result
-		res = character + res;
-
-		// Update the column number for the next iteration
-		columnNumber /= 26;
-
+		// to base 1 index
+		int c = ch - 'A' + 1;
+		res = res * 26 + c;
 	}
 
 	return res;
@@ -44,11 +33,9 @@ string convertToTitle(int columnNumber) {
 int main()
 {
 	cout << boolalpha;
-	cout << char(90) << '\n';
-	cout << convertToTitle(701) << '\n';
-	cout << convertToTitle(28) << '\n';
-	cout << convertToTitle(1) << '\n';
-
+	cout << titleToNumber("A") << '\n';
+	cout << titleToNumber("AB") << '\n';
+	cout << titleToNumber("ZY") << '\n';
 
 
 	return 0;

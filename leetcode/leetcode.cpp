@@ -17,16 +17,25 @@
 
 using namespace std;
 
-string mergeAlternately(string word1, string word2) {
+// https://leetcode.com/problems/excel-sheet-column-title/solutions/3943321/c-beats100-step-by-step-full-explanation/
+// O(log(columnNumber)) O(log(columnNumber))
+string convertToTitle(int columnNumber) {
 	string res = "";
-	int i = 0, j = 0;
-	while (i < word1.size() || j < word2.size())
-	{
-		if (i < word1.size())
-			res += word1[i++];
 
-		if (j < word2.size())
-			res += word2[j++];
+	while (columnNumber > 0)
+	{
+		// conver the column number to 0-based index
+		columnNumber--;
+
+		// calculate the remainder to determine the character
+		char character = 'A' + (columnNumber % 26);
+
+		// Append the character to the result
+		res = character + res;
+
+		// Update the column number for the next iteration
+		columnNumber /= 26;
+
 	}
 
 	return res;
@@ -35,7 +44,11 @@ string mergeAlternately(string word1, string word2) {
 int main()
 {
 	cout << boolalpha;
-	cout << maximum69Number(9669) << '\n';
+	cout << char(90) << '\n';
+	cout << convertToTitle(701) << '\n';
+	cout << convertToTitle(28) << '\n';
+	cout << convertToTitle(1) << '\n';
+
 
 
 	return 0;

@@ -17,10 +17,39 @@
 
 using namespace std;
 
-vector<int> getConcatenation(vector<int>& nums) {
-	vector<int> res = nums;
-	res.insert(res.begin(), nums.begin(), nums.end());
-	return res;
+// 13ms 15MB
+bool divideArray(vector<int>& nums) {
+	if (nums.size() % 2 != 0)
+		return false;
+
+	unordered_map<int, int> mp;
+	for (auto& num : nums)
+		mp[num]++;
+
+	for (auto& x : mp)
+		if (x.second % 2 != 0)
+			return false;
+
+	return true;
+}
+
+// 4ms 13.9MB
+bool divideArray(vector<int>& nums) {
+	if (nums.size() % 2 != 0)
+		return false;
+
+	vector<int> v(501, 0);
+	for (int i = 0; i < nums.size(); i++)
+		v[nums[i]]++;
+
+	int count = 0;
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (v[i] % 2 != 0)
+			return false;
+	}
+
+	return true;
 }
 
 int main()

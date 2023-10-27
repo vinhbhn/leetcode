@@ -17,17 +17,9 @@
 
 using namespace std;
 
-// 4ms O(n) O(1)
-int titleToNumber(string columnTitle) {
-	int res = 0;
-	for (auto ch : columnTitle)
-	{
-		// to base 1 index
-		int c = ch - 'A' + 1;
-		res = res * 26 + c;
-	}
-
-	return res;
+int distinctIntegers(int n) {
+	// for n > 2, n % (n - 1) == 1 thus n-1 will be added on the board the next day.
+	return (n == 1) ? 1 : n - 1;
 }
 
 int main()

@@ -17,61 +17,73 @@
 
 using namespace std;
 
-// O(N*N*logN) O(n) 0ms 11.9MB
-static bool cmpFreq(pair<int, int>& a, pair<int, int>& b)
-{
-	return (a.second == b.second) ? a.first > b.first : a.second < b.second;
-}
-//vector<int> frequencySort(vector<int>& nums) {
-//	unordered_map<int, int> mp;
-//	for (auto num : nums)
-//		mp[num]++;
+// 6ms 7.2MB  O(N*logN) O(n)
+//typedef pair<char, int> P;
+//string frequencySort(string s) {
+//	unordered_map<char, int> mp;
+//	for (auto& ch : s)
+//		mp[ch]++;
 //
-//	vector<pair<int, int>> res;
+//	vector<P> v;
 //	for (auto& it : mp)
-//		res.push_back(it);
+//		v.push_back(it);
 //
-//	sort(res.begin(), res.end(), cmpFreq);
-//
-//	vector<int> ans;
-//	for (auto &x : res)
-//	{
-//		while (x.second)
+//	auto cmp = [&](P& a, P& b)
 //		{
-//			ans.push_back(x.first);
-//			x.second--;
-//		}
+//			return (a.second == b.second) ? a.first < b.first : a.second > b.second;
+//		};
+//
+//	sort(v.begin(), v.end(), cmp);
+//
+//	string res = "";
+//	for (auto& x : v)
+//	{
+//		res += string(x.second, x.first);
 //	}
 //
-//	return ans;
+//	return res;
 //}
 
-// 10ms 11.5MB O(NlogN)
-vector<int> frequencySort(vector<int>& nums) {
-	unordered_map<int, int> mp;
-	for (auto num : nums)
-		mp[num]++;
+// 109ms 8.2MB
+//string frequencySort(string s) {
+//	unordered_map<char, int> mp;
+//	for (auto& ch : s)
+//		mp[ch]++;
+//
+//	sort(s.begin(), s.end(), [&mp](char &a, char &b) 
+//		{
+//		return (mp[a] == mp[b]) ? a < b : mp[a] > mp[b];
+//		});
+//
+//	return s;
+//}
 
-	sort(nums.begin(), nums.end(), [&mp](int a, int b)
-		{
-			return (mp[a] == mp[b]) ? a > b : mp[a] < mp[b];
-		});
+// web, using priority_queue 13ms 9.2MB
+string frequencySort(string s) {
+	unordered_map<char, int> mp;
+	for (auto& ch : s)
+		mp[ch]++;
 
-	return nums;
+	priority_queue<pair<int, char>> pq;
+	for (auto& it : mp)
+		pq.push({ it.second, it.first });
+
+	string res = "";
+	while(!pq.empty())
+	{
+		res += string(pq.top().first, pq.top().second);
+		pq.pop();
+	}
+
+	return res;
 }
 
 int main()
 {
 	cout << boolalpha;
-	vector nums = { 1,1,2,2,2,3 };
-	for (auto& x : frequencySort(nums))
-		cout << x << ' ';
-	cout << '\n';
-
-	nums = { -1,1,-6,4,5,-6,1,4,1 };
-	for (auto& x : frequencySort(nums))
-		cout << x << ' ';
-	cout << '\n';
+	cout << frequencySort("tree") << '\n';
+	cout << frequencySort("cccaaa") << '\n';
+	cout << frequencySort("Aabb") << '\n';
 
 	return 0;
 

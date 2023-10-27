@@ -17,18 +17,31 @@
 
 using namespace std;
 
-int distinctIntegers(int n) {
-	// for n > 2, n % (n - 1) == 1 thus n-1 will be added on the board the next day.
-	return (n == 1) ? 1 : n - 1;
+int numberOfMatches(int n) {
+	int matches = 0;
+	// be careful with n == 1
+	while (n > 1)
+	{
+		if (n % 2 == 0)
+		{
+			matches += n / 2;
+			n /= 2;
+		}
+		else
+		{
+			matches += (n - 1) / 2;
+			n = (n - 1) / 2 + 1;
+		}
+	}
+
+	return matches;
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << titleToNumber("A") << '\n';
-	cout << titleToNumber("AB") << '\n';
-	cout << titleToNumber("ZY") << '\n';
-
+	cout << numberOfMatches(7) << '\n';
+	cout << numberOfMatches(14) << '\n';
 
 	return 0;
 

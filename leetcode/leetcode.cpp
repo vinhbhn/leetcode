@@ -17,46 +17,61 @@
 
 using namespace std;
 
-// 13ms 15MB
-bool divideArray(vector<int>& nums) {
-	if (nums.size() % 2 != 0)
-		return false;
+// O(N*N*logN) O(n) 0ms 11.9MB
+static bool cmpFreq(pair<int, int>& a, pair<int, int>& b)
+{
+	return (a.second == b.second) ? a.first > b.first : a.second < b.second;
+}
+//vector<int> frequencySort(vector<int>& nums) {
+//	unordered_map<int, int> mp;
+//	for (auto num : nums)
+//		mp[num]++;
+//
+//	vector<pair<int, int>> res;
+//	for (auto& it : mp)
+//		res.push_back(it);
+//
+//	sort(res.begin(), res.end(), cmpFreq);
+//
+//	vector<int> ans;
+//	for (auto &x : res)
+//	{
+//		while (x.second)
+//		{
+//			ans.push_back(x.first);
+//			x.second--;
+//		}
+//	}
+//
+//	return ans;
+//}
 
+// 10ms 11.5MB O(NlogN)
+vector<int> frequencySort(vector<int>& nums) {
 	unordered_map<int, int> mp;
-	for (auto& num : nums)
+	for (auto num : nums)
 		mp[num]++;
 
-	for (auto& x : mp)
-		if (x.second % 2 != 0)
-			return false;
+	sort(nums.begin(), nums.end(), [&mp](int a, int b)
+		{
+			return (mp[a] == mp[b]) ? a > b : mp[a] < mp[b];
+		});
 
-	return true;
-}
-
-// 4ms 13.9MB
-bool divideArray(vector<int>& nums) {
-	if (nums.size() % 2 != 0)
-		return false;
-
-	vector<int> v(501, 0);
-	for (int i = 0; i < nums.size(); i++)
-		v[nums[i]]++;
-
-	int count = 0;
-	for (int i = 0; i < v.size(); i++)
-	{
-		if (v[i] % 2 != 0)
-			return false;
-	}
-
-	return true;
+	return nums;
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << numberOfMatches(7) << '\n';
-	cout << numberOfMatches(14) << '\n';
+	vector nums = { 1,1,2,2,2,3 };
+	for (auto& x : frequencySort(nums))
+		cout << x << ' ';
+	cout << '\n';
+
+	nums = { -1,1,-6,4,5,-6,1,4,1 };
+	for (auto& x : frequencySort(nums))
+		cout << x << ' ';
+	cout << '\n';
 
 	return 0;
 

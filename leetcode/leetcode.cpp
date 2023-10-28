@@ -17,50 +17,64 @@
 
 using namespace std;
 
-// 7ms 16.2MB O(NlogN) O(n)
-//string restoreString(string s, vector<int>& indices) {
-//	typedef pair<char, int> P;
-//	vector<P> v;
-//	int i = 0;
-//	while (i < s.length())
+// 11ms 9.4MB O(n+m) O(n+m)
+//bool canConstruct(string ransomNote, string magazine) {
+//	unordered_map<char, int> mp;
+//	for (auto ch : magazine)
+//		mp[ch]++;
+//
+//	for (auto ch : ransomNote)
 //	{
-//		v.push_back({ s[i], indices[i] });
-//		i++;
+//		if (mp[ch] > 0)
+//			mp[ch]--;
+//		else if (mp[ch] == 0)
+//			return false;
 //	}
 //
-//	auto cmp = [&](P& a, P& b)
-//		{
-//			return a.second < b.second;
-//		};
-//	sort(v.begin(), v.end(), cmp);
-//
-//	string res = "";
-//	for (auto& x : v)
-//		res += x.first;
-//
-//	return res;
+//	return true;
 //}
 
-// web 0ms 15.6MB O(n) O(1)
-string restoreString(string s, vector<int>& indices) {
-	vector<char> temp(s.size(), ' ');
-	for (int i = 0; i < indices.size(); i++)
-	{
-		temp[indices[i]] = s[i];
-	}
+// web 0ms real: 14ms 9.1MB
+vector<int> getCharCount(const string& s) {
+	vector<int> counts('z' - 'a' + 1, 0);
+	for (char c : s)
+		counts[c - 'a']++;
 
-	string res = "";
-	for (auto& x : temp)
-		res += x;
+	return counts;
+}
+bool greaterThanOrEquals(const vector<int>& a, const vector<int>& b)
+{
+	if (a.size() != b.size()) throw;
 
-	return res;
+	for (int i = 0; i < a.size(); i++)
+		if (a[i] > b[i]) // each letter in magazine can only be used once in ransomNote
+			return false;
+
+	return true;
+}
+//bool canConstruct(string ransomNote, string magazine) {
+//	vector<int> cntNote = getCharCount(ransomNote);
+//	vector<int> cntMag = getCharCount(magazine);
+//
+//	return greaterThanOrEquals(cntNote, cntMag);
+//}
+
+// web 2ms real: 9ms 9MB time - O(n log n + m log m) space - O(1)
+bool canConstruct(string ransomNote, string magazine) {
+	int mp[26] = {};
+	for (auto ch : ransomNote)
+		mp[ch - 'a']++;
+	for (auto ch : magazine)
+		mp[ch - 'a']--;
+
+	return ranges::count_if(mp, [](auto c) { return c > 0; }) == 0;
 }
 
 int main()
 {
 	cout << boolalpha;
-	vector nums = { 4,5,6,7,0,2,1,3 };
-	cout << restoreString("codeleet", nums) << '\n';
+	cout << canConstruct("aa", "aab") << '\n';
+	cout << canConstruct("a", "b") << '\n';
 
 	return 0;
 

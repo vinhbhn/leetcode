@@ -17,85 +17,36 @@
 
 using namespace std;
 
-// 3ms 6.6MB
-//string reorderSpaces(string text) {
-//	string temp = "";
-//	int space = 0;
-//	vector<string> v;
-//	for (auto ch : text)
-//	{
-//		if (ch == ' ' && temp != "")
-//		{
-//			v.push_back(temp);
-//			temp = "";
-//			space++;
-//		}
-//		else if (ch == ' ')
-//			space++;
-//		else
-//			temp += ch;
-//	}
-//	if (temp != "")
-//		v.push_back(temp);
-//
-//	if (v.size() == 1)
-//		return v[0] + string(space, ' ');
-//
-//	int count = space / (v.size() - 1), used = 0;
-//	string res = "";
-//	for (int i = 0; i < v.size() - 1; i++)
-//	{
-//		res += v[i] + string(count, ' ');
-//		used += count;
-//	}
-//	// last word in text
-//	res += v[v.size() - 1] + string(space - used, ' ');
-//
-//	return res;
-//}
-
-// 0ms, 6.7MB
-string reorderSpaces(string text) {
-	string temp = "";
-	int space = 0;
-	vector<string> v;
-	for (auto &ch : text)
+// https://leetcode.com/problems/top-k-frequent-elements/solutions/3316085/c-easy-approach-unordered-map-priority-queue/
+// O(NlogN) O(N)
+vector<int> topKFrequent(vector<int>& nums, int k) {
+	unordered_map<int, int> mp;
+	for (auto num : nums)
 	{
-		if (ch == ' ' && temp != "")
-		{
-			v.push_back(temp);
-			temp = "";
-			space++;
-		}
-		else if (ch == ' ')
-			space++;
-		else
-			temp += ch;
+		mp[num]++;
 	}
-	if (temp != "")
-		v.push_back(temp);
 
-	if (v.size() == 1)
-		return v[0] + string(space, ' ');
+	priority_queue<pair<int, int>> pq;
+	for (auto& i : mp)
+		pq.push({ i.second, i.first });
 
-	int count = space / (v.size() - 1);
-	temp = "";
-	for (int i = 0; i < v.size() - 1; i++)
+	vector<int> ans;
+	while (k-- && !pq.empty())
 	{
-		temp += v[i] + string(count, ' ');
-		space -= count;
+		ans.push_back(pq.top().second);
+		pq.pop();
 	}
-	// last word in text
-	temp += v[v.size() - 1] + string(space, ' ');
 
-	return temp;
+	return ans;
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << reorderSpaces("  this   is  a sentence ") << '\n';
-	cout << reorderSpaces(" practice   makes   perfect") << '\n';
+	vector nums = { 1,1,1,2,2,3 };
+	for (auto& x : topKFrequent(nums, 2))
+		cout << x << ' ';
+	cout << '\n';
 
 	return 0;
 

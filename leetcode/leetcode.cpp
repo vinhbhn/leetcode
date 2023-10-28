@@ -17,36 +17,50 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/top-k-frequent-elements/solutions/3316085/c-easy-approach-unordered-map-priority-queue/
-// O(NlogN) O(N)
-vector<int> topKFrequent(vector<int>& nums, int k) {
-	unordered_map<int, int> mp;
-	for (auto num : nums)
+// 7ms 16.2MB O(NlogN) O(n)
+//string restoreString(string s, vector<int>& indices) {
+//	typedef pair<char, int> P;
+//	vector<P> v;
+//	int i = 0;
+//	while (i < s.length())
+//	{
+//		v.push_back({ s[i], indices[i] });
+//		i++;
+//	}
+//
+//	auto cmp = [&](P& a, P& b)
+//		{
+//			return a.second < b.second;
+//		};
+//	sort(v.begin(), v.end(), cmp);
+//
+//	string res = "";
+//	for (auto& x : v)
+//		res += x.first;
+//
+//	return res;
+//}
+
+// web 0ms 15.6MB O(n) O(1)
+string restoreString(string s, vector<int>& indices) {
+	vector<char> temp(s.size(), ' ');
+	for (int i = 0; i < indices.size(); i++)
 	{
-		mp[num]++;
+		temp[indices[i]] = s[i];
 	}
 
-	priority_queue<pair<int, int>> pq;
-	for (auto& i : mp)
-		pq.push({ i.second, i.first });
+	string res = "";
+	for (auto& x : temp)
+		res += x;
 
-	vector<int> ans;
-	while (k-- && !pq.empty())
-	{
-		ans.push_back(pq.top().second);
-		pq.pop();
-	}
-
-	return ans;
+	return res;
 }
 
 int main()
 {
 	cout << boolalpha;
-	vector nums = { 1,1,1,2,2,3 };
-	for (auto& x : topKFrequent(nums, 2))
-		cout << x << ' ';
-	cout << '\n';
+	vector nums = { 4,5,6,7,0,2,1,3 };
+	cout << restoreString("codeleet", nums) << '\n';
 
 	return 0;
 

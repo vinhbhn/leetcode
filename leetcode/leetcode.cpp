@@ -17,57 +17,52 @@
 
 using namespace std;
 
-// 11ms 9.4MB O(n+m) O(n+m)
-//bool canConstruct(string ransomNote, string magazine) {
-//	unordered_map<char, int> mp;
-//	for (auto ch : magazine)
-//		mp[ch]++;
+// 2386ms 72.89MB
+//vector<int> replaceElements(vector<int>& arr) {
+//    vector<int> res;
+//    for (int i = 1; i < arr.size(); i++)
+//    {
+//        // replace every element in that array with the greatest element among the elements to its right
+//        auto max = max_element(arr.begin() + i, arr.end());
+//        res.push_back(*max);
+//    }
+//    //  replace the last element with -1
+//    res.push_back(-1);
 //
-//	for (auto ch : ransomNote)
-//	{
-//		if (mp[ch] > 0)
-//			mp[ch]--;
-//		else if (mp[ch] == 0)
-//			return false;
-//	}
-//
-//	return true;
+//    return res;
 //}
 
-// web 0ms real: 14ms 9.1MB
-vector<int> getCharCount(const string& s) {
-	vector<int> counts('z' - 'a' + 1, 0);
-	for (char c : s)
-		counts[c - 'a']++;
-
-	return counts;
-}
-bool greaterThanOrEquals(const vector<int>& a, const vector<int>& b)
-{
-	if (a.size() != b.size()) throw;
-
-	for (int i = 0; i < a.size(); i++)
-		if (a[i] > b[i]) // each letter in magazine can only be used once in ransomNote
-			return false;
-
-	return true;
-}
-//bool canConstruct(string ransomNote, string magazine) {
-//	vector<int> cntNote = getCharCount(ransomNote);
-//	vector<int> cntMag = getCharCount(magazine);
+// work 74/90
+//vector<int> replaceElements(vector<int>& arr) {
+//    vector<int> res;
+//    for (int i = 0; i < arr.size() - 1; i++)
+//    {
+//        int max = 0;
+//        for (int j = i + 1; j < arr.size(); j++)
+//        {
+//            max = std::max(max, arr[j]);
+//        }
+//        res.push_back(max);
+//    }
+//    //  replace the last element with -1
+//    res.push_back(-1);
 //
-//	return greaterThanOrEquals(cntNote, cntMag);
+//    return res;
 //}
 
-// web 2ms real: 9ms 9MB time - O(n log n + m log m) space - O(1)
-bool canConstruct(string ransomNote, string magazine) {
-	int mp[26] = {};
-	for (auto ch : ransomNote)
-		mp[ch - 'a']++;
-	for (auto ch : magazine)
-		mp[ch - 'a']--;
+// 71ms 72.70MB
+vector<int> replaceElements(vector<int>& arr) {
+    vector<int> res;
+	res.push_back(-1);
+	int max = 0;
+	for (int i = arr.size() - 1; i >= 0; i--)
+	{
+		max = std::max(max, arr[i]);
+		res.push_back(max);
+	}
 
-	return ranges::count_if(mp, [](auto c) { return c > 0; }) == 0;
+	reverse(res.begin(), res.end());
+    return res;
 }
 
 int main()

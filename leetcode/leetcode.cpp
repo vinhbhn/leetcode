@@ -17,21 +17,85 @@
 
 using namespace std;
 
-int percentageLetter(string s, char letter) {
-	int count = 0;
-	for (auto& ch : s)
-		if (ch == letter)
-			count++;
+// 3ms 6.6MB
+//string reorderSpaces(string text) {
+//	string temp = "";
+//	int space = 0;
+//	vector<string> v;
+//	for (auto ch : text)
+//	{
+//		if (ch == ' ' && temp != "")
+//		{
+//			v.push_back(temp);
+//			temp = "";
+//			space++;
+//		}
+//		else if (ch == ' ')
+//			space++;
+//		else
+//			temp += ch;
+//	}
+//	if (temp != "")
+//		v.push_back(temp);
+//
+//	if (v.size() == 1)
+//		return v[0] + string(space, ' ');
+//
+//	int count = space / (v.size() - 1), used = 0;
+//	string res = "";
+//	for (int i = 0; i < v.size() - 1; i++)
+//	{
+//		res += v[i] + string(count, ' ');
+//		used += count;
+//	}
+//	// last word in text
+//	res += v[v.size() - 1] + string(space - used, ' ');
+//
+//	return res;
+//}
 
-	return (count * 100 / s.size());
+// 0ms, 6.7MB
+string reorderSpaces(string text) {
+	string temp = "";
+	int space = 0;
+	vector<string> v;
+	for (auto &ch : text)
+	{
+		if (ch == ' ' && temp != "")
+		{
+			v.push_back(temp);
+			temp = "";
+			space++;
+		}
+		else if (ch == ' ')
+			space++;
+		else
+			temp += ch;
+	}
+	if (temp != "")
+		v.push_back(temp);
+
+	if (v.size() == 1)
+		return v[0] + string(space, ' ');
+
+	int count = space / (v.size() - 1);
+	temp = "";
+	for (int i = 0; i < v.size() - 1; i++)
+	{
+		temp += v[i] + string(count, ' ');
+		space -= count;
+	}
+	// last word in text
+	temp += v[v.size() - 1] + string(space, ' ');
+
+	return temp;
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << frequencySort("tree") << '\n';
-	cout << frequencySort("cccaaa") << '\n';
-	cout << frequencySort("Aabb") << '\n';
+	cout << reorderSpaces("  this   is  a sentence ") << '\n';
+	cout << reorderSpaces(" practice   makes   perfect") << '\n';
 
 	return 0;
 

@@ -17,52 +17,21 @@
 
 using namespace std;
 
-// 2386ms 72.89MB
-//vector<int> replaceElements(vector<int>& arr) {
-//    vector<int> res;
-//    for (int i = 1; i < arr.size(); i++)
-//    {
-//        // replace every element in that array with the greatest element among the elements to its right
-//        auto max = max_element(arr.begin() + i, arr.end());
-//        res.push_back(*max);
-//    }
-//    //  replace the last element with -1
-//    res.push_back(-1);
-//
-//    return res;
-//}
-
-// work 74/90
-//vector<int> replaceElements(vector<int>& arr) {
-//    vector<int> res;
-//    for (int i = 0; i < arr.size() - 1; i++)
-//    {
-//        int max = 0;
-//        for (int j = i + 1; j < arr.size(); j++)
-//        {
-//            max = std::max(max, arr[j]);
-//        }
-//        res.push_back(max);
-//    }
-//    //  replace the last element with -1
-//    res.push_back(-1);
-//
-//    return res;
-//}
-
-// 71ms 72.70MB
-vector<int> replaceElements(vector<int>& arr) {
-    vector<int> res;
-	res.push_back(-1);
-	int max = 0;
-	for (int i = arr.size() - 1; i >= 0; i--)
+// 3ms 6.7MB
+bool checkNoZeroInt(int val)
+{
+	string num = to_string(val);
+	return (find(num.begin(), num.end(), '0') == num.end()) ? true : false;
+}
+vector<int> getNoZeroIntegers(int n) {
+	for (int a = 1; a < n; a++)
 	{
-		max = std::max(max, arr[i]);
-		res.push_back(max);
+		int b = n - a;
+		if (checkNoZeroInt(a) && checkNoZeroInt(b))
+			return { a, b };
 	}
 
-	reverse(res.begin(), res.end());
-    return res;
+	return {};
 }
 
 int main()

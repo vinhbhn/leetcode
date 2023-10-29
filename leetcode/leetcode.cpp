@@ -17,35 +17,43 @@
 
 using namespace std;
 
-// 0ms 9.7MB
-vector<int> numberOfPairs(vector<int>& nums) {
-	int pairs = 0, left = 0;
-	unordered_map<int, int> mp;
-	for (auto num : nums)
-		mp[num]++;
+// 14ms 13MB
+vector<string> topKFrequent(vector<string>& words, int k) {
+	unordered_map<string, int> mp;
+	for (auto& w : words)
+		mp[w]++;
 
+	typedef pair<string, int> P;
+	vector<P> v;
 	for (auto& x : mp)
-	{
-		if (x.second % 2 == 0)
-		{
-			pairs += x.second / 2;
-		}
-		else
-		{
-			pairs += (x.second - 1) / 2;
-			left++;
-		}
-	}
+		v.push_back({ x.first, x.second });
 
-	return { pairs, left };
+	auto cmp = [&](P& a, P& b)
+		{
+			return (a.second == b.second) ? a.first < b.first : a.second > b.second;
+		};
+	sort(v.begin(), v.end(), cmp);
+
+	vector<string> res;
+	for (int i = 0; i < k; i++)
+		res.push_back(v[i].first);
+
+	return res;
 }
+
 
 int main()
 {
 	cout << boolalpha;
-	vector<int> arr = { 1,0,2,3,0,4,5,0 };
-	cout << duplicateZeros(arr) << '\n';
+	vector<string> words = { "i","love","leetcode","i","love","coding" };
+	for (auto& x : topKFrequent(words, 2))
+		cout << x << ' ';
+	cout << '\n';
 
+	words = { "the","day","is","sunny","the","the","the","sunny","is","is" };
+	for (auto& x : topKFrequent(words, 4))
+		cout << x << ' ';
+	cout << '\n';
 
 	return 0;
 

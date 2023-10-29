@@ -17,21 +17,38 @@
 
 using namespace std;
 
-// 3ms 6.7MB
-bool checkNoZeroInt(int val)
-{
-	string num = to_string(val);
-	return (find(num.begin(), num.end(), '0') == num.end()) ? true : false;
-}
-vector<int> getNoZeroIntegers(int n) {
-	for (int a = 1; a < n; a++)
+//int minMaxDifference(int num) {
+//	vector<int> v;
+//	int number = num;
+//	while (number)
+//	{
+//		v.push_back(number % 10);
+//		number /= 10;
+//	}
+//	reverse(v.begin(), v.end());
+//
+//	int chooseDigit = v[0];
+//
+//
+//}
+
+// 2ms 6.4MB
+int minMaxDifference(int num) {
+	string number = to_string(num);
+	char cDH = ' ', cDL = ' ';
+	for (int i = 0; i < number.size(); i++)
 	{
-		int b = n - a;
-		if (checkNoZeroInt(a) && checkNoZeroInt(b))
-			return { a, b };
+		if (number[i] != '9' && cDL == ' ')
+			cDL = number[i];
+
+		if (number[i] != '0' && cDH == ' ')
+			cDH = number[i];
 	}
 
-	return {};
+	string max = number, min = number;
+	replace(max.begin(), max.end(), cDL, '9');
+	replace(min.begin(), min.end(), cDH, '0');
+	return stoi(max) - stoi(min);
 }
 
 int main()

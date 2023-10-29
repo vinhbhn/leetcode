@@ -17,45 +17,61 @@
 
 using namespace std;
 
-//int minMaxDifference(int num) {
-//	vector<int> v;
-//	int number = num;
-//	while (number)
+// 12ms 12.9MB
+//int numUniqueEmails(vector<string>& emails) {
+//	unordered_set<string> st;
+//
+//	for (auto& email : emails)
 //	{
-//		v.push_back(number % 10);
-//		number /= 10;
+//		auto pos = email.find('@');
+//		auto plus = email.find('+');
+//		if (plus != string::npos && plus < pos)
+//			email.erase(plus, pos - plus);
+//
+//		// refind pos of '@'
+//		pos = email.find('@');
+//		auto dot = std::remove(email.begin(), email.begin() + pos, '.');
+//		email.erase(dot, email.begin() + pos);
+//
+//		cout << email << ' ';
+//		st.insert(email);
 //	}
-//	reverse(v.begin(), v.end());
 //
-//	int chooseDigit = v[0];
-//
-//
+//	return st.size();
 //}
 
-// 2ms 6.4MB
-int minMaxDifference(int num) {
-	string number = to_string(num);
-	char cDH = ' ', cDL = ' ';
-	for (int i = 0; i < number.size(); i++)
-	{
-		if (number[i] != '9' && cDL == ' ')
-			cDL = number[i];
+// web 3ms real 24ms 14.2MB
+int numUniqueEmails(vector<string>& emails) {
+	unordered_set<string> st;
 
-		if (number[i] != '0' && cDH == ' ')
-			cDH = number[i];
+	for (auto& email : emails)
+	{
+		string cleanEmail = "";
+		for (char c : email)
+		{
+			if (c == '+' || c == '@')
+				break;
+			if (c == '.')
+				continue;
+			cleanEmail += c;
+		}
+
+		cleanEmail += email.substr(email.find('@'));
+		st.insert(cleanEmail);
 	}
 
-	string max = number, min = number;
-	replace(max.begin(), max.end(), cDL, '9');
-	replace(min.begin(), min.end(), cDH, '0');
-	return stoi(max) - stoi(min);
+	return st.size();
 }
 
 int main()
 {
 	cout << boolalpha;
-	cout << canConstruct("aa", "aab") << '\n';
-	cout << canConstruct("a", "b") << '\n';
+	vector<string> emails = { "test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com" };
+	cout << numUniqueEmails(emails) << '\n';
+
+	emails = { "a@e+c.com", "a@e+c+f.com" };
+	cout << numUniqueEmails(emails) << '\n';
+
 
 	return 0;
 

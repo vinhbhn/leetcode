@@ -17,59 +17,27 @@
 
 using namespace std;
 
-// 24ms 10.1MB
-//void duplicateZeros(vector<int>& arr) {
-//	int oldSize = arr.size();
-//
-//	for (auto it = arr.begin(); it != arr.end();)
-//	{
-//		if (*it == 0)
-//		{
-//			it = arr.insert(it, 0);
-//			it += 2;
-//		}
-//		else
-//			it++;
-//	}
-//
-//	arr.resize(oldSize);
-//}
+// 0ms 9.7MB
+vector<int> numberOfPairs(vector<int>& nums) {
+	int pairs = 0, left = 0;
+	unordered_map<int, int> mp;
+	for (auto num : nums)
+		mp[num]++;
 
-// web 0ms real 8ms 10MB
-void duplicateZeros(vector<int>& arr) {
-	int zeros = count(arr.begin(), arr.end(), 0);
-	int n = arr.size();
-	for (int i = n - 1; i >= 0; i--)
+	for (auto& x : mp)
 	{
-		if (i + zeros < n)
-			arr[i + zeros] = arr[i];
-
-		if (arr[i] == 0)
+		if (x.second % 2 == 0)
 		{
-			zeros--;
-			if (i + zeros < n)
-				arr[i + zeros] = arr[i];
-		}
-	}
-
-}
-
-// web 3ms real 3ms 10.4MB
-void duplicateZeros(vector<int>& arr) {
-	int oldSize = arr.size();
-	vector<int> ans;
-	for (auto it : arr)
-	{
-		if (it == 0)
-		{
-			ans.push_back(0);
-			ans.push_back(0);
+			pairs += x.second / 2;
 		}
 		else
-			ans.push_back(it);
+		{
+			pairs += (x.second - 1) / 2;
+			left++;
+		}
 	}
 
-	copy(ans.begin(), ans.begin() + oldSize, arr.begin()); 
+	return { pairs, left };
 }
 
 int main()

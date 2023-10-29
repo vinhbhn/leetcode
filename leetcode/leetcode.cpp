@@ -17,60 +17,66 @@
 
 using namespace std;
 
-// 12ms 12.9MB
-//int numUniqueEmails(vector<string>& emails) {
-//	unordered_set<string> st;
+// 24ms 10.1MB
+//void duplicateZeros(vector<int>& arr) {
+//	int oldSize = arr.size();
 //
-//	for (auto& email : emails)
+//	for (auto it = arr.begin(); it != arr.end();)
 //	{
-//		auto pos = email.find('@');
-//		auto plus = email.find('+');
-//		if (plus != string::npos && plus < pos)
-//			email.erase(plus, pos - plus);
-//
-//		// refind pos of '@'
-//		pos = email.find('@');
-//		auto dot = std::remove(email.begin(), email.begin() + pos, '.');
-//		email.erase(dot, email.begin() + pos);
-//
-//		cout << email << ' ';
-//		st.insert(email);
+//		if (*it == 0)
+//		{
+//			it = arr.insert(it, 0);
+//			it += 2;
+//		}
+//		else
+//			it++;
 //	}
 //
-//	return st.size();
+//	arr.resize(oldSize);
 //}
 
-// web 3ms real 24ms 14.2MB
-int numUniqueEmails(vector<string>& emails) {
-	unordered_set<string> st;
-
-	for (auto& email : emails)
+// web 0ms real 8ms 10MB
+void duplicateZeros(vector<int>& arr) {
+	int zeros = count(arr.begin(), arr.end(), 0);
+	int n = arr.size();
+	for (int i = n - 1; i >= 0; i--)
 	{
-		string cleanEmail = "";
-		for (char c : email)
-		{
-			if (c == '+' || c == '@')
-				break;
-			if (c == '.')
-				continue;
-			cleanEmail += c;
-		}
+		if (i + zeros < n)
+			arr[i + zeros] = arr[i];
 
-		cleanEmail += email.substr(email.find('@'));
-		st.insert(cleanEmail);
+		if (arr[i] == 0)
+		{
+			zeros--;
+			if (i + zeros < n)
+				arr[i + zeros] = arr[i];
+		}
 	}
 
-	return st.size();
+}
+
+// web 3ms real 3ms 10.4MB
+void duplicateZeros(vector<int>& arr) {
+	int oldSize = arr.size();
+	vector<int> ans;
+	for (auto it : arr)
+	{
+		if (it == 0)
+		{
+			ans.push_back(0);
+			ans.push_back(0);
+		}
+		else
+			ans.push_back(it);
+	}
+
+	copy(ans.begin(), ans.begin() + oldSize, arr.begin()); 
 }
 
 int main()
 {
 	cout << boolalpha;
-	vector<string> emails = { "test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com" };
-	cout << numUniqueEmails(emails) << '\n';
-
-	emails = { "a@e+c.com", "a@e+c+f.com" };
-	cout << numUniqueEmails(emails) << '\n';
+	vector<int> arr = { 1,0,2,3,0,4,5,0 };
+	cout << duplicateZeros(arr) << '\n';
 
 
 	return 0;

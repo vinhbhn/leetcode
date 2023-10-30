@@ -17,42 +17,31 @@
 
 using namespace std;
 
-// 3ms 11.4MB O(nlogn) O(n)
-vector<int> sortByBits(vector<int>& arr) {
+// 3ms 8.9MB O(nlogn) O(1)
+vector<int> countBits(int n) {
 	vector<int> res;
-
-	typedef pair<int, int> P;
-	vector<P> v;
-	for (auto num : arr)
+	for (int i = 0; i <= n; i++)
 	{
-		bitset<16> b(num);
-		auto x = b.to_ulong();
-		v.push_back({ num, popcount(x) });
+		bitset<32> b(i);
+		res.push_back(popcount(b.to_ulong()));
 	}
 
-	auto cmp = [&](P a, P b)
-		{
-			return (a.second == b.second) ? a.first < b.first : a.second < b.second;
-		};
-	sort(v.begin(), v.end(), cmp);
+	return res;
+}
 
-	for (auto& a : v)
-		res.push_back(a.first);
+// web 0ms real 3ms 8.2MB O(n) O(1)
+vector<int> countBits(int n) {
+	vector<int> res(n+1);
+	for (int i = 1; i <= n; i++)
+	{
+		res[i] = res[i & (i - 1)] + 1;
+	}
 
 	return res;
 }
 
 int main()
 {
-	vector arr = { 0,1,2,3,4,5,6,7,8 };
-	for (auto x : sortByBits(arr))
-		cout << x << ' ';
-	cout << '\n';
-
-	arr = { 10000, 10000 };
-	for (auto x : sortByBits(arr))
-		cout << x << ' ';
-	cout << '\n';
 
 	return 0;
 

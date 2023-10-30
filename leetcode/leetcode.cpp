@@ -29,15 +29,18 @@ vector<int> countBits(int n) {
 	return res;
 }
 
-// web 0ms real 3ms 8.2MB O(n) O(1)
-vector<int> countBits(int n) {
-	vector<int> res(n+1);
-	for (int i = 1; i <= n; i++)
+// O(n) O(1) 7ms 22.1MB
+int sumIndicesWithKSetBits(vector<int>& nums, int k) {
+	int sum = 0;
+
+	for (int i = 0; i < nums.size(); i++)
 	{
-		res[i] = res[i & (i - 1)] + 1;
+		bitset<16> b(i);
+		if (popcount(b.to_ulong()) == k)
+			sum += nums[i];
 	}
 
-	return res;
+	return sum;
 }
 
 int main()

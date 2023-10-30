@@ -17,30 +17,46 @@
 
 using namespace std;
 
-// 3ms 8.9MB O(nlogn) O(1)
-vector<int> countBits(int n) {
-	vector<int> res;
-	for (int i = 0; i <= n; i++)
+// 12ms 13.4MB O(n) O(1)
+int mostFrequent(vector<int>& nums, int key) {
+	unordered_map<int, int> mp;
+	for (int i = 0; i <= nums.size() - 2; i++)
 	{
-		bitset<32> b(i);
-		res.push_back(popcount(b.to_ulong()));
+		if (nums[i] == key)
+		{
+			mp[nums[i + 1]]++;
+		}
 	}
 
-	return res;
+	priority_queue<pair<int, int>> pq;
+	for (auto& x : mp)
+		pq.push({ x.second, x.first });
+
+	return pq.top().second;
 }
 
-// O(n) O(1) 7ms 22.1MB
-int sumIndicesWithKSetBits(vector<int>& nums, int k) {
-	int sum = 0;
-
-	for (int i = 0; i < nums.size(); i++)
+// 8ms 13MB
+int mostFrequent(vector<int>& nums, int key) {
+	unordered_map<int, int> mp;
+	for (int i = 0; i <= nums.size() - 2; i++)
 	{
-		bitset<16> b(i);
-		if (popcount(b.to_ulong()) == k)
-			sum += nums[i];
+		if (nums[i] == key)
+		{
+			mp[nums[i + 1]]++;
+		}
 	}
 
-	return sum;
+	int maxi = 0, maxf = 0;
+	for (auto& x : mp)
+	{
+		if (x.second > maxf)
+		{
+			maxf = x.second;
+			maxi = x.first;
+		}
+	}
+
+	return maxi;
 }
 
 int main()

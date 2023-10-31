@@ -17,47 +17,88 @@
 
 using namespace std;
 
-// 117 ms 46.9MB O(nlogn) O(n)
-//vector<int> findDuplicates(vector<int>& nums) {
-//	map<int, int> mp;
-//	for (auto num : nums)
-//		mp[num]++;
-//
-//	vector<int> res;
-//	for (auto& x : mp)
-//		if (x.second >= 2)
-//			res.push_back(x.first);
-//
-//	return res;
-//}
-
-// 52ms 33.9MB O(n) O(1)
-//vector<int> findDuplicates(vector<int>& nums) {
-//	sort(nums.begin(), nums.end());
-//	vector<int> res;
-//	for (int i = 0; i < nums.size() -1;)
-//	{
-//		if (nums[i] == nums[i + 1])
-//		{
-//			res.push_back(nums[i]);
-//			i += 2;
-//		}
-//		else
-//			i++;
-//	}
-//
-//	return res;
-//}
-
-// web 19ms real 37ms 33.9MB O(n) O(1)
-vector<int> findDuplicates(vector<int>& nums) {
-	vector<int> res;
-	for (int i = 0; i < nums.size(); i++)
+// 38ms 21.7MB O(nlogn) O(n)
+string shortestCompletingWord(string licensePlate, vector<string>& words) {
+	unordered_map<char, int> mpl;
+	for (auto ch : licensePlate)
 	{
-		if (nums[abs(nums[i]) - 1] > 0)
-			nums[abs(nums[i]) - 1] *= -1;
-		else if (nums[abs(nums[i]) - 1] < 0)
-			res.push_back(abs(nums[i]));
+		if (islower(ch) || isupper(ch))
+			mpl[tolower(ch)]++;
+	}
+
+	string res = "";
+	int len = 16;
+	for (auto &word : words)
+	{
+		bool containsAllLetter = true;
+		unordered_map<char, int> mpw;
+		for (auto ch : word)
+		{
+			mpw[ch]++;
+		}
+
+		for (auto& x : mpl)
+		{
+			if (mpw[x.first] < x.second)
+			{
+				containsAllLetter = false;
+				break;
+			}
+		}
+
+		
+		if (containsAllLetter)
+		{
+			if (word.length() < len)
+			{
+				len = word.length();
+				res = word;
+			}
+		}
+	}
+
+	return res;
+}
+
+
+// web 0ms real 13ms 11.9MB
+string shortestCompletingWord(string licensePlate, vector<string>& words) {
+	transform(licensePlate.begin(), licensePlate.end(), licensePlate.begin(), ::tolower);
+
+	int u[26] = { 0 };
+	string res;
+
+	for (auto ch : licensePlate)
+	{
+		if (!isalpha(ch))
+			continue;
+
+		u[ch - 'a']++;
+	}
+
+	for(auto &word : words)
+	{
+		int v[26] = { 0 };
+		for (auto ch : word)
+			v[ch - 'a']++;
+
+		bool containsAllLetter = true;
+		for (int i = 0; i < 26; i++)
+		{
+			if (u[i] > v[i])
+			{
+				containsAllLetter = false;
+				break;
+			}
+		}
+
+		if (containsAllLetter)
+		{
+			if (res.length() == 0)
+				res = word;
+			else if (res.length() > word.length())
+				res = word;
+		}
 	}
 
 	return res;

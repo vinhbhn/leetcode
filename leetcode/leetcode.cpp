@@ -17,34 +17,41 @@
 
 using namespace std;
 
-// 0ms 10.7MB O(n) O(1)
-int findLucky(vector<int>& arr) {
-	unordered_map<int, int> mp;
-	for (auto num : arr)
-		mp[num]++;
+// https://leetcode.com/problems/check-if-it-is-a-straight-line/solutions/3598587/python-java-c-simple-solution-easy-to-understand/
+// 11ms 10.4MB
+bool checkStraightLine(vector<vector<int>>& co) {
+	int x0 = co[0][0];
+	int y0 = co[0][1];
+	int x1 = co[1][0];
+	int y1 = co[1][1];
 
-	int lucky = -1;
-	for (auto& x : mp)
-		if (x.first == x.second)
-			lucky = max(lucky, x.first);
+	for (int i = 2; i < co.size(); i++)
+	{
+		int x = co[i][0];
+		int y = co[i][1];
 
-	return lucky;
+		if ((x - x0) * (y1 - y0) != (y - y0) * (x1 - x0))
+			return false;
+	}
+
+	return true;
 }
 
-// 7ms 10.8MB O(n) O(1)
-int findLucky(vector<int>& arr) {
-	vector<int> v(501, 0);
-	for (auto num : arr)
-		v[num]++;
+// web 0ms real 11ms 10.7MB O(n) O(1)
+bool checkStraightLine(vector<vector<int>>& coordinates) {
+	if (coordinates.size() <= 2) return true;
+	int x = coordinates[1][0] - coordinates[0][0];
+	int y = coordinates[1][1] - coordinates[0][1];
 
-	int lucky = -1;
-	for (int i = 1; i < v.size(); i++)
-		if (i == v[i])
-			lucky = max(lucky, i);
+	auto good = [&](vector<int>& v) -> bool {
+		return x * (v[1] - coordinates[1][1]) == y * (v[0] - coordinates[1][0]);
+		};
+	for (int i = 1; i < coordinates.size(); i++)
+		if (!good(coordinates[i]))
+			return false;
 
-	return lucky;
+	return true;
 }
-
 
 int main()
 {

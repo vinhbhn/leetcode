@@ -17,62 +17,32 @@
 
 using namespace std;
 
-// 0ms 8.7MB O(nlogn) O(n)
-bool uniqueOccurrences(vector<int>& arr) {
+// 0ms 10.7MB O(n) O(1)
+int findLucky(vector<int>& arr) {
 	unordered_map<int, int> mp;
 	for (auto num : arr)
 		mp[num]++;
 
-	typedef pair<int, int> P;
-	vector<P> v;
+	int lucky = -1;
 	for (auto& x : mp)
-		v.push_back({ x.first, x.second });
+		if (x.first == x.second)
+			lucky = max(lucky, x.first);
 
-	auto cmp = [&](P a, P b)
-		{
-			return a.second < b.second;
-		};
-	sort(v.begin(), v.end(), cmp);
-
-	int val = 0;
-	for (int i = 0; i < v.size(); i++)
-	{
-		if (val == v[i].second)
-			return false;
-		else
-			val = v[i].second;
-	}
-
-	return true;
+	return lucky;
 }
 
-// https://leetcode.com/problems/unique-number-of-occurrences/solutions/3593004/only-100-solution-with-explanation-using-basic-array-only-no-hashmap-no-set-no-dp/
-// 0ms 8.4MB O(nlogn) O(1)
-bool uniqueOccurrences(vector<int>& arr) {
-	sort(arr.begin(), arr.end());
-	vector<int> v;
-	int count = 1;
-	for (int i = 1; i < arr.size(); i++)
-	{
-		if (arr[i] == arr[i - 1])
-			count++;
-		else
-		{
-			v.push_back(count);
-			count = 1;
-		}
-	}
-	v.push_back(count);
+// 7ms 10.8MB O(n) O(1)
+int findLucky(vector<int>& arr) {
+	vector<int> v(501, 0);
+	for (auto num : arr)
+		v[num]++;
 
-	sort(v.begin(), v.end());
-
+	int lucky = -1;
 	for (int i = 1; i < v.size(); i++)
-	{
-		if (v[i] == v[i - 1])
-			return false;
-	}
+		if (i == v[i])
+			lucky = max(lucky, i);
 
-	return true;
+	return lucky;
 }
 
 

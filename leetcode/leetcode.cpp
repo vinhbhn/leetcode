@@ -17,40 +17,81 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/check-if-it-is-a-straight-line/solutions/3598587/python-java-c-simple-solution-easy-to-understand/
-// 11ms 10.4MB
-bool checkStraightLine(vector<vector<int>>& co) {
-	int x0 = co[0][0];
-	int y0 = co[0][1];
-	int x1 = co[1][0];
-	int y1 = co[1][1];
-
-	for (int i = 2; i < co.size(); i++)
+// 21ms 11.8MB O(n^2) O(n)
+vector<int> luckyNumbers(vector<vector<int>>& matrix) {
+	vector<int> vmin, vmax;
+	for (auto& it : matrix)
 	{
-		int x = co[i][0];
-		int y = co[i][1];
-
-		if ((x - x0) * (y1 - y0) != (y - y0) * (x1 - x0))
-			return false;
+		auto min = min_element(it.begin(), it.end());
+		vmin.push_back(*min);
 	}
 
-	return true;
+	for (int j = 0; j < matrix[0].size(); j++)
+	{
+		int max = matrix[0][j];
+		for (int i = 1; i < matrix.size(); i++)
+			max = ::max(max, matrix[i][j]);
+
+		vmax.push_back(max);
+	}
+
+	for (auto it : vmin)
+	{
+		for (int i = 0; i < vmax.size(); i++)
+			if (it == vmax[i])
+				return { it };
+	}
+
+	return {};
 }
 
-// web 0ms real 11ms 10.7MB O(n) O(1)
-bool checkStraightLine(vector<vector<int>>& coordinates) {
-	if (coordinates.size() <= 2) return true;
-	int x = coordinates[1][0] - coordinates[0][0];
-	int y = coordinates[1][1] - coordinates[0][1];
+// 13ms 11.9MB
+vector<int> luckyNumbers(vector<vector<int>>& matrix) {
+	vector<int> vmin, vmax;
+	for (auto& it : matrix)
+	{
+		auto min = min_element(it.begin(), it.end());
+		vmin.push_back(*min);
+	}
 
-	auto good = [&](vector<int>& v) -> bool {
-		return x * (v[1] - coordinates[1][1]) == y * (v[0] - coordinates[1][0]);
-		};
-	for (int i = 1; i < coordinates.size(); i++)
-		if (!good(coordinates[i]))
-			return false;
+	for (int j = 0; j < matrix[0].size(); j++)
+	{
+		int max = matrix[0][j];
+		for (int i = 1; i < matrix.size(); i++)
+			max = ::max(max, matrix[i][j]);
 
-	return true;
+		vmax.push_back(max);
+	}
+
+	for (auto it : vmin)
+	{
+		if (find(vmax.begin(), vmax.end(), it) != vmax.end())
+			return { it };
+	}
+
+	return {};
+}
+
+// 10ms 11.9MB
+vector<int> luckyNumbers(vector<vector<int>>& matrix) {
+	vector<int> vmin;
+	for (auto& it : matrix)
+	{
+		auto min = min_element(it.begin(), it.end());
+		vmin.push_back(*min);
+	}
+
+	for (int j = 0; j < matrix[0].size(); j++)
+	{
+		int max = matrix[0][j];
+		for (int i = 1; i < matrix.size(); i++)
+			max = ::max(max, matrix[i][j]);
+
+		if (find(vmin.begin(), vmin.end(), max) != vmin.end())
+			return { max };
+	}
+
+	return {};
 }
 
 int main()

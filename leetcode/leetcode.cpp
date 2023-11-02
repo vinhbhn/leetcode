@@ -17,81 +17,82 @@
 
 using namespace std;
 
-// 21ms 11.8MB O(n^2) O(n)
-vector<int> luckyNumbers(vector<vector<int>>& matrix) {
-	vector<int> vmin, vmax;
-	for (auto& it : matrix)
+// 33ms 12.6MB
+int sumFourDivisors(vector<int>& nums) {
+	int res = 0;
+	for (auto& num : nums)
 	{
-		auto min = min_element(it.begin(), it.end());
-		vmin.push_back(*min);
+		int sum = 0, count = 0;
+		for (int i = 1; i * i <= num; i++)
+		{
+			if (num % i == 0)
+			{
+				if (num / i == i)
+				{
+					sum += i;
+					count++;
+				}
+				else {
+					sum += i + (num / i);
+					count += 2;
+				}
+
+			}
+		}
+
+		if (count == 4)
+			res += sum;
 	}
 
-	for (int j = 0; j < matrix[0].size(); j++)
-	{
-		int max = matrix[0][j];
-		for (int i = 1; i < matrix.size(); i++)
-			max = ::max(max, matrix[i][j]);
-
-		vmax.push_back(max);
-	}
-
-	for (auto it : vmin)
-	{
-		for (int i = 0; i < vmax.size(); i++)
-			if (it == vmax[i])
-				return { it };
-	}
-
-	return {};
+	return res;
 }
 
-// 13ms 11.9MB
-vector<int> luckyNumbers(vector<vector<int>>& matrix) {
-	vector<int> vmin, vmax;
-	for (auto& it : matrix)
+// pass 84/85 cases, miss case: num / i == i 
+int sumFourDivisors(vector<int>& nums) {
+	int res = 0;
+	for (auto& num : nums)
 	{
-		auto min = min_element(it.begin(), it.end());
-		vmin.push_back(*min);
+		int sum = 0, countF = 0;
+		for (int i = 2; i * i <= num; i++)
+		{
+			if (num % i == 0)
+			{
+				sum += i + (num / i);
+				countF += 2;
+			}
+		}
+
+		if (countF == 2)
+			res += sum + 1 + num;
 	}
 
-	for (int j = 0; j < matrix[0].size(); j++)
-	{
-		int max = matrix[0][j];
-		for (int i = 1; i < matrix.size(); i++)
-			max = ::max(max, matrix[i][j]);
-
-		vmax.push_back(max);
-	}
-
-	for (auto it : vmin)
-	{
-		if (find(vmax.begin(), vmax.end(), it) != vmax.end())
-			return { it };
-	}
-
-	return {};
+	return res;
 }
 
-// 10ms 11.9MB
-vector<int> luckyNumbers(vector<vector<int>>& matrix) {
-	vector<int> vmin;
-	for (auto& it : matrix)
+// https://leetcode.com/problems/four-divisors/solutions/547252/c-java-easy-check/
+// 16ms 12.6MB
+int sumFourDivisors(vector<int>& nums) {
+	int sum = 0;
+	for (auto num : nums)
 	{
-		auto min = min_element(it.begin(), it.end());
-		vmin.push_back(*min);
+		int last_d = 0;
+		for (int d = 2; d * d <= num; d++)
+		{
+			if (num % d == 0)
+				if (last_d == 0)
+					last_d = d;
+				else
+				{
+					last_d = 0;
+					break;
+				}
+		}
+
+		if (last_d > 0 && last_d != num / last_d)
+			sum += 1 + num + last_d + num / last_d;
 	}
 
-	for (int j = 0; j < matrix[0].size(); j++)
-	{
-		int max = matrix[0][j];
-		for (int i = 1; i < matrix.size(); i++)
-			max = ::max(max, matrix[i][j]);
-
-		if (find(vmin.begin(), vmin.end(), max) != vmin.end())
-			return { max };
-	}
-
-	return {};
+	return sum;
 }
 
 int main()

@@ -17,56 +17,45 @@
 
 using namespace std;
 
-// 0ms 8MB O(n + nlogn) O(1)
-//int lastStoneWeight(vector<int> &s) {
-//	make_heap(s.begin(), s.end());
-//
-//	while (s.size() > 2)
-//	{
-//		sort(s.begin(), s.end());
-//
-//		auto last1 = s.back();
-//		s.pop_back();
-//
-//		auto last2 = s.back();
-//		s.pop_back();
-//
-//		if (last1 != last2)
-//		{
-//			s.push_back(last1 - last2);
-//		}
-//	}
-//
-//	// maybe have size 1 or 2
-//	if (s.size() == 2)
-//	{
-//		s[0] = abs(s[0] - s[1]);
-//	}
-//
-//	return s[0];
-//}
+// 39ms 30.4MB O(n) O(n)
+int repeatedNTimes(vector<int>& nums) {
+	int n = nums.size() / 2;
 
-// 0ms 8MB O(n + nlogn) O(1)
-int lastStoneWeight(vector<int>& s) {
-	make_heap(s.begin(), s.end());
-
-	while (s.size() > 1)
+	unordered_map<int, int> mp;
+	for (auto num : nums)
 	{
-		sort(s.begin(), s.end());
+		mp[num]++;
 
-		auto last1 = s.back();
-		s.pop_back();
-
-		auto last2 = s.back();
-		s.pop_back();
-
-		if (last1 != last2)
-		{
-			s.push_back(last1 - last2);
-		}
+		if (mp[num] == n)
+			return num;
 	}
 
-	return s.empty() ? 0 : s[0];
+	return -1;
+}
+
+
+// web 7ms real 17ms 24.9MB O(n) O(1)
+int repeatedNTimes(vector<int>& nums) {
+	bitset<10001> hashset;
+
+	for (auto num : nums)
+	{
+		if (hashset.test(num))
+			return num;
+		hashset.set(num);
+	}
+
+	return -1;
+}
+
+// web 10ms real 31ms 24.9MB
+int repeatedNTimes(vector<int>& nums) {
+
+	for (size_t i = 0; i < nums.size() - 1; i++)
+		if (nums[i] == nums[i + 1])
+			return nums[i];
+
+	return nums.back() == nums[1] ? nums[1] : nums[0];
 }
 
 int main()

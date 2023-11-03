@@ -17,80 +17,61 @@
 
 using namespace std;
 
-// 0ms 7.4MB O(n) O(1)
-vector<string> summaryRanges(vector<int>& nums) {
-	int n = nums.size();
-	if (n == 0)
-		return {};
-	if (n == 1)
-		return { to_string(nums[0]) };
-
-	string temp = "";
-	vector<string> res;
-	for (int i = 0; i < n - 1; i++)
+// 22ms 26.2MB O(n) O(n)
+int findKOr(vector<int>& nums, int k) {
+	vector<int> res(32, 0);
+	int sum = 0;
+	for (int bit = 0; bit < 32; bit++)
 	{
-		if (nums[i] + 1 != nums[i + 1])
+		long temp = pow(2, bit);
+		for (auto x : nums)
 		{
-			if (temp == "")
-				res.push_back(to_string(nums[i]));
-			else
-			{
-				temp += to_string(nums[i]);
-				res.push_back(temp);
-				temp = "";
-			}
+			if ((temp & x) == temp)
+				res[bit]++;
+		}
 
-		}
-		else
-		{
-			if (temp == "")
-				temp = to_string(nums[i]) + "->";
-		}
-	}
-	if (nums[n - 1] != nums[n - 2] + 1)
-		res.push_back(to_string(nums[n - 1]));
-	else
-	{
-		temp += to_string(nums[n - 1]);
-		res.push_back(temp);
+		if (res[bit] >= k)
+			sum += temp;
 	}
 
-
-	return res;
+	return sum;
 }
 
-//https://leetcode.com/problems/summary-ranges/solutions/1805583/c-detailed-explanation-w-dry-run-faster-than-100-basic-concept-used/
-vector<string> summaryRanges(vector<int>& nums) {
-	int n = nums.size();
-	if (n == 0)
-		return {};
-	if (n == 1)
-		return { to_string(nums[0]) };
-
-	string temp = "";
-	vector<string> res;
-	for (int i = 0; i < nums.size(); i++)
+// 12ms 25.8MB
+int findKOr(vector<int>& nums, int k) {
+	int sum = 0;
+	for (int bit = 0; bit < 32; bit++)
 	{
-		int j = i; // declare another pointer that will move
+		long pow2bit = pow(2, bit);
+		int count = 0;
+		for (auto x : nums)
+			if ((pow2bit & x) == pow2bit)
+				count++;
 
-		// run that pointer until our range is not break
-		while (j + 1 < n && nums[j + 1] == nums[j] + 1)
-			j++;
+		if (count >= k)
+			sum += pow2bit;
+	}
 
-		// if j > i, that means we got our range more than one element
-		if (j > i)
-			temp += to_string(nums[i]) + "->" + to_string(nums[j]);
-		else
-			temp += to_string(nums[i]);
+	return sum;
+}
 
-		res.push_back(temp); // push one possible answer string to our answer
-		temp = ""; // again reinitalize temp for new poissible answers
-		i = j; // and move i to j for a fresh start
+// web 0ms real 12ms 25.6MB
+int findKOr(vector<int>& nums, int k) {
+	int res = 0;
+	for (int bit = 0; bit <= 31; bit++)
+	{
+		int set = 1 << bit;
+		int count = 0;
+		for (auto x : nums)
+			if (set & x)
+				count++;
+
+		if (count >= k)
+			res = res | set;
 	}
 
 	return res;
 }
-
 
 int main()
 {

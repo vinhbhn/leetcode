@@ -41,31 +41,30 @@ vector<int> nextGreaterElement(vector<int>& n1, vector<int>& n2) {
 	return n1;
 }
 
-// web 0ms real 3ms 9.4MB
+// web 0ms real 3ms 9.4MB O(n1+n2)
+// https://leetcode.com/problems/next-greater-element-i/solutions/3384541/c-java-python-javascript-optimized-with-stack-10-lines-of-code-brute-force/
 vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
 	stack<int> s;
-	unordered_map<int, int> nextGreater;
+	unordered_map<int, int> nextGreater; // map for next greater element
 
 	for (int num : nums2)
 	{
 		while (!s.empty() && s.top() < num)
 		{
+			// Pop elements from stack and update map with next greater element
 			nextGreater[s.top()] = num;
 			s.pop();
 		}
-		s.push(num);
+		s.push(num); // push current element onto stack
 	}
 
-	vector<int> result;
-	for (int num : nums1)
+	for (int &num : nums1)
 	{
-		if (nextGreater.find(num) != nextGreater.end())
-			result.push_back(nextGreater[num]);
-		else
-			result.push_back(-1);
+		// check if each element in nums1 has a next greater element in map
+		num = nextGreater.count(num) ? nextGreater[num] : -1; // update element in nums1 with next greater element or -1
 	}
 
-	return result;
+	return nums1;
 }
 
 int main() {

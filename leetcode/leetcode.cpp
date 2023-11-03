@@ -17,64 +17,65 @@
 
 using namespace std;
 
-// 22ms 26.2MB O(n) O(n)
-int findKOr(vector<int>& nums, int k) {
-	vector<int> res(32, 0);
-	int sum = 0;
-	for (int bit = 0; bit < 32; bit++)
+// 0ms 8MB O(n + nlogn) O(1)
+//int lastStoneWeight(vector<int> &s) {
+//	make_heap(s.begin(), s.end());
+//
+//	while (s.size() > 2)
+//	{
+//		sort(s.begin(), s.end());
+//
+//		auto last1 = s.back();
+//		s.pop_back();
+//
+//		auto last2 = s.back();
+//		s.pop_back();
+//
+//		if (last1 != last2)
+//		{
+//			s.push_back(last1 - last2);
+//		}
+//	}
+//
+//	// maybe have size 1 or 2
+//	if (s.size() == 2)
+//	{
+//		s[0] = abs(s[0] - s[1]);
+//	}
+//
+//	return s[0];
+//}
+
+// 0ms 8MB O(n + nlogn) O(1)
+int lastStoneWeight(vector<int>& s) {
+	make_heap(s.begin(), s.end());
+
+	while (s.size() > 1)
 	{
-		long temp = pow(2, bit);
-		for (auto x : nums)
+		sort(s.begin(), s.end());
+
+		auto last1 = s.back();
+		s.pop_back();
+
+		auto last2 = s.back();
+		s.pop_back();
+
+		if (last1 != last2)
 		{
-			if ((temp & x) == temp)
-				res[bit]++;
+			s.push_back(last1 - last2);
 		}
-
-		if (res[bit] >= k)
-			sum += temp;
 	}
 
-	return sum;
-}
-
-// 12ms 25.8MB
-int findKOr(vector<int>& nums, int k) {
-	int sum = 0;
-	for (int bit = 0; bit < 32; bit++)
-	{
-		long pow2bit = pow(2, bit);
-		int count = 0;
-		for (auto x : nums)
-			if ((pow2bit & x) == pow2bit)
-				count++;
-
-		if (count >= k)
-			sum += pow2bit;
-	}
-
-	return sum;
-}
-
-// web 0ms real 12ms 25.6MB
-int findKOr(vector<int>& nums, int k) {
-	int res = 0;
-	for (int bit = 0; bit <= 31; bit++)
-	{
-		int set = 1 << bit;
-		int count = 0;
-		for (auto x : nums)
-			if (set & x)
-				count++;
-
-		if (count >= k)
-			res = res | set;
-	}
-
-	return res;
+	return s.empty() ? 0 : s[0];
 }
 
 int main()
 {
+	vector s = { 2,7,4,1,8,1 };
+	cout << lastStoneWeight(s) << '\n';
+
+	s = { 2,2 };
+	cout << lastStoneWeight(s) << '\n';
 
 	return 0;
 

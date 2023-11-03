@@ -17,82 +17,45 @@
 
 using namespace std;
 
-// 33ms 12.6MB
-int sumFourDivisors(vector<int>& nums) {
-	int res = 0;
-	for (auto& num : nums)
+// 0ms 6.3MB O(n) O(n)
+int countLargestGroup(int n) {
+	vector<int> v(37, 0);
+	for (int i = 1; i <= n; i++)
 	{
-		int sum = 0, count = 0;
-		for (int i = 1; i * i <= num; i++)
+		int sum = 0, temp = i;
+		while (temp)
 		{
-			if (num % i == 0)
-			{
-				if (num / i == i)
-				{
-					sum += i;
-					count++;
-				}
-				else {
-					sum += i + (num / i);
-					count += 2;
-				}
-
-			}
+			sum += temp % 10;
+			temp /= 10;
 		}
-
-		if (count == 4)
-			res += sum;
+		v[sum]++;
 	}
 
-	return res;
+	auto m = max_element(v.begin(), v.end());
+	int count = 0;
+	for (int i = 1; i < v.size(); i++)
+		if (v[i] == *m)
+			count++;
+
+	return count;
 }
 
-// pass 84/85 cases, miss case: num / i == i 
-int sumFourDivisors(vector<int>& nums) {
-	int res = 0;
-	for (auto& num : nums)
+// 3ms 6.3MB
+int countLargestGroup(int n) {
+	vector<int> v(37, 0);
+	for (int i = 1; i <= n; i++)
 	{
-		int sum = 0, countF = 0;
-		for (int i = 2; i * i <= num; i++)
+		int sum = 0, temp = i;
+		while (temp)
 		{
-			if (num % i == 0)
-			{
-				sum += i + (num / i);
-				countF += 2;
-			}
+			sum += temp % 10;
+			temp /= 10;
 		}
-
-		if (countF == 2)
-			res += sum + 1 + num;
+		v[sum]++;
 	}
 
-	return res;
-}
-
-// https://leetcode.com/problems/four-divisors/solutions/547252/c-java-easy-check/
-// 16ms 12.6MB
-int sumFourDivisors(vector<int>& nums) {
-	int sum = 0;
-	for (auto num : nums)
-	{
-		int last_d = 0;
-		for (int d = 2; d * d <= num; d++)
-		{
-			if (num % d == 0)
-				if (last_d == 0)
-					last_d = d;
-				else
-				{
-					last_d = 0;
-					break;
-				}
-		}
-
-		if (last_d > 0 && last_d != num / last_d)
-			sum += 1 + num + last_d + num / last_d;
-	}
-
-	return sum;
+	auto m = max_element(v.begin(), v.end());
+	return count(v.begin(), v.end(), *m);
 }
 
 int main()

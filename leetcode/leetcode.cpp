@@ -17,57 +17,66 @@
 
 using namespace std;
 
-// 39ms 30.4MB O(n) O(n)
-int repeatedNTimes(vector<int>& nums) {
-	int n = nums.size() / 2;
 
-	unordered_map<int, int> mp;
-	for (auto num : nums)
+// 8ms 8.7MB O(n1*n2) O(n)
+vector<int> nextGreaterElement(vector<int>& n1, vector<int>& n2) {
+	for (int i = 0; i < n1.size(); i++)
 	{
-		mp[num]++;
+		auto pos = find(n2.begin(), n2.end(), n1[i]);
+		bool haveGreatered = false;
+		for (; pos != n2.end(); pos++)
+		{
+			if (*pos > n1[i])
+			{
+				haveGreatered = true;
+				n1[i] = *pos;
+				break;
+			}
+		}
 
-		if (mp[num] == n)
-			return num;
+		if (!haveGreatered)
+			n1[i] = -1;
 	}
 
-	return -1;
+	return n1;
 }
 
+// web 0ms real 3ms 9.4MB
+vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+	stack<int> s;
+	unordered_map<int, int> nextGreater;
 
-// web 7ms real 17ms 24.9MB O(n) O(1)
-int repeatedNTimes(vector<int>& nums) {
-	bitset<10001> hashset;
-
-	for (auto num : nums)
+	for (int num : nums2)
 	{
-		if (hashset.test(num))
-			return num;
-		hashset.set(num);
+		while (!s.empty() && s.top() < num)
+		{
+			nextGreater[s.top()] = num;
+			s.pop();
+		}
+		s.push(num);
 	}
 
-	return -1;
+	vector<int> result;
+	for (int num : nums1)
+	{
+		if (nextGreater.find(num) != nextGreater.end())
+			result.push_back(nextGreater[num]);
+		else
+			result.push_back(-1);
+	}
+
+	return result;
 }
 
-// web 10ms real 31ms 24.9MB
-int repeatedNTimes(vector<int>& nums) {
+int main() {
 
-	for (size_t i = 0; i < nums.size() - 1; i++)
-		if (nums[i] == nums[i + 1])
-			return nums[i];
-
-	return nums.back() == nums[1] ? nums[1] : nums[0];
-}
-
-int main()
-{
-	vector s = { 2,7,4,1,8,1 };
-	cout << lastStoneWeight(s) << '\n';
-
-	s = { 2,2 };
-	cout << lastStoneWeight(s) << '\n';
+	vector n1 = { 4,1,2 };
+	vector n2 = { 1,3,4,2 };
+	for (auto x : nextGreaterElement(n1, n2))
+		cout << x << ' ';
+	cout << '\n';
 
 	return 0;
-
 }
 
 //#define need_for_speed ios_base::sync_with_stdio(false); cin.tie(NULL);

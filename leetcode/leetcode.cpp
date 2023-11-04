@@ -17,63 +17,43 @@
 
 using namespace std;
 
+// 7ms 12.1MB O(3log3) O(1)
+//int fillCups(vector<int>& a) {
+//	int s = 0;
+//
+//	while (a[0] || a[1] || a[2])
+//	{
+//		sort(a.begin(), a.end());
+//
+//		if (a[2] > 0)
+//		{
+//			a[2]--;
+//			if (a[1] > 0)
+//				a[1]--;
+//
+//			s++;
+//		}
+//	}
+//
+//	return s;
+//}
 
-// 8ms 8.7MB O(n1*n2) O(n)
-vector<int> nextGreaterElement(vector<int>& n1, vector<int>& n2) {
-	for (int i = 0; i < n1.size(); i++)
-	{
-		auto pos = find(n2.begin(), n2.end(), n1[i]);
-		bool haveGreatered = false;
-		for (; pos != n2.end(); pos++)
-		{
-			if (*pos > n1[i])
-			{
-				haveGreatered = true;
-				n1[i] = *pos;
-				break;
-			}
-		}
-
-		if (!haveGreatered)
-			n1[i] = -1;
-	}
-
-	return n1;
-}
-
-// web 0ms real 3ms 9.4MB O(n1+n2)
-// https://leetcode.com/problems/next-greater-element-i/solutions/3384541/c-java-python-javascript-optimized-with-stack-10-lines-of-code-brute-force/
-vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-	stack<int> s;
-	unordered_map<int, int> nextGreater; // map for next greater element
-
-	for (int num : nums2)
-	{
-		while (!s.empty() && s.top() < num)
-		{
-			// Pop elements from stack and update map with next greater element
-			nextGreater[s.top()] = num;
-			s.pop();
-		}
-		s.push(num); // push current element onto stack
-	}
-
-	for (int &num : nums1)
-	{
-		// check if each element in nums1 has a next greater element in map
-		num = nextGreater.count(num) ? nextGreater[num] : -1; // update element in nums1 with next greater element or -1
-	}
-
-	return nums1;
+// web 11.6MB real 6ms 12MB
+int fillCups(vector<int>& a) {
+	int sum = a[0] + a[1] + a[2];
+	int maxV = max(a[0], max(a[1], a[2]));
+	return max(maxV, (sum + 1) / 2);
 }
 
 int main() {
+	vector a = { 1,4,2 };
+	cout << fillCups(a) << '\n';
 
-	vector n1 = { 4,1,2 };
-	vector n2 = { 1,3,4,2 };
-	for (auto x : nextGreaterElement(n1, n2))
-		cout << x << ' ';
-	cout << '\n';
+	a = { 5,4,4 };
+	cout << fillCups(a) << '\n';
+
+	a = { 5,3,5 };
+	cout << fillCups(a) << '\n';
 
 	return 0;
 }

@@ -17,32 +17,12 @@
 
 using namespace std;
 
-// 7ms 12.1MB O(3log3) O(1)
-//int fillCups(vector<int>& a) {
-//	int s = 0;
-//
-//	while (a[0] || a[1] || a[2])
-//	{
-//		sort(a.begin(), a.end());
-//
-//		if (a[2] > 0)
-//		{
-//			a[2]--;
-//			if (a[1] > 0)
-//				a[1]--;
-//
-//			s++;
-//		}
-//	}
-//
-//	return s;
-//}
+// 8ms 9.5MB O(n) O(n)
+vector<int> maxSubsequence(vector<int>& nums, int k) {
+	while (nums.size() > k)
+		nums.erase(min_element(nums.begin(), nums.end()));
 
-// web 11.6MB real 6ms 12MB
-int fillCups(vector<int>& a) {
-	int sum = a[0] + a[1] + a[2];
-	int maxV = max(a[0], max(a[1], a[2]));
-	return max(maxV, (sum + 1) / 2);
+	return nums;
 }
 
 int main() {

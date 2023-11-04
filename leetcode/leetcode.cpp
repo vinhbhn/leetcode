@@ -17,23 +17,143 @@
 
 using namespace std;
 
-// 8ms 9.5MB O(n) O(n)
-vector<int> maxSubsequence(vector<int>& nums, int k) {
-	while (nums.size() > k)
-		nums.erase(min_element(nums.begin(), nums.end()));
+//// 11ms 8.6MB O(nlogn + n/2)
+//string sortString(string s) {
+//	map<char, int> mp;
+//
+//	for (auto ch : s)
+//		mp[ch]++;
+//
+//	int count = 0, flip = 0;
+//	string res = "";
+//	while (count != s.length())
+//	{
+//		string temp = "";
+//		flip++;
+//		for (auto& x : mp)
+//		{
+//			if (x.second > 0)
+//			{
+//				temp += x.first;
+//				x.second--;
+//				count++;
+//			}
+//		}
+//
+//		if (flip % 2 == 0)
+//			reverse(temp.begin(), temp.end());
+//
+//		res += temp;
+//	}
+//
+//	return res;
+//}
 
-	return nums;
+// 3ms 8.2MB 
+//string sortString(string s) {
+//	vector<int> v(26, 0);
+//
+//	for (auto ch : s)
+//		v[ch - 'a']++;
+//
+//	int count = 0, flip = 0;
+//	string res = "";
+//	while (count != s.length())
+//	{
+//		string temp = "";
+//		flip++;
+//		for (int i  = 0; i < v.size(); i++)
+//		{
+//			if (v[i] > 0)
+//			{
+//				temp += (i + 'a');
+//				v[i]--;
+//				count++;
+//			}
+//		}
+//
+//		if (flip % 2 == 0)
+//			reverse(temp.begin(), temp.end());
+//
+//		res += temp;
+//	}
+//
+//	return res;
+//}
+
+// 9ms 8MB O(n) O(1)
+//string sortString(string s) {
+//	vector<int> v(26, 0);
+//
+//	for (auto ch : s)
+//		v[ch - 'a']++;
+//
+//	int count = 0;
+//	string res = "";
+//	while (count != s.length())
+//	{
+//		for (int i = 0; i < v.size(); i++)
+//		{
+//			if (v[i] > 0)
+//			{
+//				res.push_back(i + 'a');
+//				v[i]--;
+//				count++;
+//			}
+//		}
+//
+//		for (int i = v.size() - 1; i >= 0; i--)
+//		{
+//			if (v[i] > 0)
+//			{
+//				res.push_back(i + 'a');
+//				v[i]--;
+//				count++;
+//			}
+//		}
+//	}
+//
+//	return res;
+//}
+
+// 6ms 7.9MB
+string sortString(string s) {
+	vector<int> v(26, 0);
+
+	for (auto ch : s)
+		v[ch - 'a']++;
+
+	int count = 0;
+	string res = "";
+	while (count != s.length())
+	{
+		for (int i = 0; i < v.size(); i++)
+		{
+			if (v[i] > 0)
+			{
+				res += (i + 'a');
+				v[i]--;
+				count++;
+			}
+		}
+
+		for (int i = v.size() - 1; i >= 0; i--)
+		{
+			if (v[i] > 0)
+			{
+				res += (i + 'a');
+				v[i]--;
+				count++;
+			}
+		}
+	}
+
+	return res;
 }
 
 int main() {
-	vector a = { 1,4,2 };
-	cout << fillCups(a) << '\n';
-
-	a = { 5,4,4 };
-	cout << fillCups(a) << '\n';
-
-	a = { 5,3,5 };
-	cout << fillCups(a) << '\n';
+	cout << sortString("aaaabbbbcccc") << '\n';
+	cout << sortString("rat") << '\n';
 
 	return 0;
 }

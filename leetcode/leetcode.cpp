@@ -17,62 +17,57 @@
 
 using namespace std;
 
-// 0ms 6.7MB O(n) O(n)
-//string sortSentence(string s) {
-//	int space = count(s.begin(), s.end(), ' ');
-//	vector<string> v(space + 1, "");
+// 3ms 6.7MB
+//bool areNumbersAscending(string s) {
+//	vector<int> v;
 //	string temp = "";
 //	for (auto ch : s)
 //	{
-//		if (ch == ' ')
-//			continue;
-//
 //		if (isdigit(ch))
+//			temp += ch;
+//
+//		if (ch == ' ' && !temp.empty())
 //		{
-//			v[(ch - '0') - 1] = temp;
+//			v.push_back(stoi(temp));
 //			temp = "";
 //		}
-//		else
-//			temp += ch;
+//	}
+//	if (!temp.empty())
+//		v.push_back(stoi(temp));
+//
+//	for (int i = 0; i < v.size() - 1;  i++)
+//	{
+//		if (v[i] >= v[i + 1])
+//			return false;
 //	}
 //
-//	string res = "";
-//	for (auto& x : v)
-//		res += x + " ";
-//
-//	// remove last space
-//	res.pop_back();
-//	return res;
+//	return true;
 //}
 
-// 0ms 6.7MB O(n) O(n)
-string sortSentence(string s) {
-	vector<string> v(10, "");
+// 3ms 6.9MB
+bool areNumbersAscending(string s) {
+	s += ' ';
+	vector<int> v;
 	string temp = "";
 	for (auto ch : s)
 	{
-		if (ch == ' ')
-			continue;
-
 		if (isdigit(ch))
+			temp += ch;
+
+		if (ch == ' ' && !temp.empty())
 		{
-			v[ch - '0'] = temp;
+			v.push_back(stoi(temp));
 			temp = "";
 		}
-		else
-			temp += ch;
 	}
 
-	string res = "";
-	for (int i = 1; i < v.size(); i++)
+	for (int i = 0; i < v.size() - 1; i++)
 	{
-		if (v[i].length() > 0)
-			res += v[i] + " ";
+		if (v[i] >= v[i + 1])
+			return false;
 	}
 
-	// remove last space
-	res.pop_back();
-	return res;
+	return true;
 }
 
 int main() {

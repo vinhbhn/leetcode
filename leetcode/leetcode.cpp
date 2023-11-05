@@ -17,53 +17,11 @@
 
 using namespace std;
 
-// 3ms 6.7MB
-//bool areNumbersAscending(string s) {
-//	vector<int> v;
-//	string temp = "";
-//	for (auto ch : s)
-//	{
-//		if (isdigit(ch))
-//			temp += ch;
-//
-//		if (ch == ' ' && !temp.empty())
-//		{
-//			v.push_back(stoi(temp));
-//			temp = "";
-//		}
-//	}
-//	if (!temp.empty())
-//		v.push_back(stoi(temp));
-//
-//	for (int i = 0; i < v.size() - 1;  i++)
-//	{
-//		if (v[i] >= v[i + 1])
-//			return false;
-//	}
-//
-//	return true;
-//}
-
-// 3ms 6.9MB
-bool areNumbersAscending(string s) {
-	s += ' ';
-	vector<int> v;
-	string temp = "";
-	for (auto ch : s)
+// 0ms 6.5MB
+bool checkString(string s) {
+	for (int i = 0; i < s.length() - 1; i++)
 	{
-		if (isdigit(ch))
-			temp += ch;
-
-		if (ch == ' ' && !temp.empty())
-		{
-			v.push_back(stoi(temp));
-			temp = "";
-		}
-	}
-
-	for (int i = 0; i < v.size() - 1; i++)
-	{
-		if (v[i] >= v[i + 1])
+		if (s[i] == 'b' && s[i + 1] == 'a')
 			return false;
 	}
 

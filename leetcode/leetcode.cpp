@@ -17,35 +17,66 @@
 
 using namespace std;
 
-// 8ms 9.6MB O(n) O(1)
-int largestSumAfterKNegations(vector<int>& nums, int k) {
-	while (k--)
+// 0ms 6.7MB O(n) O(n)
+//string sortSentence(string s) {
+//	int space = count(s.begin(), s.end(), ' ');
+//	vector<string> v(space + 1, "");
+//	string temp = "";
+//	for (auto ch : s)
+//	{
+//		if (ch == ' ')
+//			continue;
+//
+//		if (isdigit(ch))
+//		{
+//			v[(ch - '0') - 1] = temp;
+//			temp = "";
+//		}
+//		else
+//			temp += ch;
+//	}
+//
+//	string res = "";
+//	for (auto& x : v)
+//		res += x + " ";
+//
+//	// remove last space
+//	res.pop_back();
+//	return res;
+//}
+
+// 0ms 6.7MB O(n) O(n)
+string sortSentence(string s) {
+	vector<string> v(10, "");
+	string temp = "";
+	for (auto ch : s)
 	{
-		auto m = min_element(nums.begin(), nums.end());
-		*m = -*m;
+		if (ch == ' ')
+			continue;
+
+		if (isdigit(ch))
+		{
+			v[ch - '0'] = temp;
+			temp = "";
+		}
+		else
+			temp += ch;
 	}
 
-	int sum = 0;
-	for (auto num : nums)
-		sum += num;
-
-	return sum;
-}
-
-// 12ms 9.3MB
-int largestSumAfterKNegations(vector<int>& nums, int k) {
-	while (k--)
+	string res = "";
+	for (int i = 1; i < v.size(); i++)
 	{
-		auto m = min_element(nums.begin(), nums.end());
-		*m = -*m;
+		if (v[i].length() > 0)
+			res += v[i] + " ";
 	}
 
-	return accumulate(nums.begin(), nums.end(), 0);
+	// remove last space
+	res.pop_back();
+	return res;
 }
 
 int main() {
-	cout << sortString("aaaabbbbcccc") << '\n';
-	cout << sortString("rat") << '\n';
+	cout << sortSentence("is2 sentence4 This1 a3") << '\n';
 
 	return 0;
 }

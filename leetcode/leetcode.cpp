@@ -17,29 +17,27 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/minimum-cost-of-buying-candies-with-discount/solutions/1710139/c-easy-solution-using-sorting-with-full-explanations/
-// O(nlogn) O(1) 0ms 11.2MB
-int minimumCost(vector<int>& cost) {
-	int n = cost.size(), sum = 0;
-	if (n <= 2)
-	{
-		for (auto num : cost)
-			sum += num;
+// 35ms 28.5MB O(nlogn) O(logn)
+int arrayPairSum(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
 
-		return sum;
-	}
-	
-	sort(cost.begin(), cost.end());
-
-	int i = n - 1;
-	while (i >= 1)
+	int sum = 0;
+	for (int i = 1; i < nums.size(); i+=2)
 	{
-		sum += cost[i] + cost[i - 1];
-		if (i - 1 == 0 || i - 1 == 1)
-			return sum;
-		i -= 3;
+		sum += min(nums[i-1], nums[i]);
 	}
-	sum += cost[0];
+
+	return sum;
+}
+
+int arrayPairSum(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+
+	int sum = 0;
+	for (int i = 0; i < nums.size() - 1; i += 2)
+	{
+		sum += nums[i]; // because nums is sorted
+	}
 
 	return sum;
 }

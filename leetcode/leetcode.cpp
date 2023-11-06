@@ -17,54 +17,47 @@
 
 using namespace std;
 
-// 5ms 9MB
-//bool check(vector<int>& a) {
-//	if (is_sorted(a.begin(), a.end()))
-//		return true;
-//
-//	vector<int> b(a.size() * 2, 0);
-//	for (int i = 0; i < b.size(); i++)
+// 17ms 32.1MB O((vowel.size())^(right-left)) O(n)
+//int vowelStrings(vector<string>& words, int left, int right) {
+//	int count = 0;
+//	string vowels = "aeiou";
+//	for (int i  = left; i <= right; i++)
 //	{
-//		b[i] = a[i % a.size()];
+//		bool start = false, end = false;
+//		for (auto ch : vowels)
+//		{
+//			if (ch == words[i][0])
+//				start = true;
+//
+//			if (ch == words[i][words[i].size() - 1])
+//				end = true;
+//
+//			if (start && end)
+//			{
+//				count++;
+//				break;
+//			}
+//		}
 //	}
 //
-//	for (int i = 1; i < b.size() - a.size(); i++)
-//	{
-//		if (is_sorted(b.begin() + i, b.begin() + i + a.size()))
-//			return true;
-//	}
-//
-//	return false;
+//	return count;
 //}
 
-// 0ms 9MB O(b.size()) O(a.size())
-//bool check(vector<int>& a) {
-//	vector<int> b(a.size() * 2, 0);
-//	for (int i = 0; i < b.size(); i++)
-//	{
-//		b[i] = a[i % a.size()];
-//	}
-//
-//	for (int i = 0; i < b.size() - a.size(); i++)
-//	{
-//		if (is_sorted(b.begin() + i, b.begin() + i + a.size()))
-//			return true;
-//	}
-//
-//	return false;
-//}
-
-// https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/solutions/1053508/java-c-python-easy-and-concise/
-// O(n) O(1) 2ms 8.5MB
-bool check(vector<int>& a) {
-	for (int i = 0, k = 0; i < a.size(); i++)
-	{
-		if (a[i] > a[(i + 1) % a.size()] && ++k > 1)
-			return false;
-	}
-	return true;
+// 11ms 31.8MB
+bool isVowel(char ch)
+{
+	return (ch == 'a') || (ch == 'e') || (ch == 'i') || (ch == 'o') || (ch == 'u');
 }
+int vowelStrings(vector<string>& words, int left, int right) {
+	int count = 0;
+	for (int i = left; i <= right; i++)
+	{
+		if (isVowel(words[i][0]) && isVowel(words[i][words[i].size() - 1]))
+			count++;
+	}
 
+	return count;
+}
 
 int main() {
 	cout << boolalpha;

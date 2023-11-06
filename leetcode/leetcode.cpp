@@ -17,43 +17,24 @@
 
 using namespace std;
 
-// 2ms 8.3MB O(n) O(nlogn)
-vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
-	// map arr1
-	unordered_map<int, int> mp;
-	for (auto num : arr1)
-		mp[num]++;
+// 55ms 32.5MB O(n) O(n)
+vector<vector<int>> minimumAbsDifference(vector<int>& arr) {
+	sort(arr.begin(), arr.end());
 
-	// insert element in arr1 (from map) to arr2 (subtract 1)
-	// element do not appear in arr2 save it to v
-	// sort v to ascending
-	// push element from v to arr2
-	vector<int> v;
-	for (auto& x : mp)
+	int m = INT_MAX;
+	for (int i = 1; i < arr.size(); i++)
 	{
-		auto pos = find(arr2.begin(), arr2.end(), x.first);
-		if (pos != arr2.end())
-		{
-			// subtract 1 from x.second because arr2 have the one
-			while (x.second > 1)
-			{
-				pos = arr2.insert(pos, x.first);
-				x.second--;
-			}
-		}
-		else
-		{
-			while (x.second--)
-				v.push_back(x.first);
-		}
+		m = min(m, abs(arr[i] - arr[i - 1]));
 	}
-	if (!v.empty())
-		sort(v.begin(), v.end());
-	
-	for (auto num : v)
-		arr2.push_back(num);
 
-	return arr2;
+	vector<vector<int>> res;
+	for (int i = 1; i < arr.size(); i++)
+	{
+		if (abs(arr[i] - arr[i - 1]) == m)
+			res.push_back({ arr[i - 1], arr[i] });
+	}
+
+	return res;
 }
 
 int main() {

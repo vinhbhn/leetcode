@@ -17,19 +17,69 @@
 
 using namespace std;
 
-// 0ms 6.5MB
-bool checkString(string s) {
-	for (int i = 0; i < s.length() - 1; i++)
+// 5ms 9MB
+//bool check(vector<int>& a) {
+//	if (is_sorted(a.begin(), a.end()))
+//		return true;
+//
+//	vector<int> b(a.size() * 2, 0);
+//	for (int i = 0; i < b.size(); i++)
+//	{
+//		b[i] = a[i % a.size()];
+//	}
+//
+//	for (int i = 1; i < b.size() - a.size(); i++)
+//	{
+//		if (is_sorted(b.begin() + i, b.begin() + i + a.size()))
+//			return true;
+//	}
+//
+//	return false;
+//}
+
+// 0ms 9MB O(b.size()) O(a.size())
+//bool check(vector<int>& a) {
+//	vector<int> b(a.size() * 2, 0);
+//	for (int i = 0; i < b.size(); i++)
+//	{
+//		b[i] = a[i % a.size()];
+//	}
+//
+//	for (int i = 0; i < b.size() - a.size(); i++)
+//	{
+//		if (is_sorted(b.begin() + i, b.begin() + i + a.size()))
+//			return true;
+//	}
+//
+//	return false;
+//}
+
+// https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/solutions/1053508/java-c-python-easy-and-concise/
+// O(n) O(1) 2ms 8.5MB
+bool check(vector<int>& a) {
+	for (int i = 0, k = 0; i < a.size(); i++)
 	{
-		if (s[i] == 'b' && s[i + 1] == 'a')
+		if (a[i] > a[(i + 1) % a.size()] && ++k > 1)
 			return false;
 	}
-
 	return true;
 }
 
+
 int main() {
-	cout << sortSentence("is2 sentence4 This1 a3") << '\n';
+	cout << boolalpha;
+
+	vector nums = { 3,4,5,1,2 };
+	cout << check(nums) << '\n';
+
+	nums = { 2,1,3,4 };
+	cout << check(nums) << '\n';
+
+	nums = { 1,2,3 };
+	cout << check(nums) << '\n';
+
+	nums = { 6,10,6 };
+	cout << check(nums) << '\n';
 
 	return 0;
 }

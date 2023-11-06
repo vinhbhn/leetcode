@@ -17,46 +17,43 @@
 
 using namespace std;
 
-// 17ms 32.1MB O((vowel.size())^(right-left)) O(n)
-//int vowelStrings(vector<string>& words, int left, int right) {
-//	int count = 0;
-//	string vowels = "aeiou";
-//	for (int i  = left; i <= right; i++)
-//	{
-//		bool start = false, end = false;
-//		for (auto ch : vowels)
-//		{
-//			if (ch == words[i][0])
-//				start = true;
-//
-//			if (ch == words[i][words[i].size() - 1])
-//				end = true;
-//
-//			if (start && end)
-//			{
-//				count++;
-//				break;
-//			}
-//		}
-//	}
-//
-//	return count;
-//}
+// 2ms 8.3MB O(n) O(nlogn)
+vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
+	// map arr1
+	unordered_map<int, int> mp;
+	for (auto num : arr1)
+		mp[num]++;
 
-// 11ms 31.8MB
-bool isVowel(char ch)
-{
-	return (ch == 'a') || (ch == 'e') || (ch == 'i') || (ch == 'o') || (ch == 'u');
-}
-int vowelStrings(vector<string>& words, int left, int right) {
-	int count = 0;
-	for (int i = left; i <= right; i++)
+	// insert element in arr1 (from map) to arr2 (subtract 1)
+	// element do not appear in arr2 save it to v
+	// sort v to ascending
+	// push element from v to arr2
+	vector<int> v;
+	for (auto& x : mp)
 	{
-		if (isVowel(words[i][0]) && isVowel(words[i][words[i].size() - 1]))
-			count++;
+		auto pos = find(arr2.begin(), arr2.end(), x.first);
+		if (pos != arr2.end())
+		{
+			// subtract 1 from x.second because arr2 have the one
+			while (x.second > 1)
+			{
+				pos = arr2.insert(pos, x.first);
+				x.second--;
+			}
+		}
+		else
+		{
+			while (x.second--)
+				v.push_back(x.first);
+		}
 	}
+	if (!v.empty())
+		sort(v.begin(), v.end());
+	
+	for (auto num : v)
+		arr2.push_back(num);
 
-	return count;
+	return arr2;
 }
 
 int main() {

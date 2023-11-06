@@ -17,40 +17,38 @@
 
 using namespace std;
 
-// 55ms 32.5MB O(n) O(n)
-vector<vector<int>> minimumAbsDifference(vector<int>& arr) {
-	sort(arr.begin(), arr.end());
-
-	int m = INT_MAX;
-	for (int i = 1; i < arr.size(); i++)
+// https://leetcode.com/problems/minimum-cost-of-buying-candies-with-discount/solutions/1710139/c-easy-solution-using-sorting-with-full-explanations/
+// O(nlogn) O(1) 0ms 11.2MB
+int minimumCost(vector<int>& cost) {
+	int n = cost.size(), sum = 0;
+	if (n <= 2)
 	{
-		m = min(m, abs(arr[i] - arr[i - 1]));
-	}
+		for (auto num : cost)
+			sum += num;
 
-	vector<vector<int>> res;
-	for (int i = 1; i < arr.size(); i++)
+		return sum;
+	}
+	
+	sort(cost.begin(), cost.end());
+
+	int i = n - 1;
+	while (i >= 1)
 	{
-		if (abs(arr[i] - arr[i - 1]) == m)
-			res.push_back({ arr[i - 1], arr[i] });
+		sum += cost[i] + cost[i - 1];
+		if (i - 1 == 0 || i - 1 == 1)
+			return sum;
+		i -= 3;
 	}
+	sum += cost[0];
 
-	return res;
+	return sum;
 }
 
 int main() {
 	cout << boolalpha;
 
-	vector nums = { 3,4,5,1,2 };
-	cout << check(nums) << '\n';
-
-	nums = { 2,1,3,4 };
-	cout << check(nums) << '\n';
-
-	nums = { 1,2,3 };
-	cout << check(nums) << '\n';
-
-	nums = { 6,10,6 };
-	cout << check(nums) << '\n';
+	vector nums = { 6,5,7,9,2,2 };
+	cout << minimumCost(nums) << '\n';
 
 	return 0;
 }

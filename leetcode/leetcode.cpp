@@ -17,23 +17,40 @@
 
 using namespace std;
 
-// 230ms 116.6MB O(n) O(n)
-int distributeCandies(vector<int>& candyType) {
-	unordered_set<int> st;
-	for (auto candy : candyType)
-		st.insert(candy);
+// 37ms 23.5MB O(n) O(logn)
+vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
+	priority_queue<pair<int, string>> pq;
+	for (int i = 0; i < names.size(); i++)
+	{
+		pq.push({ heights[i], names[i] });
+	}
 
-	return (candyType.size() / 2 > st.size()) ? st.size() : candyType.size() / 2;
+	vector<string> res;
+	while (!pq.empty())
+	{
+		res.push_back(pq.top().second);
+		pq.pop();
+	}
+
+	return res;
 }
 
-// web 52ms real 66ms 81.9MB
-int distributeCandies(vector<int>& candyType) {
-	bitset<200001> bitset;
+// web 12ms real 22ms 22.6MB O(nlogn) O(logn) 
+vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
+	vector<pair<int, string>> v;
+	for (int i = 0; i < names.size(); i++)
+	{
+		v.push_back({ heights[i], names[i] });
+	}
 
-	for (const int candy : candyType)
-		bitset.set(candy + 100000);
+	sort(v.rbegin(), v.rend());
 
-	return min(candyType.size() / 2, bitset.count());
+	for (int i = 0; i < names.size(); i++)
+	{
+		names[i] = v[i].second;
+	}
+
+	return names;
 }
 
 int main() {

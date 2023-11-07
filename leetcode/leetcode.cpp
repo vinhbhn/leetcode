@@ -17,29 +17,20 @@
 
 using namespace std;
 
-// 35ms 28.5MB O(nlogn) O(logn)
-int arrayPairSum(vector<int>& nums) {
-	sort(nums.begin(), nums.end());
-
-	int sum = 0;
-	for (int i = 1; i < nums.size(); i+=2)
+// 0ms 6.3MB
+int arrangeCoins(int n) {
+	int i = 1;
+	while (true)
 	{
-		sum += min(nums[i-1], nums[i]);
+		if (n - i >= 0)
+			n -= i;
+		else
+			return i - 1;
+
+		i++;
 	}
 
-	return sum;
-}
-
-int arrayPairSum(vector<int>& nums) {
-	sort(nums.begin(), nums.end());
-
-	int sum = 0;
-	for (int i = 0; i < nums.size() - 1; i += 2)
-	{
-		sum += nums[i]; // because nums is sorted
-	}
-
-	return sum;
+	return 0;
 }
 
 int main() {

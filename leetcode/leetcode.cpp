@@ -17,41 +17,47 @@
 
 using namespace std;
 
-// 37ms 23.5MB O(n) O(logn)
-vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
-	priority_queue<pair<int, string>> pq;
-	for (int i = 0; i < names.size(); i++)
+// 0ms 7.4MB O(s.size()+k) O(1)
+string truncateSentence(string s, int k) {
+	vector<string> v;
+	string temp = "";
+	for (auto ch : s)
 	{
-		pq.push({ heights[i], names[i] });
+		if (ch == ' ')
+		{
+			v.push_back(temp);
+			temp = "";
+		}
+		else
+			temp += ch;
 	}
+	if (!temp.empty())
+		v.push_back(temp);
 
-	vector<string> res;
-	while (!pq.empty())
-	{
-		res.push_back(pq.top().second);
-		pq.pop();
-	}
+	string res = "";
+	for (int i = 0; i < k; i++)
+		res += v[i] + ' ';
 
+	res.pop_back();
 	return res;
 }
 
-// web 12ms real 22ms 22.6MB O(nlogn) O(logn) 
-vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
-	vector<pair<int, string>> v;
-	for (int i = 0; i < names.size(); i++)
+// web 6.3MB real 3ms 6.7MB O(s.size()) O(1)
+string truncateSentence(string s, int k) {
+	int space = 0;
+	for (int i = 0; i < s.size(); i++)
 	{
-		v.push_back({ heights[i], names[i] });
+		if (s[i] == ' ')
+		{
+			space++;
+			if (space == k)
+				return s.substr(0, i);
+		}
 	}
 
-	sort(v.rbegin(), v.rend());
-
-	for (int i = 0; i < names.size(); i++)
-	{
-		names[i] = v[i].second;
-	}
-
-	return names;
+	return s;
 }
+
 
 int main() {
 	cout << boolalpha;

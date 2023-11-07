@@ -17,20 +17,23 @@
 
 using namespace std;
 
-// 0ms 6.3MB
-int arrangeCoins(int n) {
-	int i = 1;
-	while (true)
-	{
-		if (n - i >= 0)
-			n -= i;
-		else
-			return i - 1;
+// 230ms 116.6MB O(n) O(n)
+int distributeCandies(vector<int>& candyType) {
+	unordered_set<int> st;
+	for (auto candy : candyType)
+		st.insert(candy);
 
-		i++;
-	}
+	return (candyType.size() / 2 > st.size()) ? st.size() : candyType.size() / 2;
+}
 
-	return 0;
+// web 52ms real 66ms 81.9MB
+int distributeCandies(vector<int>& candyType) {
+	bitset<200001> bitset;
+
+	for (const int candy : candyType)
+		bitset.set(candy + 100000);
+
+	return min(candyType.size() / 2, bitset.count());
 }
 
 int main() {

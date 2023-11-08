@@ -17,45 +17,31 @@
 
 using namespace std;
 
-// 0ms 7.4MB O(s.size()+k) O(1)
-string truncateSentence(string s, int k) {
-	vector<string> v;
-	string temp = "";
-	for (auto ch : s)
-	{
-		if (ch == ' ')
-		{
-			v.push_back(temp);
-			temp = "";
-		}
-		else
-			temp += ch;
+// 14ms 13.9MB O(nlogn) O(n)
+int minimumDifference(vector<int>& nums, int k) {
+	int n = nums.size();
+	if (n == 1) // highest and lowest is same
+		return 0;
+
+	sort(nums.begin(), nums.end());
+	int m = INT_MAX;
+	for (int i = 0; i < n - k + 1; i++)
+	{				// lowest	// highest  with k scores
+		m = min(m, abs(nums[i] - nums[i+k-1]));
 	}
-	if (!temp.empty())
-		v.push_back(temp);
 
-	string res = "";
-	for (int i = 0; i < k; i++)
-		res += v[i] + ' ';
-
-	res.pop_back();
-	return res;
+	return m;
 }
 
-// web 6.3MB real 3ms 6.7MB O(s.size()) O(1)
-string truncateSentence(string s, int k) {
-	int space = 0;
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (s[i] == ' ')
-		{
-			space++;
-			if (space == k)
-				return s.substr(0, i);
-		}
-	}
+// web 0ms real 15ms 13.9MB
+int minimumDifference(vector<int>& nums, int k) {
+	int n = nums.size(), i = 0, j = k - 1;
+	sort(nums.begin(), nums.end());
+	int res = INT_MAX;
+	while (j < n)
+		res = min(res, nums[j++] - nums[i++]);
 
-	return s;
+	return res;
 }
 
 

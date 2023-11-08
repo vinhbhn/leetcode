@@ -17,40 +17,14 @@
 
 using namespace std;
 
-// 5ms 8.6MB O(n) O(1)
-bool isOdd(int num)
-{
-	return (num % 2 == 1);
-}
-bool threeConsecutiveOdds(vector<int>& arr) {
-	if (arr.size() < 3)
-		return false;
-
-	for (int i = 0; i < arr.size() - 2; i++)
+// 5ms 8.8MB O(n) O(1)
+vector<int> runningSum(vector<int>& nums) {
+	for (int i = 1; i < nums.size(); i++)
 	{
-		if (isOdd(arr[i]) && isOdd(arr[i + 1]) && isOdd(arr[i + 2]))
-			return true;
+		nums[i] = nums[i] + nums[i - 1];
 	}
 
-	return false;
-}
-
-// web 0ms real 3ms 8.8MB
-bool threeConsecutiveOdds(vector<int>& arr) {
-	int count = 0;
-	for (int num : arr)
-	{
-		if (num % 2 == 1)
-		{
-			count++;
-			if (count == 3)
-				return true;
-		}
-		else
-			count = 0; // resetting the counter if an even number is encountered
-	}
-
-	return false;
+	return nums;
 }
 
 int main() {

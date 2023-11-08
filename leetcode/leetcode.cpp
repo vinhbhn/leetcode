@@ -17,18 +17,35 @@
 
 using namespace std;
 
-// 0ms 10.1MB O(n/2) O(1)
-vector<int> shuffle(vector<int>& nums, int n) {
-	vector<int> res;
-	for (int i = 0; i < n; i++)
+// 19ms 20MB O(n) O(n)
+int findClosestNumber(vector<int>& nums) {
+	// |m| = closest number to 0
+	// find |m| with m > 0 in array
+	// if true return m, if false return -m
+	int m = INT_MAX;
+	for (int i = 0; i < nums.size(); i++)
 	{
-		res.push_back(nums[i]);
-		res.push_back(nums[i + n]);
+		m = min(m, abs(nums[i]));
 	}
 
-	return res;
+	return (find(nums.begin(), nums.end(), m) != nums.end()) ? m : -m;
 }
 
+// web 3ms real 14ms 19.9MB O(n) O(n)
+int findClosestNumber(vector<int>& nums) {
+	int closest = INT_MAX;
+	for (int num : nums)
+	{
+		int abs = ::abs(num);
+		int closest_abs = ::abs(closest);
+		if (abs < closest_abs)
+			closest = num;
+		else if (abs == closest_abs && num > closest)
+			closest = num;
+	}
+
+	return closest;
+}
 
 int main() {
 	cout << boolalpha;

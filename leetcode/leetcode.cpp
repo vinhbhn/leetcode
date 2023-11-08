@@ -17,29 +17,14 @@
 
 using namespace std;
 
-// 14ms 13.9MB O(nlogn) O(n)
-int minimumDifference(vector<int>& nums, int k) {
-	int n = nums.size();
-	if (n == 1) // highest and lowest is same
-		return 0;
-
-	sort(nums.begin(), nums.end());
-	int m = INT_MAX;
-	for (int i = 0; i < n - k + 1; i++)
-	{				// lowest	// highest  with k scores
-		m = min(m, abs(nums[i] - nums[i+k-1]));
+// 0ms 10.1MB O(n/2) O(1)
+vector<int> shuffle(vector<int>& nums, int n) {
+	vector<int> res;
+	for (int i = 0; i < n; i++)
+	{
+		res.push_back(nums[i]);
+		res.push_back(nums[i + n]);
 	}
-
-	return m;
-}
-
-// web 0ms real 15ms 13.9MB
-int minimumDifference(vector<int>& nums, int k) {
-	int n = nums.size(), i = 0, j = k - 1;
-	sort(nums.begin(), nums.end());
-	int res = INT_MAX;
-	while (j < n)
-		res = min(res, nums[j++] - nums[i++]);
 
 	return res;
 }

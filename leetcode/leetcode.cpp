@@ -17,14 +17,15 @@
 
 using namespace std;
 
-// 5ms 8.8MB O(n) O(1)
-vector<int> runningSum(vector<int>& nums) {
-	for (int i = 1; i < nums.size(); i++)
-	{
-		nums[i] = nums[i] + nums[i - 1];
-	}
+// 0ms 12MB O(n*m) O(n)
+bool arrayStringsAreEqual(vector<string>& word1, vector<string>& word2) {
+	string s1 = "", s2 = "";
+	for (auto& word : word1)
+		s1 += word;
+	for (auto& word : word2)
+		s2 += word;
 
-	return nums;
+	return (s1 == s2);
 }
 
 int main() {

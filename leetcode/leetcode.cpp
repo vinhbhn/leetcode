@@ -17,7 +17,7 @@
 
 using namespace std;
 
-// 0ms 12MB O(n*m) O(n)
+// 0ms 12MB O(n*m) O(n+m)
 bool arrayStringsAreEqual(vector<string>& word1, vector<string>& word2) {
 	string s1 = "", s2 = "";
 	for (auto& word : word1)

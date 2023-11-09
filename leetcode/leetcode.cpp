@@ -17,15 +17,19 @@
 
 using namespace std;
 
-// 0ms 12MB O(n*m) O(n+m)
-bool arrayStringsAreEqual(vector<string>& word1, vector<string>& word2) {
-	string s1 = "", s2 = "";
-	for (auto& word : word1)
-		s1 += word;
-	for (auto& word : word2)
-		s2 += word;
+// 3ms 8.1MB O(n*m) O(n) n = accounts.size(), m = accounts[i].size()
+int maximumWealth(vector<vector<int>>& accounts) {
+	int res = 0;
+	for (auto& a : accounts)
+	{
+		int sum = 0;
+		for (auto x : a)
+			sum += x;
 
-	return (s1 == s2);
+		res = max(res, sum);
+	}
+
+	return res;
 }
 
 int main() {

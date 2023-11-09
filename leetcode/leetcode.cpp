@@ -17,16 +17,15 @@
 
 using namespace std;
 
-// 3ms 8.1MB O(n*m) O(n) n = accounts.size(), m = accounts[i].size()
-int maximumWealth(vector<vector<int>>& accounts) {
-	int res = 0;
-	for (auto& a : accounts)
-	{
-		int sum = 0;
-		for (auto x : a)
-			sum += x;
+// 6ms 18.4MB O(nlogn + n) O(logn)
+int minMovesToSeat(vector<int>& seats, vector<int>& students) {
+	sort(seats.begin(), seats.end());
+	sort(students.begin(), students.end());
 
-		res = max(res, sum);
+	int res = 0;
+	for (int i = 0; i < seats.size(); i++)
+	{
+		res += abs(seats[i] - students[i]);
 	}
 
 	return res;

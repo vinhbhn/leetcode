@@ -17,17 +17,24 @@
 
 using namespace std;
 
-// 0ms 6.5MB O(n) O(1)
-int xorOperation(int n, int start) {
-	int res = 0;
-	while(n)
+// 0ms 9.1MB O(n*m) O(1) n = words.size(), m = words[i].size()
+int uniqueMorseRepresentations(vector<string>& words) {
+	vector<string> v = { ".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",
+		".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.." };
+
+	unordered_set<string> st;
+	for (auto& w : words)
 	{
-		res ^= start;
-		start += 2;
-		n--;
+		string temp = "";
+		for (auto ch : w)
+		{
+			temp += v[ch - 'a'];
+		}
+
+		st.insert(temp);
 	}
 
-	return res;
+	return st.size();
 }
 
 int main() {

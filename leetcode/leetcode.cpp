@@ -17,75 +17,39 @@
 
 using namespace std;
 
-// 6ms 8.4MB O(n+b+m) O(logm) n = paragraph.size(), b = banned.size(), m = mp.size()
-string mostCommonWord(string paragraph, vector<string>& banned) {
-	unordered_map<string, int> mp;
-
-	string temp = "";
-	paragraph += ' ';
-	for (auto ch : paragraph)
+// 3ms 6.7MB O(m+n) O(1) m = s1.size(), n = s2.size() 
+bool areAlmostEqual(string s1, string s2) {
+	int count = 0;
+	vector<int> v1(26, 0);
+	vector<int> v2(26, 0);
+	for (int i = 0; i < s1.size(); i++)
 	{
-		if (isalpha(ch))
-			temp += tolower(ch);
-		else
+		v1[s1[i] - 'a']++;
+		v2[s2[i] - 'a']++;
+
+		if (s1[i] != s2[i])
+			count++;
+	}
+
+	if (count == 0 || count == 2)
+	{
+		for (int i = 0; i < v1.size(); i++)
 		{
-			mp[temp]++;
-			temp = "";
+			if (v1[i] != v2[i])
+				return false;
 		}
+
+		return true;
 	}
 
-	for (auto& str : banned)
-	{
-		if (mp.count(str))
-			mp.erase(str); // erase key, but value still in mp
-	}
-
-	priority_queue<pair<int, string>> pq;
-	for (auto& x : mp)
-	{
-		if (x.first != "")
-			pq.push({ x.second, x.first });
-	}
-
-	return pq.top().second;
-}
-
-// 3ms 8.1MB O(n+b+m) O(1) n = paragraph.size(), b = banned.size(), m = mp.size()
-string mostCommonWord(string paragraph, vector<string>& banned) {
-	unordered_map<string, int> mp;
-
-	string temp = "";
-	paragraph += ' ';
-	for (auto ch : paragraph)
-	{
-		if (isalpha(ch))
-			temp += tolower(ch);
-		else
-		{
-			mp[temp]++;
-			temp = "";
-		}
-	}
-
-	for (auto& str : banned)
-		mp.erase(str); // erase key, but value still in mp
-
-	string res = "";
-	int m = 0;
-	for (auto& x : mp)
-	{
-		if (x.second > m && x.first != "")
-		{
-			m = x.second;
-			res = x.first;
-		}
-	}
-
-	return res;
+	return false;
 }
 
 int main() {
 	cout << boolalpha;
+
+	// aa bb
+	// caa aaz
 
 	return 0;
 }

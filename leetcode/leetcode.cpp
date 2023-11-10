@@ -17,39 +17,72 @@
 
 using namespace std;
 
-// 3ms 6.7MB O(m+n) O(1) m = s1.size(), n = s2.size() 
-bool areAlmostEqual(string s1, string s2) {
-	int count = 0;
-	vector<int> v1(26, 0);
-	vector<int> v2(26, 0);
-	for (int i = 0; i < s1.size(); i++)
+// 0ms 7.2MB
+bool buddyStrings(string s, string goal) {
+	// case s == goal
+	if (s == goal)
 	{
-		v1[s1[i] - 'a']++;
-		v2[s2[i] - 'a']++;
-
-		if (s1[i] != s2[i])
-			count++;
-	}
-
-	if (count == 0 || count == 2)
-	{
-		for (int i = 0; i < v1.size(); i++)
+		for (int i = 0; i < s.size() - 1; i++)
 		{
-			if (v1[i] != v2[i])
-				return false;
+			for (int j = i + 1; j < s.size(); j++)
+			{
+				string temp = s;
+				swap(temp[i], temp[j]);
+
+				if (temp == goal)
+					return true;
+			}
 		}
 
-		return true;
+		return false;
 	}
 
-	return false;
+	// case s != goal
+	int i = -1, j = -1;
+	for (int pos = 0; pos < s.size(); pos++)
+	{
+		if (s[pos] != goal[pos])
+		{
+			if (i == -1)
+				i = pos;
+			else
+				j = pos;
+		}
+
+		if (i != -1 && j != -1)
+			break;
+	}
+	if (i != j && i != -1 && j != -1)
+		swap(s[i], s[j]);
+	return (s == goal);
+}
+
+//https://leetcode.com/problems/buddy-strings/solutions/3711198/c-easy-explanation-self-explanatory-code-beats-100/
+// O(n) O(n) 6ms 7.4MB
+bool buddyStrings(string s, string goal) {
+	if (s.length() != goal.length() || s.length() <= 1)
+		return false;
+
+	if (s == goal)
+	{
+		unordered_set<char> distinctChars(s.begin(), s.end());
+		return distinctChars.size() < s.length();
+	}
+
+	vector<int> index;
+	for (int i = 0; i < s.length(); i++)
+		if (s[i] != goal[i])
+			index.push_back(i);
+
+	if (index.size() != 2)
+		return false;
+
+	swap(s[index[0]], s[index[1]]);
+	return s == goal;
 }
 
 int main() {
 	cout << boolalpha;
-
-	// aa bb
-	// caa aaz
 
 	return 0;
 }

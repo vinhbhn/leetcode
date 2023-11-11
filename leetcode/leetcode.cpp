@@ -17,53 +17,27 @@
 
 using namespace std;
 
-// 0ms 6.8MB O(command.size()) O(temp.size())
-string interpret(string command) {
-	string temp = "", res = "";
-	for (auto ch : command)
+// 4ms 11.2MB O(n*k) O(k)
+vector<int> findKDistantIndices(vector<int>& nums, int key, int k) {
+	vector<int> res, keys;
+
+	for (int i = 0; i < nums.size(); i++)
 	{
-		if (ch == 'G')
-		{
-			res += 'G';
-			continue;
-		}
-
-		temp += ch;
-		if (ch == ')')
-		{
-			if (temp.size() == 2)
-				res += 'o';
-			else if (temp.size() > 2)
-				res += temp.substr(1, temp.size() - 2);
-
-			temp = "";
-		}
+		if (nums[i] == key)
+			keys.push_back(i);
 	}
 
-	return res;
-}
+	if (keys.empty())
+		return res;
 
-// 0ms 6.6MB O(n) O(n)
-string interpret(string command) {
-	string temp = "", res = "";
-	for (auto ch : command)
+	for (int i = 0; i < nums.size(); i++)
 	{
-		if (ch == 'G')
-		{
-			res += 'G';
-			continue;
-		}
-
-		temp += ch;
-		if (ch == ')')
-		{
-			if (temp == "()")
-				res += 'o';
-			else if (temp == "(al)")
-				res += "al";
-
-			temp.clear();
-		}
+		for (auto key : keys)
+			if (abs(i - key) <= k)
+			{
+				res.push_back(i);
+				break; 
+			}
 	}
 
 	return res;

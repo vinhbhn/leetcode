@@ -17,35 +17,56 @@
 
 using namespace std;
 
-// 0ms 8.9MB O(n) SC: O(n+m)
-vector<int> createTargetArray(vector<int>& nums, vector<int>& index) {
-	vector<int> target;
-
-	for (int i = 0; i < index.size(); i++)
+// 0ms 6.8MB O(command.size()) O(temp.size())
+string interpret(string command) {
+	string temp = "", res = "";
+	for (auto ch : command)
 	{
-		if (index[i] > target.size())
+		if (ch == 'G')
 		{
-			target.push_back(nums[i]);
+			res += 'G';
+			continue;
 		}
-		else
+
+		temp += ch;
+		if (ch == ')')
 		{
-			target.insert(target.begin() + index[i], nums[i]);
+			if (temp.size() == 2)
+				res += 'o';
+			else if (temp.size() > 2)
+				res += temp.substr(1, temp.size() - 2);
+
+			temp = "";
 		}
 	}
 
-	return target;
+	return res;
 }
 
-// 0ms 8.8MB O(n) SC: O(n+m)
-vector<int> createTargetArray(vector<int>& nums, vector<int>& index) {
-	vector<int> target;
-
-	for (int i = 0; i < index.size(); i++)
+// 0ms 6.6MB O(n) O(n)
+string interpret(string command) {
+	string temp = "", res = "";
+	for (auto ch : command)
 	{
-		target.insert(target.begin() + index[i], nums[i]);
+		if (ch == 'G')
+		{
+			res += 'G';
+			continue;
+		}
+
+		temp += ch;
+		if (ch == ')')
+		{
+			if (temp == "()")
+				res += 'o';
+			else if (temp == "(al)")
+				res += "al";
+
+			temp.clear();
+		}
 	}
 
-	return target;
+	return res;
 }
 
 int main() {

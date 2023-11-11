@@ -17,24 +17,35 @@
 
 using namespace std;
 
-// 0ms 9.1MB O(n*m) O(1) n = words.size(), m = words[i].size()
-int uniqueMorseRepresentations(vector<string>& words) {
-	vector<string> v = { ".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",
-		".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.." };
+// 0ms 8.9MB O(n) SC: O(n+m)
+vector<int> createTargetArray(vector<int>& nums, vector<int>& index) {
+	vector<int> target;
 
-	unordered_set<string> st;
-	for (auto& w : words)
+	for (int i = 0; i < index.size(); i++)
 	{
-		string temp = "";
-		for (auto ch : w)
+		if (index[i] > target.size())
 		{
-			temp += v[ch - 'a'];
+			target.push_back(nums[i]);
 		}
-
-		st.insert(temp);
+		else
+		{
+			target.insert(target.begin() + index[i], nums[i]);
+		}
 	}
 
-	return st.size();
+	return target;
+}
+
+// 0ms 8.8MB O(n) SC: O(n+m)
+vector<int> createTargetArray(vector<int>& nums, vector<int>& index) {
+	vector<int> target;
+
+	for (int i = 0; i < index.size(); i++)
+	{
+		target.insert(target.begin() + index[i], nums[i]);
+	}
+
+	return target;
 }
 
 int main() {

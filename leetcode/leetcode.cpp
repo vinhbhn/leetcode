@@ -17,30 +17,20 @@
 
 using namespace std;
 
-// 4ms 11.2MB O(n*k) O(k)
-vector<int> findKDistantIndices(vector<int>& nums, int key, int k) {
-	vector<int> res, keys;
-
-	for (int i = 0; i < nums.size(); i++)
+// 0ms 9.4MB O(n) O(1)
+vector<int> diStringMatch(string s) {
+	vector<int> p;
+	int i = 0, d = s.size();
+	s += s[0];
+	for (auto ch : s)
 	{
-		if (nums[i] == key)
-			keys.push_back(i);
+		if (ch == 'I')
+			p.push_back(i++);
+		else
+			p.push_back(d--);
 	}
 
-	if (keys.empty())
-		return res;
-
-	for (int i = 0; i < nums.size(); i++)
-	{
-		for (auto key : keys)
-			if (abs(i - key) <= k)
-			{
-				res.push_back(i);
-				break; 
-			}
-	}
-
-	return res;
+	return p;
 }
 
 int main() {

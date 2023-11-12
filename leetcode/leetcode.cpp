@@ -17,20 +17,45 @@
 
 using namespace std;
 
-// 0ms 9.4MB O(n) O(1)
-vector<int> diStringMatch(string s) {
-	vector<int> p;
-	int i = 0, d = s.size();
-	s += s[0];
-	for (auto ch : s)
+// 11ms 9.4MB O(k+n) O(k*n), n = g.size()
+long long pickGifts(vector<int>& g, int k) {
+	long long res = 0;
+
+	for (int i = 0; i < k; i++)
 	{
-		if (ch == 'I')
-			p.push_back(i++);
-		else
-			p.push_back(d--);
+		auto m = max_element(g.begin(), g.end());
+		*m = sqrt(*m);
 	}
 
-	return p;
+	for (auto num : g)
+		res += num;
+
+	return res;
+}
+
+// 15ms 9.7MB
+long long pickGifts(vector<int>& g, int k) {
+	for (int i = 0; i < k; i++)
+	{
+		auto m = max_element(g.begin(), g.end());
+		*m = sqrt(*m);
+	}
+
+	return accumulate(g.begin(), g.end(), 0ll);
+}
+
+// web 0ms real 3ms 9.6MB
+long long pickGifts(vector<int>& g, int k) {
+	make_heap(g.begin(), g.end());
+	for (int i = 0; i < k; i++)
+	{
+		int value = sqrt(g[0]);
+		pop_heap(g.begin(), g.end());
+		g.back() = value;
+		push_heap(g.begin(), g.end());
+	}
+
+	return accumulate(g.begin(), g.end(), 0ll);
 }
 
 int main() {

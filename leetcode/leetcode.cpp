@@ -17,17 +17,23 @@
 
 using namespace std;
 
-// 0ms 9.3MB O(n) O(floor(3/2*(n-1))
-int countElements(vector<int>& nums) {
-	auto [nMin, nMax] = minmax_element(nums.begin(), nums.end());
-	int count = 0;
-	for (auto& num : nums)
+int numberOfSteps(int num) {
+	int step = 0;
+	while (num)
 	{
-		if (num != *nMin && num != *nMax)
-			count++;
+		if (num % 2 == 0)
+		{
+			num /= 2;
+			step++;
+		}
+		else
+		{
+			num--;
+			step++;
+		}
 	}
 
-	return count;
+	return step;
 }
 
 int main() {

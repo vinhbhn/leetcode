@@ -17,63 +17,36 @@
 
 using namespace std;
 
-// 43ms 12.3MB O(nlogn) O(n)
-bool isVowel(char c)
-{
-	return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'
-		|| c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
-}
-string sortVowels(string s) {
-	vector<char> v;
-	for (auto ch : s)
+// 26ms 22.4MB O(nlogn) O(n)
+int largestPerimeter(vector<int>& nums) {
+	int res = 0;
+
+	sort(nums.begin(), nums.end());
+	for (int i = nums.size() - 1; i >= 2; i--)
 	{
-		if (isVowel(ch))
-			v.push_back(ch);
+		if (nums[i] < nums[i - 1] + nums[i - 2])
+			res = max(res, nums[i] + nums[i - 1] + nums[i - 2]);
 	}
 
-	if (v.empty())
-		return s;
-
-	sort(v.begin(), v.end());
-	int i = 0;
-	for (auto& ch : s)
-	{
-		if (isVowel(ch))
-			ch = v[i++];
-	}
-
-	return s;
+	return res;
 }
 
-// web 16ms real 21ms 10.9MB O(n) O(n)
-bool isVowel(char c)
-{
-	return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'
-		|| c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
-}
-string sortVowels(string s) {
-	int freq[128] = { 0 };
-	for (auto ch : s)
+// 26ms 22.4MB O(nlogn) O(n)
+int largestPerimeter(vector<int>& nums) {
+	int res = 0;
+
+	sort(nums.begin(), nums.end());
+	for (int i = nums.size() - 1; i >= 2; i--)
 	{
-		if (isVowel(ch))
-			freq[(int)ch]++;
+		// after the array is sorted, 3 last element is largest of array
+		// so if 3 element is a triangle, it's the largest perimeter
+		if (nums[i] < nums[i - 1] + nums[i - 2])
+			return nums[i] + nums[i - 1] + nums[i - 2]; 
+
 	}
 
-	int idx = 0;
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (isVowel(s[i]))
-		{
-			while (freq[idx] == 0)
-				idx++;
-			s[i] = (char)idx;
-			freq[idx]--;
-		}
-	}
-
-	return s;
+	return res;
 }
-
 
 int main() {
 	cout << boolalpha;

@@ -17,30 +17,17 @@
 
 using namespace std;
 
-// 15ms 16.3MB O(n) O(n)
-char nextGreatestLetter(vector<char>& letters, char target) {
-	for (auto ch : letters)
+// 0ms 9.3MB O(n) O(floor(3/2*(n-1))
+int countElements(vector<int>& nums) {
+	auto [nMin, nMax] = minmax_element(nums.begin(), nums.end());
+	int count = 0;
+	for (auto& num : nums)
 	{
-		if (ch > target)
-			return ch;
+		if (num != *nMin && num != *nMax)
+			count++;
 	}
 
-	return letters[0]; 
-}
-
-// web 0ms real 13ms 16.2MB
-char nextGreatestLetter(vector<char>& letters, char target) {
-	vector<int> alphabets(26, 0);
-	for (int i = 0; i < letters.size(); i++)
-	{
-		alphabets[letters[i] - 'a']++;
-	}
-	int index = (target - 'a' + 1) % 26;
-	while (alphabets[index] == 0)
-	{
-		index = (index + 1) % 26;
-	}
-	return index + 'a';
+	return count;
 }
 
 int main() {

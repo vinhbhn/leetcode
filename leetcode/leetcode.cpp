@@ -17,46 +17,63 @@
 
 using namespace std;
 
-// 11ms 9.4MB O(k+n) O(k*n), n = g.size()
-long long pickGifts(vector<int>& g, int k) {
-	long long res = 0;
-
-	for (int i = 0; i < k; i++)
+// 43ms 12.3MB O(nlogn) O(n)
+bool isVowel(char c)
+{
+	return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'
+		|| c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
+}
+string sortVowels(string s) {
+	vector<char> v;
+	for (auto ch : s)
 	{
-		auto m = max_element(g.begin(), g.end());
-		*m = sqrt(*m);
+		if (isVowel(ch))
+			v.push_back(ch);
 	}
 
-	for (auto num : g)
-		res += num;
+	if (v.empty())
+		return s;
 
-	return res;
-}
-
-// 15ms 9.7MB
-long long pickGifts(vector<int>& g, int k) {
-	for (int i = 0; i < k; i++)
+	sort(v.begin(), v.end());
+	int i = 0;
+	for (auto& ch : s)
 	{
-		auto m = max_element(g.begin(), g.end());
-		*m = sqrt(*m);
+		if (isVowel(ch))
+			ch = v[i++];
 	}
 
-	return accumulate(g.begin(), g.end(), 0ll);
+	return s;
 }
 
-// web 0ms real 3ms 9.6MB
-long long pickGifts(vector<int>& g, int k) {
-	make_heap(g.begin(), g.end());
-	for (int i = 0; i < k; i++)
+// web 16ms real 21ms 10.9MB O(n) O(n)
+bool isVowel(char c)
+{
+	return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'
+		|| c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
+}
+string sortVowels(string s) {
+	int freq[128] = { 0 };
+	for (auto ch : s)
 	{
-		int value = sqrt(g[0]);
-		pop_heap(g.begin(), g.end());
-		g.back() = value;
-		push_heap(g.begin(), g.end());
+		if (isVowel(ch))
+			freq[(int)ch]++;
 	}
 
-	return accumulate(g.begin(), g.end(), 0ll);
+	int idx = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (isVowel(s[i]))
+		{
+			while (freq[idx] == 0)
+				idx++;
+			s[i] = (char)idx;
+			freq[idx]--;
+		}
+	}
+
+	return s;
 }
+
 
 int main() {
 	cout << boolalpha;

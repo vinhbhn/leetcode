@@ -17,19 +17,33 @@
 
 using namespace std;
 
-int countOperations(int num1, int num2) {
-	int count = 0;
-	while (num1 > 0 && num2 > 0)
+// 3ms 8.7MB O(n) O(n)
+int calPoints(vector<string>& operations) {
+	vector<int> v;
+	for (auto& ch : operations)
 	{
-		if (num1 > num2)
-			num1 -= num2;
+		if (ch == "C")
+		{
+			if (!v.empty())
+				v.pop_back();
+		}
+		else if (ch == "D")
+		{
+			int temp = v.back();
+			v.push_back(2 * temp);
+		}
+		else if (ch == "+")
+		{
+			if (v.size() >= 2)
+				v.push_back(v[v.size() - 1] + v[v.size() - 2]);
+			else
+				v.push_back(v[0]);
+		}
 		else
-			num2 -= num1;
-
-		count++;
+			v.push_back(stoi(ch));
 	}
 
-	return count;
+	return accumulate(v.begin(), v.end(), 0);
 }
 
 int main() {

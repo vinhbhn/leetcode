@@ -17,33 +17,18 @@
 
 using namespace std;
 
-// 3ms 8.7MB O(n) O(n)
-int calPoints(vector<string>& operations) {
-	vector<int> v;
-	for (auto& ch : operations)
+// 3ms 8.9MB O(n)
+int numOfStrings(vector<string>& patterns, string word) {
+	int count = 0;
+	for (auto& p : patterns)
 	{
-		if (ch == "C")
+		if (word.find(p) != string::npos)
 		{
-			if (!v.empty())
-				v.pop_back();
+			count++;
 		}
-		else if (ch == "D")
-		{
-			int temp = v.back();
-			v.push_back(2 * temp);
-		}
-		else if (ch == "+")
-		{
-			if (v.size() >= 2)
-				v.push_back(v[v.size() - 1] + v[v.size() - 2]);
-			else
-				v.push_back(v[0]);
-		}
-		else
-			v.push_back(stoi(ch));
 	}
 
-	return accumulate(v.begin(), v.end(), 0);
+	return count;
 }
 
 int main() {

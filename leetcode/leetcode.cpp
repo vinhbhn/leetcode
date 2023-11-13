@@ -17,23 +17,19 @@
 
 using namespace std;
 
-int numberOfSteps(int num) {
-	int step = 0;
-	while (num)
+int countOperations(int num1, int num2) {
+	int count = 0;
+	while (num1 > 0 && num2 > 0)
 	{
-		if (num % 2 == 0)
-		{
-			num /= 2;
-			step++;
-		}
+		if (num1 > num2)
+			num1 -= num2;
 		else
-		{
-			num--;
-			step++;
-		}
+			num2 -= num1;
+
+		count++;
 	}
 
-	return step;
+	return count;
 }
 
 int main() {

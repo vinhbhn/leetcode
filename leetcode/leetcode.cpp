@@ -17,21 +17,39 @@
 
 using namespace std;
 
-// 72ms 51.6MB O(nlogn) O(n)
-int maximumElementAfterDecrementingAndRearranging(vector<int>& arr) {
-	// sort and check arr[0] == 1
-	sort(arr.begin(), arr.end());
-	arr[0] = 1;
+// 6ms 10.6MB O(n) O(logn)
+vector<string> findRelativeRanks(vector<int>& score) {
+	vector<string> res(score.size(), "");
 
-	// The absolute difference between any 2 adjacent elements must be less than or equal to 1.
-	// Decrease the value of any element of arr to a smaller positive integer if it's not meet the above condition.
-	for (int i = 1; i < arr.size(); i++)
+	priority_queue<pair<int, int>> pq;
+	for (int i = 0; i < score.size(); i++)
+		pq.push({ score[i],i });
+
+	int count = 0;
+	while (!pq.empty())
 	{
-		if (abs(arr[i] - arr[i - 1]) > 1)
-			arr[i] = arr[i - 1] + 1;
+		count++;
+		int i = pq.top().second;
+		switch (count)
+		{
+		case 1: 
+			res[i] = "Gold Medal";
+			break;
+		case 2:
+			res[i] = "Silver Medal";
+			break;
+		case 3: 
+			res[i] = "Bronze Medal";
+			break;
+		default:
+			res[i] = to_string(count);
+			break;
+		}
+
+		pq.pop();
 	}
 
-	return arr.back();
+	return res;
 }
 
 int main() {

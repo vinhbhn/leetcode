@@ -17,40 +17,37 @@
 
 using namespace std;
 
-// 6ms 10.6MB O(n) O(logn)
-vector<string> findRelativeRanks(vector<int>& score) {
-	vector<string> res(score.size(), "");
+// 3ms 10.5MB O(2^n) O(n)
+string findDifferentBinaryString(vector<string>& nums) {
+	int n = nums.size();
 
-	priority_queue<pair<int, int>> pq;
-	for (int i = 0; i < score.size(); i++)
-		pq.push({ score[i],i });
+	int m = pow(2, n); // max, eg: with nums.size() = 3, so it has 2^3 possible string;
+	// from bit_min = "000" to bit_max = "111" 
 
-	int count = 0;
-	while (!pq.empty())
+	for (int i = 0; i < m; i++)
 	{
-		count++;
-		int i = pq.top().second;
-		switch (count)
-		{
-		case 1: 
-			res[i] = "Gold Medal";
-			break;
-		case 2:
-			res[i] = "Silver Medal";
-			break;
-		case 3: 
-			res[i] = "Bronze Medal";
-			break;
-		default:
-			res[i] = to_string(count);
-			break;
-		}
-
-		pq.pop();
+		bitset<16> b_temp(i);
+		string temp = b_temp.to_string().substr(16 - n, n);
+		if (find(nums.begin(), nums.end(), temp) == nums.end())
+			return temp;
 	}
 
-	return res;
+	return "";
 }
+
+//https://leetcode.com/problems/find-unique-binary-string/solutions/4292653/beats-100-explained-with-video-simplest-solution-2-3-lines-visualized-too/?envType=daily-question&envId=2023-11-16
+// 3ms 10.4MB O(n) O(n)
+string findDifferentBinaryString(vector<string>& nums) {
+	string result;
+
+	for (int i = 0; i < nums.size(); i++)
+	{
+		result += (nums[i][i] == '0' ? '1' : '0');
+	}
+
+	return result;
+}
+
 
 int main() {
 	cout << boolalpha;

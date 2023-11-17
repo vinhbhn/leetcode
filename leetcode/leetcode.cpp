@@ -17,35 +17,71 @@
 
 using namespace std;
 
-// 3ms 10.5MB O(2^n) O(n)
-string findDifferentBinaryString(vector<string>& nums) {
-	int n = nums.size();
+// 191ms 96.7MB O(nlogn) O(logn)
+int minPairSum(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
 
-	int m = pow(2, n); // max, eg: with nums.size() = 3, so it has 2^3 possible string;
-	// from bit_min = "000" to bit_max = "111" 
-
-	for (int i = 0; i < m; i++)
+	int first = 0, last = nums.size() - 1, maxV = 0, value = 0;
+	vector<int> res;
+	while (first < last)
 	{
-		bitset<16> b_temp(i);
-		string temp = b_temp.to_string().substr(16 - n, n);
-		if (find(nums.begin(), nums.end(), temp) == nums.end())
-			return temp;
+		maxV = max(maxV, nums[first] + nums[last]);
+
+		first++;
+		last--;
 	}
 
-	return "";
+	return maxV;
 }
 
-//https://leetcode.com/problems/find-unique-binary-string/solutions/4292653/beats-100-explained-with-video-simplest-solution-2-3-lines-visualized-too/?envType=daily-question&envId=2023-11-16
-// 3ms 10.4MB O(n) O(n)
-string findDifferentBinaryString(vector<string>& nums) {
-	string result;
+//https://leetcode.com/problems/minimize-maximum-pair-sum-in-array/solutions/4296726/more-than-one-way-detail-explanation-java-c-python-javascript-c/?envType=daily-question&envId=2023-11-17
+// 136ms 113.3 MB
+int minPairSum(vector<int>& nums) {
+	int maxSum = INT_MIN; // Variable to store the minimized maximum pair sum
+	int minNum = INT_MAX; // Variable to store the minimum number in the array
+	int maxNum = INT_MIN; // Variable to store the maximum number in the array
 
-	for (int i = 0; i < nums.size(); i++)
+	vector<int> freq(100001, 0); // Vector to store the frequency of each number in the array
+
+	// Iterate through the array to populate frequency vector and find min and max number
+	for (int num : nums)
 	{
-		result += (nums[i][i] == '0' ? '1' : '0');
+		freq[num]++;
+		minNum = min(minNum, num);
+		maxNum = max(maxNum, num);
 	}
 
-	return result;
+	// Initialize pointers for two numbers to form pairs
+	int low = minNum;
+	int high = maxNum;
+	
+	// Iterate while low pointers is less than or equal to high pointer
+	while (low <= high)
+	{
+		// If frequency of the number at low pointer is zero, move low pointer to the right
+		if (freq[low] == 0)
+			low++;
+		else if(freq[high] == 0)
+		{
+			// If frequency of the number at high pointer is zero, move high pointer to the left
+			high--;
+		}
+		else
+		{
+			// Both low and high pointers point to valid numbers
+			
+			// Calculate the sum of the pair at the current pointers
+			int currentPairSum = low + high;
+			// Update maxSum if the current pair sum is greater
+			maxSum = max(maxSum, currentPairSum);
+			// Decrese the frequency of the numbers at low and high pointers
+			freq[low]--;
+			freq[high]--;
+
+		}
+	}
+
+	return maxSum; 
 }
 
 

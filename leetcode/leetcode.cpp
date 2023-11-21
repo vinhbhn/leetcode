@@ -41,6 +41,8 @@ int countNicePairs(vector<int>& nums) {
 		if (mp.contains(nums[i]))
 			count += mp[nums[i]];
 
+		// equal count * (count - 1) / 2
+		// each i if nums[i] in the map, reverse method above
 		mp[nums[i]]++;
 	}
 

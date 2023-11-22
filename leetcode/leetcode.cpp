@@ -17,50 +17,95 @@
 
 using namespace std;
 
-// 96ms 184.65MB
-class MyHashSet {
-public:
-    vector<int> v;
-
-    MyHashSet() {
-        v.resize(1e6 + 1, 0);
-    }
-
-    void add(int key) {
-        v[key] = 1;
-    }
-
-    void remove(int key) {
-        v[key] = 0;
-    }
-
-    bool contains(int key) {
-        return (v[key] == 1);
-    }
-};
-
-// 59ms 44MB
-class MyHashSet {
+// too slow
+class MyHashMap {
 private:
-    vector<bool> v;
-
+	vector<vector<int>> v;
 public:
-    MyHashSet() {
-        v.resize(1e6 + 1, false);
-    }
+	MyHashMap() {
+		v.resize(1e6 + 1, { 0,0 });
+	}
 
-    void add(int key) {
-        v[key] = true;
-    }
+	void put(int key, int value) {
+		v[key] = { key, value };
+	}
 
-    void remove(int key) {
-        v[key] = false;
-    }
+	int get(int key) {
+		return (v[key][0] > 0) ? v[key][1] : -1; // return value or -1
+	}
 
-    bool contains(int key) {
-        return (v[key] == true);
-    }
+	void remove(int key) {
+		v[key] = { 0,0 };
+	}
 };
+
+// 156ms 313.1MB my overthinking
+class MyHashMap {
+private:
+	vector<pair<bool, int>> v;
+public:
+	MyHashMap() {
+		v.resize(1e6 + 1, { false,0 });
+	}
+
+	void put(int key, int value) {
+		v[key] = { true, value };
+	}
+
+	int get(int key) {
+		return (v[key].first == true) ? v[key].second : -1; // return value or -1
+	}
+
+	void remove(int key) {
+		v[key] = { false,0 };
+	}
+};
+
+// 156ms 313.1MB
+class MyHashMap {
+private:
+	vector<pair<bool, int>> v;
+public:
+	MyHashMap() {
+		v.resize(1e6 + 1, { false, -1 });
+	}
+
+	void put(int key, int value) {
+		v[key] = { true, value };
+	}
+
+	int get(int key) {
+		return v[key].second; // return value or -1
+	}
+
+	void remove(int key) {
+		v[key] = { false, -1 };
+	}
+};
+
+//https://leetcode.com/problems/design-hashmap/solutions/4126960/c-easy-o-n-solution-day-4-daily-challenge/
+// 119ms 212.9MB
+class MyHashMap {
+private:
+	vector<int> v;
+public:
+	MyHashMap() {
+		v.resize(1e6 + 1, -1);
+	}
+
+	void put(int key, int value) {
+		v[key] = value;
+	}
+
+	int get(int key) {
+		return v[key]; // return value or -1
+	}
+
+	void remove(int key) {
+		v[key] = -1;
+	}
+};
+
 
 
 int main() {

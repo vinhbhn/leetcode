@@ -17,96 +17,39 @@
 
 using namespace std;
 
-// too slow
-class MyHashMap {
-private:
-	vector<vector<int>> v;
-public:
-	MyHashMap() {
-		v.resize(1e6 + 1, { 0,0 });
+// https://leetcode.com/problems/first-bad-version/solutions/4109901/c-solution-with-explanation/
+// 2ms 6.3MB
+int firstBadVersion(int n) {
+	long l = 1, h = n, m = 1;
+	while (l <= h)
+	{
+		m = l + (h - l) / 2;
+		if (!isBadVersion(m))
+			l = m + 1;
+		else
+		{
+			if ((m - 1 >= 0) && !isBadVersion(m - 1)) // m > 0 && the version before mid is false so mid is the first bad version
+				return m;
+			
+			h = m - 1;
+		}
 	}
 
-	void put(int key, int value) {
-		v[key] = { key, value };
+	return m;
+}
+
+
+22 / 24
+int firstBadVersion(int n) {
+
+	for (int i = 1; i <= n; i++)
+	{
+		if (isBadVersion(i))
+			return i;
 	}
 
-	int get(int key) {
-		return (v[key][0] > 0) ? v[key][1] : -1; // return value or -1
-	}
-
-	void remove(int key) {
-		v[key] = { 0,0 };
-	}
-};
-
-// 156ms 313.1MB my overthinking
-class MyHashMap {
-private:
-	vector<pair<bool, int>> v;
-public:
-	MyHashMap() {
-		v.resize(1e6 + 1, { false,0 });
-	}
-
-	void put(int key, int value) {
-		v[key] = { true, value };
-	}
-
-	int get(int key) {
-		return (v[key].first == true) ? v[key].second : -1; // return value or -1
-	}
-
-	void remove(int key) {
-		v[key] = { false,0 };
-	}
-};
-
-// 156ms 313.1MB
-class MyHashMap {
-private:
-	vector<pair<bool, int>> v;
-public:
-	MyHashMap() {
-		v.resize(1e6 + 1, { false, -1 });
-	}
-
-	void put(int key, int value) {
-		v[key] = { true, value };
-	}
-
-	int get(int key) {
-		return v[key].second; // return value or -1
-	}
-
-	void remove(int key) {
-		v[key] = { false, -1 };
-	}
-};
-
-//https://leetcode.com/problems/design-hashmap/solutions/4126960/c-easy-o-n-solution-day-4-daily-challenge/
-// 119ms 212.9MB
-class MyHashMap {
-private:
-	vector<int> v;
-public:
-	MyHashMap() {
-		v.resize(1e6 + 1, -1);
-	}
-
-	void put(int key, int value) {
-		v[key] = value;
-	}
-
-	int get(int key) {
-		return v[key]; // return value or -1
-	}
-
-	void remove(int key) {
-		v[key] = -1;
-	}
-};
-
-
+	return 0;
+}
 
 int main() {
 	cout << boolalpha;

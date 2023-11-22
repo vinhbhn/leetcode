@@ -17,42 +17,29 @@
 
 using namespace std;
 
-// 104ms 57.5MB O(n) O(logn)
-int rev(int num)
-{
-	int res = 0;
-	while (num)
+int guessNumber(int n) {
+	int left = 1;
+	int right = n;
+
+	while (left <= right)
 	{
-		res = res * 10 + num % 10;
-		num /= 10;
+		int mid = left + (right - left) / 2;
+		int guessing = guess(mid);
+
+		if (guessing == 0)
+			return mid;
+		else if (guessing == -1)
+			right = mid - 1;
+		else
+			left = mid + 1;
+
 	}
 
-	return res;
-}
-int countNicePairs(vector<int>& nums) {
-	long count = 0;
-	unordered_map<int, long> mp;
-
-	// inplace nums[i] - rev(nums[i]) then count a pair equal value (using map)
-	for (int i = 0; i < nums.size(); i++)
-	{
-		nums[i] -= rev(nums[i]);
-
-		if (mp.contains(nums[i]))
-			count += mp[nums[i]];
-
-		// equal count * (count - 1) / 2
-		// each i if nums[i] in the map, reverse method above
-		mp[nums[i]]++;
-	}
-
-	return static_cast<int>(count % (1000000007));
-}
+	return -1;
+}}
 
 int main() {
 	cout << boolalpha;
-
-	cout << rev(12) << '\n';
 
 	return 0;
 }

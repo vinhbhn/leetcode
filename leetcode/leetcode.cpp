@@ -17,38 +17,30 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/first-bad-version/solutions/4109901/c-solution-with-explanation/
-// 2ms 6.3MB
-int firstBadVersion(int n) {
-	long l = 1, h = n, m = 1;
-	while (l <= h)
+// 4ms 7.7MB O(n^2) O(n)
+int numberOfArithmeticSlices(vector<int>& nums) {
+	int n = nums.size();
+	if (n < 3)
+		return 0;
+
+	int count = 0;
+
+	for (int i = 0; i < n - 2; i++)
 	{
-		m = l + (h - l) / 2;
-		if (!isBadVersion(m))
-			l = m + 1;
-		else
+		int diff = nums[i + 1] - nums[i];
+		for (int j = i + 2; j < n; j++)
 		{
-			if ((m - 1 >= 0) && !isBadVersion(m - 1)) // m > 0 && the version before mid is false so mid is the first bad version
-				return m;
-			
-			h = m - 1;
+			// ex [1,2,3,4] if 3-2==diff (3 is arthmetic so 4-3==diff therefore 4 is arthmetic but not check all slice)
+			// bridging properties
+			if (nums[j] - nums[j - 1] == diff)
+				count++;
+			else
+				break;
 		}
+		
 	}
 
-	return m;
-}
-
-
-22 / 24
-int firstBadVersion(int n) {
-
-	for (int i = 1; i <= n; i++)
-	{
-		if (isBadVersion(i))
-			return i;
-	}
-
-	return 0;
+	return count;
 }
 
 int main() {

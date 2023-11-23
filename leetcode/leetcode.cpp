@@ -17,41 +17,22 @@
 
 using namespace std;
 
-// 36ms 36.5MB
-int findMaxConsecutiveOnes(vector<int>& nums) {
-	int count = (nums[0] == 1) ? 1 : 0;
-	int res = 0;
-	for (int i = 1; i < nums.size(); i++)
+// 0ms 7.1MB
+int maxPower(string s) {
+	int step = 0, res = 0;
+	for (int i = 1; i < s.length(); i++)
 	{
-		if (nums[i] == 1)
-			count++;
-		else
+		if (s[i] == s[i - 1])
 		{
-			res = max(res, count);
-			count = 0;
-		}
-	}
-
-	// last element in nums vector
-	res = max(res, count);
-	return res;
-}
-
-// 24ms 36.5MB O(n) O(n)
-int findMaxConsecutiveOnes(vector<int>& nums) {
-	int res = 0, count = 0;
-	for (int i = 0; i < nums.size(); i++)
-	{
-		if (nums[i] == 1)
-		{
-			count++;
-			res = max(res, count);
+			step++;
+			res = max(res, step);
 		}
 		else
-			count = 0;
+			step = 0;
+
 	}
 
-	return res;
+	return res + 1; // max step + 1
 }
 
 int main() {

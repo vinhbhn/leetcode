@@ -17,102 +17,41 @@
 
 using namespace std;
 
-// 128ms 176.5MB
-int longestContinuousSubstring(string s) {
-	vector<string> v;
-	string temp = string(1, s[0]);
-	for (int i = 1; i < s.length(); i++)
-	{
-		if (s[i] - 'a' - 1 == s[i - 1] - 'a')
-			temp += s[i];
-		else
-		{
-			v.push_back(temp); // maybe temp have s[i-1]
-
-			temp = s[i];
-		}
-	}
-	if (temp != "")
-		v.push_back(temp);
-
+// 36ms 36.5MB
+int findMaxConsecutiveOnes(vector<int>& nums) {
+	int count = (nums[0] == 1) ? 1 : 0;
 	int res = 0;
-	for (auto& x : v)
+	for (int i = 1; i < nums.size(); i++)
 	{
-		if (x.length() > res)
-			res = x.length();
-	}
-
-	return res; // max: 26
-}
-
-// 101ms 16.3MB due to remove duplicate string
-int longestContinuousSubstring(string s) {
-	unordered_set<string> st;
-	string temp = string(1, s[0]);
-	for (int i = 1; i < s.length(); i++)
-	{
-		if (s[i] - 'a' - 1 == s[i - 1] - 'a')
-			temp += s[i];
-		else
-		{
-			st.insert(temp); // maybe temp have one character is s[i-1]
-
-			temp = s[i]; // update temp to s[i], remove s[i-1]
-		}
-	}
-	if (temp != "")
-		st.insert(temp);
-
-	int res = 0;
-	for (auto& x : st)
-	{
-		if (x.length() > res)
-			res = x.length();
-	}
-
-	return res; // max: 26
-}
-
-// 62ms 15.7MB
-int longestContinuousSubstring(string s) {
-	string temp = string(1, s[0]);
-	int res = 0;
-	for (int i = 1; i < s.length(); i++)
-	{
-		if (s[i] - 'a' - 1 == s[i - 1] - 'a')
-			temp += s[i];
-		else
-		{
-			if (temp.length() > res)
-				res = temp.length();
-
-			temp = s[i]; // update temp to s[i], remove s[i-1]
-		}
-	}
-	if (temp != "" && temp.length() > res)
-		res = temp.length();
-
-	return res; // max: 26
-}
-
-// 41ms 15.9MB O(n) O(n)
-int longestContinuousSubstring(string s) {
-	int res = 0, count = 1; // because count always is 1 (s[i] == one character)
-	for (int i = 1; i < s.length(); i++)
-	{
-		if (s[i] - 1 == s[i - 1])
+		if (nums[i] == 1)
 			count++;
 		else
 		{
 			res = max(res, count);
-
-			count = 1; // because count always is 1 (s[i] == one character)
+			count = 0;
 		}
 	}
-	if (count > 0)
-		res = max(res, count);
 
-	return res; // max: 26
+	// last element in nums vector
+	res = max(res, count);
+	return res;
+}
+
+// 24ms 36.5MB O(n) O(n)
+int findMaxConsecutiveOnes(vector<int>& nums) {
+	int res = 0, count = 0;
+	for (int i = 0; i < nums.size(); i++)
+	{
+		if (nums[i] == 1)
+		{
+			count++;
+			res = max(res, count);
+		}
+		else
+			count = 0;
+	}
+
+	return res;
 }
 
 int main() {

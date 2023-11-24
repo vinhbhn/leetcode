@@ -17,22 +17,25 @@
 
 using namespace std;
 
-// 0ms 7.1MB
-int maxPower(string s) {
-	int step = 0, res = 0;
-	for (int i = 1; i < s.length(); i++)
+// 3ms 11.5MB 
+int diagonalSum(vector<vector<int>>& mat) {
+	int pri = 0, sec = 0;
+	int n = mat[0].size();
+	for (int row = 0, l = 0, r = n - 1; (row < n) && (l < n) && (r >= 0); row++, l++, r--)
 	{
-		if (s[i] == s[i - 1])
+		// center will add only one element
+		// if and only if the length of the matrix is odd
+		if (n % 2 == 1 && l == r)
 		{
-			step++;
-			res = max(res, step);
+			pri += mat[row][l];
+			continue;
 		}
-		else
-			step = 0;
 
+		pri += mat[row][l];
+		sec += mat[row][r];
 	}
 
-	return res + 1; // max step + 1
+	return pri + sec;
 }
 
 int main() {

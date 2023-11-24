@@ -131,6 +131,57 @@ bool checkValid(vector<vector<int>>& matrix) {
 	return true;
 }
 
+// web 63ms real 88ms 35.3MB
+bool checkValid(vector<vector<int>>& matrix) {
+	int n = matrix[0].size();
+
+	for (int i = 0; i < n; i++)
+	{
+		bitset<101> row;
+		bitset<101> col;
+
+		// check row
+		for (int j = 0; j < n; j++)
+		{
+			row[matrix[i][j]] = true;
+		}
+		if (row.count() < n)
+			return false;
+
+		// check col
+		for (int j = 0; j < n; j++)
+		{
+			col[matrix[j][i]] = true;
+		}
+		if (col.count() < n)
+			return false;
+	}
+
+	return true;
+}
+
+// web 63ms real 91ms 35.3MB
+bool checkValid(vector<vector<int>>& matrix) {
+	int n = matrix[0].size();
+
+	for (int i = 0; i < n; i++)
+	{
+		bitset<101> row;
+		bitset<101> col;
+
+		// check row
+		for (int j = 0; j < n; j++)
+		{
+			row[matrix[i][j]] = true;
+			col[matrix[j][i]] = true;
+		}
+		if (min(row.count(), col.count()) < n)
+			return false;
+	}
+
+	return true;
+}
+
 int main() {
 	cout << boolalpha;
 

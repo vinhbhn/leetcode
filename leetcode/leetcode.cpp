@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -17,170 +17,74 @@
 
 using namespace std;
 
-// 251ms 95.1MB
-bool checkValid(vector<vector<int>>& matrix) {
-	int n = matrix[0].size();
-
-	// check row
-	for (int row = 0; row < n; row++)
-	{
-		set<int> st;
-		for (int col = 0; col < n; col++)
-		{
-			st.insert(matrix[row][col]);
-		}
-		if (st.size() != n)
-			return false;
-	}
-
-	// check col
-	for (int col = 0; col < n; col++)
-	{
-		set<int> st;
-		for (int row = 0; row < n; row++)
-		{
-			st.insert(matrix[row][col]);
-		}
-		if (st.size() != n)
-			return false;
-	}
-
-	return true;
+// brute force 42/59
+// anwendeng formula idea in comment: result[i] = total with (j>i) of (aJ-aI) + total with (j<i) of (aI-aJ)
+int prefix(vector<int> v, int i)
+{
+	return accumulate(v.begin(), v.begin() + i, 0);
 }
-
-// 217ms 68.7MB
-bool checkValid(vector<vector<int>>& matrix) {
-	int n = matrix[0].size();
-	unordered_set<int> st;
-
-	// check row
-	for (int row = 0; row < n; row++)
-	{
-		st.clear();
-		for (int col = 0; col < n; col++)
-		{
-			st.insert(matrix[row][col]);
-		}
-		if (st.size() != n)
-			return false;
-	}
-
-	// check col
-	for (int col = 0; col < n; col++)
-	{
-		st.clear();
-		for (int row = 0; row < n; row++)
-		{
-			st.insert(matrix[row][col]);
-		}
-		if (st.size() != n)
-			return false;
-	}
-
-	return true;
+int suffix(vector<int> v, int i)
+{
+	return accumulate(v.begin() + i + 1, v.end(), 0);
 }
-
-// 83ms 35.7MB
-bool checkValid(vector<vector<int>>& matrix) {
-	int n = matrix[0].size();
+vector<int> getSumAbsoluteDifferences(vector<int>& nums) {
+	int n = nums.size();
+	vector<int> res(n, 0);
 
 	for (int i = 0; i < n; i++)
 	{
-		vector<bool> r(n, false);
-		vector<bool> c(n, false);
+		// total with (j<i) of (aI-aJ)
+		int left = 0;
+		if (i > 0)
+			left = nums[i] * i - prefix(nums, i);
 
-		// check row
-		for (int j = 0; j < n; j++)
-		{
-			r[matrix[i][j] - 1] = true;
-		}
-		if (count(r.begin(), r.end(), true) != n)
-			return false;
+		// total with (j>i) of(aJ - aI)
+		int right = suffix(nums, i) - nums[i] * (n - i - 1);
 
-		// check col
-		for (int j = 0; j < n; j++)
-		{
-			c[matrix[j][i] - 1] = true;
-		}
-		if (count(c.begin(), c.end(), true) != n)
-			return false;
+		res[i] = left + right;
 	}
 
-	return true;
+	return res;
 }
 
-// 100ms 35.7MB
-bool checkValid(vector<vector<int>>& matrix) {
-	int n = matrix[0].size();
+//https://leetcode.com/problems/sum-of-absolute-differences-in-a-sorted-array/solutions/4326597/beats-100-explained-with-video-two-pointers-visualized-too/?envType=daily-question&envId=2023-11-25
+// 98ms 83.5MB O(n) O(n)
+vector<int> getSumAbsoluteDifferences(vector<int>& nums) {
+	int sum = accumulate(nums.begin(), nums.end(), 0);
+	int left = 0, right = sum, n = nums.size();
 
+	vector<int> res(n, 0);
 	for (int i = 0; i < n; i++)
 	{
-		vector<bool> rowCheck(n, false);
-		vector<bool> colCheck(n, false);
+		right -= nums[i];
 
-		// check row
-		for (int j = 0; j < n; j++)
-		{
-			rowCheck[matrix[i][j] - 1] = true; // check row
-			colCheck[matrix[j][i] - 1] = true; // check col
-		}
-		if (count(rowCheck.begin(), rowCheck.end(), true) != n || count(colCheck.begin(), colCheck.end(), true) != n)
-			return false;
+		res[i] = nums[i] * i - left + right - nums[i] * (n - i - 1);
+
+		left += nums[i];
 	}
 
-	return true;
+	return res;
 }
 
-// web 63ms real 88ms 35.3MB
-bool checkValid(vector<vector<int>>& matrix) {
-	int n = matrix[0].size();
-
+// web 52ms real 92ms 83.5MB O(n) O(n)
+vector<int> getSumAbsoluteDifferences(vector<int>& nums) 
+{
+	int n = nums.size(), pre = 0;
 	for (int i = 0; i < n; i++)
 	{
-		bitset<101> row;
-		bitset<101> col;
+		int now = nums[i];
 
-		// check row
-		for (int j = 0; j < n; j++)
-		{
-			row[matrix[i][j]] = true;
-		}
-		if (row.count() < n)
-			return false;
+		if (i != 0)
+			nums[i] = nums[i - 1] + (i - 1 - (n - i - 1)) * (nums[i] - pre);
+		else
+			nums[i] = accumulate(nums.begin() + 1, nums.end(), 0) - nums[i] * (n - 1);
 
-		// check col
-		for (int j = 0; j < n; j++)
-		{
-			col[matrix[j][i]] = true;
-		}
-		if (col.count() < n)
-			return false;
+		pre = now;
 	}
 
-	return true;
+	return nums;
 }
 
-// web 63ms real 91ms 35.3MB
-bool checkValid(vector<vector<int>>& matrix) {
-	int n = matrix[0].size();
-
-	for (int i = 0; i < n; i++)
-	{
-		bitset<101> row;
-		bitset<101> col;
-
-		// check row
-		for (int j = 0; j < n; j++)
-		{
-			row[matrix[i][j]] = true;
-			col[matrix[j][i]] = true;
-		}
-		if (min(row.count(), col.count()) < n)
-			return false;
-	}
-
-	return true;
-}
 
 int main() {
 	cout << boolalpha;

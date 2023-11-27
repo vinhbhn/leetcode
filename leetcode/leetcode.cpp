@@ -17,46 +17,43 @@
 
 using namespace std;
 
-// 2ms 6.7MB
-//int maxRepeating(string sequence, string word) {
-//	string w = word;
-//	int k = 0;
-//	while (word.length() <= sequence.length())
-//	{
-//		if (sequence.find(word) != string::npos)
-//			k++;
-//		else
-//			break;
-//
-//		word += w;
-//	}
-//
-//	return k;
-//}
-
-// 1ms
-int maxRepeating(string sequence, string word) {
-	string w = word;
-	int k = 0;
-	while (sequence.find(word) != string::npos)
+// 3ms 7.2MB
+bool allCharInRow(string& s, string &rowKey)
+{
+	for (int i = 1; i < s.length(); i++)
 	{
-		k++;
-		word += w;
+		if (rowKey.find(s[i]) == string::npos)
+			return false;
 	}
 
-	return k;
+	return true;
+}
+vector<string> findWords(vector<string>& words) {
+	string first = "qwertyuiopQWERTYUIOP", second = "asdfghjklASDFGHJKL", third = "zxcvbnmZXCVBNM";
+
+	vector<string> res;
+	for (auto& word : words)
+	{
+		// take first character to locate it in the first, second or third row
+		char it = word[0];
+		string temp = "";
+		if (first.find(it) != string::npos)
+			temp = first;
+		else if (second.find(it) != string::npos)
+			temp = second;
+		else
+			temp = third;
+
+		if (allCharInRow(word, temp))
+			res.push_back(word);
+	}
+
+	return res;
 }
 
 int main() {
 	cout << boolalpha;
-	string sequence = "ababc", word = "ac";
-	cout << maxRepeating(sequence, word) << '\n';
 
-	sequence = "ababc", word = "ab";
-	cout << maxRepeating(sequence, word) << '\n';
-
-	sequence = "ababc", word = "ba";
-	cout << maxRepeating(sequence, word) << '\n';
 
 	return 0;
 }

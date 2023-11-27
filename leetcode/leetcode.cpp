@@ -17,26 +17,46 @@
 
 using namespace std;
 
-//https://leetcode.com/problems/detect-pattern-of-length-m-repeated-k-or-more-times/solutions/819361/simple-c-solution-0ms-100-fast/
-// 0ms 8.4MB 
-bool containsPattern(vector<int>& arr, int m, int k) {
-	int count = 0;
-	for (int i = 0; i + m < arr.size(); i++)
-	{
-		if (arr[i] != arr[i + m])
-			count = 0;
+// 2ms 6.7MB
+//int maxRepeating(string sequence, string word) {
+//	string w = word;
+//	int k = 0;
+//	while (word.length() <= sequence.length())
+//	{
+//		if (sequence.find(word) != string::npos)
+//			k++;
+//		else
+//			break;
+//
+//		word += w;
+//	}
+//
+//	return k;
+//}
 
-		count += (arr[i] == arr[i + m]);
-		if (count == (k - 1) * m)
-			return true;
+// 1ms
+int maxRepeating(string sequence, string word) {
+	string w = word;
+	int k = 0;
+	while (sequence.find(word) != string::npos)
+	{
+		k++;
+		word += w;
 	}
 
-	return false;
+	return k;
 }
-
 
 int main() {
 	cout << boolalpha;
+	string sequence = "ababc", word = "ac";
+	cout << maxRepeating(sequence, word) << '\n';
+
+	sequence = "ababc", word = "ab";
+	cout << maxRepeating(sequence, word) << '\n';
+
+	sequence = "ababc", word = "ba";
+	cout << maxRepeating(sequence, word) << '\n';
 
 	return 0;
 }

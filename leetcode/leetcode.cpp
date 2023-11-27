@@ -17,48 +17,23 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/knight-dialer/solutions/4333888/beats-100-explained-with-video-memorization-visualized-too/?envType=daily-question&envId=2023-11-27
-//41ms 8.5MB O(n*10) O(n*10)
-class Solution {
-public:
-    static const int mod = 1e9 + 7;
-    vector<vector<int>> MOVES = {
-    {4, 6},
-    {8, 6},
-    {7, 9},
-    {4, 8},
-    {3, 9, 0},
-    {},
-    {0, 1, 7},
-    {2, 6},
-    {1, 3},
-    {2, 4},
-    };
+//https://leetcode.com/problems/detect-pattern-of-length-m-repeated-k-or-more-times/solutions/819361/simple-c-solution-0ms-100-fast/
+// 0ms 8.4MB 
+bool containsPattern(vector<int>& arr, int m, int k) {
+	int count = 0;
+	for (int i = 0; i + m < arr.size(); i++)
+	{
+		if (arr[i] != arr[i + m])
+			count = 0;
 
-    int cache[5001][10];
+		count += (arr[i] == arr[i + m]);
+		if (count == (k - 1) * m)
+			return true;
+	}
 
-    int knightDialer(int n) {
-        vector<int> nextNumbers = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        return knightDialer(n, nextNumbers);
-    }
+	return false;
+}
 
-    int knightDialer(int remaining, vector<int>& nextNumbers) {
-        if (remaining == 1)
-            return nextNumbers.size();
-
-        int count = 0;
-        for (int nextNumber : nextNumbers) {
-            int cur = cache[remaining][nextNumber];
-            if (cur == 0) {
-                cur = knightDialer(remaining - 1, MOVES[nextNumber]);
-                cache[remaining][nextNumber] = cur;
-            }
-            count += cur;
-            count %= mod;
-        }
-        return count;
-    }
-};
 
 int main() {
 	cout << boolalpha;

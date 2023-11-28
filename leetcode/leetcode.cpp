@@ -17,38 +17,78 @@
 
 using namespace std;
 
-// 3ms 7.2MB
-bool allCharInRow(string& s, string &rowKey)
-{
-	for (int i = 1; i < s.length(); i++)
+// 37ms 16.8MB
+bool checkXMatrix(vector<vector<int>>& grid) {
+	// odd: 2n - 1, even: 2n
+	// other elements are 0
+	int n = grid.size(), row = n - 1;
+	int total = n * n, count0 = 0;
+
+	// check two diagnoals are non-zero
+	for (int i = 0; i < n; i++)
 	{
-		if (rowKey.find(s[i]) == string::npos)
+		for (int j = 0; j < n; j++)
+		{
+			if (grid[i][j] == 0)
+				count0++;
+		}
+
+		// left diagnoals
+		if (grid[i][i] == 0)
 			return false;
+
+		// right diagnoals
+		if (grid[row][i] == 0)
+			return false;
+		else
+			row--;
+	}
+
+	return (n % 2 == 0) ? (total - count0 == 2 * n) : (total - count0 == 2 * n - 1);
+}
+
+// 15ms 16.7MB
+bool checkXMatrix(vector<vector<int>>& grid) {
+	// odd: 2n - 1, even: 2n
+	// other elements are 0
+	int n = grid.size();
+	int total = n * n, count0 = 0;
+
+	// check two diagnoals are non-zero
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (i == j && grid[i][j] == 0)
+				return false;
+			else if (i == n - 1 - j && grid[i][j] == 0)
+				return false;
+			else if (grid[i][j] == 0)
+				count0++;
+		}
+	}
+
+	return (n % 2 == 0) ? (total - count0 == 2 * n) : (total - count0 == 2 * n - 1);
+}
+
+// web 14ms real 24ms 16.8MB
+bool checkXMatrix(vector<vector<int>>& grid) {
+	int n = grid.size();
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			// check two diagnoals are non-zero
+			if ((i == j or i == n - 1 - j) and grid[i][j] == 0)
+				return false;
+			// other elements are 0
+			if (i != j and i != n - 1 - j and grid[i][j] != 0)
+				return false;
+		}
 	}
 
 	return true;
-}
-vector<string> findWords(vector<string>& words) {
-	string first = "qwertyuiopQWERTYUIOP", second = "asdfghjklASDFGHJKL", third = "zxcvbnmZXCVBNM";
-
-	vector<string> res;
-	for (auto& word : words)
-	{
-		// take first character to locate it in the first, second or third row
-		char it = word[0];
-		string temp = "";
-		if (first.find(it) != string::npos)
-			temp = first;
-		else if (second.find(it) != string::npos)
-			temp = second;
-		else
-			temp = third;
-
-		if (allCharInRow(word, temp))
-			res.push_back(word);
-	}
-
-	return res;
 }
 
 int main() {

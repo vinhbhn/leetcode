@@ -18,40 +18,22 @@
 using namespace std;
 
 // 0ms 6.3MB
-bool hasAlternatingBits(int n) {
-	string b = "";
-	while (n)
-	{
-		b += char(n % 2);
-		n /= 2;
-	}
-
-	reverse(b.begin(), b.end());
-
-	for (int i = 1; i < b.length(); i++)
-	{
-		if (b[i] == b[i - 1])
-			return false;
-	}
-
-	return true;
+int hammingDistance(int x, int y) {
+	bitset<32> res(x ^ y);
+	return res.count();
 }
 
-// web 2ms real 0ms 6.2MB
-bool hasAlternatingBits(int n) {
-	int prev = -1;
-
-	while (n)
+// 0ms 6.3MB
+int hammingDistance(int x, int y) {
+	int count = 0;
+	while (x || y)
 	{
-		int last_bit = n & 1;
-		if (last_bit == prev)
-			return false;
-
-		n >>= 1;
-		prev = last_bit;
+		if ((x & 1) != (y & 1))
+			count++;
+		x >>= 1;
+		y >>= 1;
 	}
-
-	return true;
+	return count;
 }
 
 int main() {

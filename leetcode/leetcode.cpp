@@ -17,75 +17,38 @@
 
 using namespace std;
 
-// 37ms 16.8MB
-bool checkXMatrix(vector<vector<int>>& grid) {
-	// odd: 2n - 1, even: 2n
-	// other elements are 0
-	int n = grid.size(), row = n - 1;
-	int total = n * n, count0 = 0;
-
-	// check two diagnoals are non-zero
-	for (int i = 0; i < n; i++)
+// 0ms 6.3MB
+bool hasAlternatingBits(int n) {
+	string b = "";
+	while (n)
 	{
-		for (int j = 0; j < n; j++)
-		{
-			if (grid[i][j] == 0)
-				count0++;
-		}
-
-		// left diagnoals
-		if (grid[i][i] == 0)
-			return false;
-
-		// right diagnoals
-		if (grid[row][i] == 0)
-			return false;
-		else
-			row--;
+		b += char(n % 2);
+		n /= 2;
 	}
 
-	return (n % 2 == 0) ? (total - count0 == 2 * n) : (total - count0 == 2 * n - 1);
-}
+	reverse(b.begin(), b.end());
 
-// 15ms 16.7MB
-bool checkXMatrix(vector<vector<int>>& grid) {
-	// odd: 2n - 1, even: 2n
-	// other elements are 0
-	int n = grid.size();
-	int total = n * n, count0 = 0;
-
-	// check two diagnoals are non-zero
-	for (int i = 0; i < n; i++)
+	for (int i = 1; i < b.length(); i++)
 	{
-		for (int j = 0; j < n; j++)
-		{
-			if (i == j && grid[i][j] == 0)
-				return false;
-			else if (i == n - 1 - j && grid[i][j] == 0)
-				return false;
-			else if (grid[i][j] == 0)
-				count0++;
-		}
+		if (b[i] == b[i - 1])
+			return false;
 	}
 
-	return (n % 2 == 0) ? (total - count0 == 2 * n) : (total - count0 == 2 * n - 1);
+	return true;
 }
 
-// web 14ms real 24ms 16.8MB
-bool checkXMatrix(vector<vector<int>>& grid) {
-	int n = grid.size();
+// web 2ms real 0ms 6.2MB
+bool hasAlternatingBits(int n) {
+	int prev = -1;
 
-	for (int i = 0; i < n; i++)
+	while (n)
 	{
-		for (int j = 0; j < n; j++)
-		{
-			// check two diagnoals are non-zero
-			if ((i == j or i == n - 1 - j) and grid[i][j] == 0)
-				return false;
-			// other elements are 0
-			if (i != j and i != n - 1 - j and grid[i][j] != 0)
-				return false;
-		}
+		int last_bit = n & 1;
+		if (last_bit == prev)
+			return false;
+
+		n >>= 1;
+		prev = last_bit;
 	}
 
 	return true;

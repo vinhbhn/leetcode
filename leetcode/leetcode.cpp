@@ -17,79 +17,49 @@
 
 using namespace std;
 
-// 3ms 7MB
-bool wordPattern(string pattern, string s) {
-	vector<string> sv;
-
-	s += ' ';
-	string temp = "";
-	for (auto ch : s)
-	{
-		if (ch == ' ')
-		{
-			if (temp != "")
-				sv.push_back(temp);
-
-			temp = "";
-		}
-		else
-			temp += ch;
-	}
-
-	// letter and pattern 
-	if (pattern.length() != sv.size())
+// 3ms 7.4MB
+bool isIsomorphic(string s, string t) {
+	if (s.length() != t.length())
 		return false;
 
-	// max 26 pattern
-	vector<string> v(26, "");
-	unordered_set<string> st; // save the word present before and check the current word is not present in set.
-
-	for (int i = 0; i < pattern.size(); i++)
+	unordered_map<char, char> ms, mt; // map char in string t to s and vice verse
+	for (int i = 0; i < s.length(); i++)
 	{
-		if (v[pattern[i] - 'a'] == "" && i < sv.size() && sv[i] != "")
+		if (!ms.contains(s[i]))
+			ms[s[i]] = t[i];
+		else
 		{
-			v[pattern[i] - 'a'] = sv[i];
-
-			// if the current word have present in set, return false
-			if (st.empty())
-				st.insert(sv[i]);
-			else
-			{
-				if (st.contains(sv[i]))
-					return false;
-				else
-					st.insert(sv[i]);
-			}
+			if (ms[s[i]] != t[i])
+				return false;
 		}
 
-		// the current word == the pattern have present word
-		if (v[pattern[i] - 'a'] != sv[i])
-			return false;
+		if (!mt.contains(t[i]))
+			mt[t[i]] = s[i];
+		else
+		{
+			if (mt[t[i]] != s[i])
+				return false;
+		}
 	}
 
 	return true;
 }
 
-// https://leetcode.com/problems/word-pattern/solutions/1695870/c-simple-intuitive-solution-0ms/
-bool wordPattern(string pattern, string s) {
-	unordered_map<char, int> p2i;
-	unordered_map<string, int> w2i;
+// web 1ms real 2ms 7.4MB
+bool isIsomorphic(string s, string t) {
+	if (s.length() != t.length())
+		return false;
 
-	istringstream in(s);
-	string word;
-	int i = 0, n = pattern.size();
-
-	for (word; in >> word; i++)
+	int m1[256] = { 0 }, m2[256] = { 0 };
+	for (int i = 0; i < s.length(); i++)
 	{
-		// If it reaches end before all the words in string 's' are traversed
-		// or if values of keys : pattern[i] & word don't match return false
-		if (i == n || p2i[pattern[i]] != w2i[word])
+		if (m1[s[i]] != m2[t[i]])
 			return false;
 
-		p2i[pattern[i]] = w2i[word] = i + 1; // Otherwise map to both to a value to a value i + 1
+		m1[s[i]] = m2[t[i]] = i + 1; // map char in s and t to i + 1
 	}
 
-	return i == n; // both the lengths should be equal
+	return true;
 }
 
 int main() {

@@ -17,29 +17,52 @@
 
 using namespace std;
 
-// 3ms 6.5MB
-int numJewelsInStones(string jewels, string stones) {
+// 40/41 too long, overthinking a simple question
+int findLUSlength(string a, string b) {
+	vector<int> av(26, 0), bv(26, 0);
 	int count = 0;
-	for (auto ch : stones)
+
+	for (auto ch : a)
+		av[ch - 'a']++;
+	for (auto ch : b)
+		bv[ch - 'a']++;
+
+	for (int i = 0; i < 26; i++)
 	{
-		if (jewels.find(ch) != string::npos)
+		if (av[i] > bv[i])
+		{
+			av[i] -= bv[i];
+			bv[i] = 0;
+		}
+		else if (av[i] < bv[i])
+		{
+			bv[i] -= av[i];
+			av[i] = 0;
+		}
+		else
+		{
+			av[i] = 0;
+			bv[i] = 0;
+		}
+
+		if (av[i] == 0 && bv[i] == 0)
 			count++;
 	}
+	if (count == 26) // if a = b == ""
+		return -1;
 
-	return count;
+	int ac = accumulate(av.begin(), av.end(), 0);
+	int bc = accumulate(bv.begin(), bv.end(), 0);
+
+	return (ac <= bc) ? b.length() : a.length();
 }
 
-// 2ms 6.7MB
-int numJewelsInStones(string jewels, string stones) {
-	unordered_set<char> jS(jewels.begin(), jewels.end());
-	int count = 0;
-	for (auto stone : stones)
-	{
-		if (jS.contains(stone))
-			count++;
-	}
+// 3ms 6.5MB
+int findLUSlength(string a, string b) {
+	if (a == b)
+		return -1;
 
-	return count;
+	return max(a.length(), b.length());
 }
 
 int main() {

@@ -17,56 +17,91 @@
 
 using namespace std;
 
-// 40/41 too long, overthinking a simple question
-int findLUSlength(string a, string b) {
-	vector<int> av(26, 0), bv(26, 0);
-	int count = 0;
+// 3ms 7MB
+bool wordPattern(string pattern, string s) {
+	vector<string> sv;
 
-	for (auto ch : a)
-		av[ch - 'a']++;
-	for (auto ch : b)
-		bv[ch - 'a']++;
-
-	for (int i = 0; i < 26; i++)
+	s += ' ';
+	string temp = "";
+	for (auto ch : s)
 	{
-		if (av[i] > bv[i])
+		if (ch == ' ')
 		{
-			av[i] -= bv[i];
-			bv[i] = 0;
-		}
-		else if (av[i] < bv[i])
-		{
-			bv[i] -= av[i];
-			av[i] = 0;
+			if (temp != "")
+				sv.push_back(temp);
+
+			temp = "";
 		}
 		else
+			temp += ch;
+	}
+
+	// letter and pattern 
+	if (pattern.length() != sv.size())
+		return false;
+
+	// max 26 pattern
+	vector<string> v(26, "");
+	unordered_set<string> st; // save the word present before and check the current word is not present in set.
+
+	for (int i = 0; i < pattern.size(); i++)
+	{
+		if (v[pattern[i] - 'a'] == "" && i < sv.size() && sv[i] != "")
 		{
-			av[i] = 0;
-			bv[i] = 0;
+			v[pattern[i] - 'a'] = sv[i];
+
+			// if the current word have present in set, return false
+			if (st.empty())
+				st.insert(sv[i]);
+			else
+			{
+				if (st.contains(sv[i]))
+					return false;
+				else
+					st.insert(sv[i]);
+			}
 		}
 
-		if (av[i] == 0 && bv[i] == 0)
-			count++;
+		// the current word == the pattern have present word
+		if (v[pattern[i] - 'a'] != sv[i])
+			return false;
 	}
-	if (count == 26) // if a = b == ""
-		return -1;
 
-	int ac = accumulate(av.begin(), av.end(), 0);
-	int bc = accumulate(bv.begin(), bv.end(), 0);
-
-	return (ac <= bc) ? b.length() : a.length();
+	return true;
 }
 
-// 3ms 6.5MB
-int findLUSlength(string a, string b) {
-	if (a == b)
-		return -1;
+// https://leetcode.com/problems/word-pattern/solutions/1695870/c-simple-intuitive-solution-0ms/
+bool wordPattern(string pattern, string s) {
+	unordered_map<char, int> p2i;
+	unordered_map<string, int> w2i;
 
-	return max(a.length(), b.length());
+	istringstream in(s);
+	string word;
+	int i = 0, n = pattern.size();
+
+	for (word; in >> word; i++)
+	{
+		// If it reaches end before all the words in string 's' are traversed
+		// or if values of keys : pattern[i] & word don't match return false
+		if (i == n || p2i[pattern[i]] != w2i[word])
+			return false;
+
+		p2i[pattern[i]] = w2i[word] = i + 1; // Otherwise map to both to a value to a value i + 1
+	}
+
+	return i == n; // both the lengths should be equal
 }
 
 int main() {
 	cout << boolalpha;
+	string pattern = "abba", s = "dog cat cat dog";
+	cout << wordPattern(pattern, s) << '\n';
+
+	pattern = "abba", s = "dog dog dog dog";
+	cout << wordPattern(pattern, s) << '\n';
+
+	pattern = "aba", s = "cat cat cat dog";
+	cout << wordPattern(pattern, s) << '\n';
 
 
 	return 0;

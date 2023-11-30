@@ -17,23 +17,29 @@
 
 using namespace std;
 
-// 3ms 9.1MB O(n*n) O(n/2)
-vector<vector<int>> flipAndInvertImage(vector<vector<int>>& image) {
-	for (int i = 0; i < image.size(); i++)
+// 3ms 6.5MB
+int numJewelsInStones(string jewels, string stones) {
+	int count = 0;
+	for (auto ch : stones)
 	{
-		reverse(image[i].begin(), image[i].end());
-
-		// invert
-		for(int j = 0; j < image[i].size(); j++)
-		{
-			if (image[i][j] == 0)
-				image[i][j] = 1;
-			else
-				image[i][j] = 0;
-		}
+		if (jewels.find(ch) != string::npos)
+			count++;
 	}
 
-	return image;
+	return count;
+}
+
+// 2ms 6.7MB
+int numJewelsInStones(string jewels, string stones) {
+	unordered_set<char> jS(jewels.begin(), jewels.end());
+	int count = 0;
+	for (auto stone : stones)
+	{
+		if (jS.contains(stone))
+			count++;
+	}
+
+	return count;
 }
 
 int main() {

@@ -17,18 +17,23 @@
 
 using namespace std;
 
-// 0ms 6.5MB
-string defangIPaddr(string address) {
-	string res = "";
-	for (auto ch : address)
+// 3ms 9.1MB O(n*n) O(n/2)
+vector<vector<int>> flipAndInvertImage(vector<vector<int>>& image) {
+	for (int i = 0; i < image.size(); i++)
 	{
-		if (ch == '.')
-			res += "[.]";
-		else
-			res += ch;
+		reverse(image[i].begin(), image[i].end());
+
+		// invert
+		for(int j = 0; j < image[i].size(); j++)
+		{
+			if (image[i][j] == 0)
+				image[i][j] = 1;
+			else
+				image[i][j] = 0;
+		}
 	}
 
-	return res;
+	return image;
 }
 
 int main() {

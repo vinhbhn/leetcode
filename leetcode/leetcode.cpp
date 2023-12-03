@@ -17,109 +17,83 @@
 
 using namespace std;
 
-// 128/134 
-vector<string> split(string str, char delimiter)
-{
-	stringstream ss(str);
-	vector<string> res;
-	string word;
-	while (getline(ss, word, delimiter))
-		res.push_back(word);
-
-	return res;
-}
-bool areSentencesSimilar(string sentence1, string sentence2) {
-	vector<string> s1 = split(sentence1, ' ');
-	vector<string> s2 = split(sentence2, ' ');
-
-	if (s1[0] == s2[0])
-	{
-		s1.begin() = s1.erase(s1.begin());
-		s2.begin() = s2.erase(s2.begin());
-	}
-	else
-		return false;
-
-	if (!s1.empty() && !s2.empty())
-		if (*s1.crbegin() != *s2.crbegin())
-			return false;
-
-	return true;
-}
-
-// https://leetcode.com/problems/sentence-similarity-iii/solutions/1140673/simple-cpp-solution/
-// 4ms 7MB
-vector<string> split(string str, char delimiter)
-{
-	stringstream ss(str);
-	vector<string> res;
-	string word;
-	while (getline(ss, word, delimiter))
-		res.push_back(word);
-
-	return res;
-}
-bool areSentencesSimilar(string sentence1, string sentence2) {
-	vector<string> s1 = split(sentence1, ' ');
-	vector<string> s2 = split(sentence2, ' ');
-
-	int start1 = 0, start2 = 0, end1 = s1.size() - 1, end2 = s2.size() - 1;
-	while (start1 <= end1 && start2 <= end2)
-	{
-		if (s1[start1] == s2[start2]) // if start of both vectors are equal
-		{
-			start1++;
-			start2++;
-		}
-		else if (s1[end1] == s2[end2]) // if end of both vectors are equal
-		{
-			end1--;
-			end2--;
-		}
-		else
-			return false;
-	}
-
-	return true;
-}
-
-// https://leetcode.com/problems/sentence-similarity-iii/solutions/1145427/easy-c-explanation-deque/
-// 0ms 7.2MB
-bool areSentencesSimilar(string sentence1, string sentence2)
-{
-	deque<string> a, b;
-	sentence1 += ' ', sentence2 += ' ';
+// 3ms 8MB
+bool isCircularSentence(string sentence) {
+	sentence += ' ';
 	string temp = "";
-	for (auto ch : sentence1)
+	vector<string> v;
+
+	for (auto ch : sentence)
 	{
 		if (ch == ' ')
 		{
-			a.push_back(temp);
+			v.push_back(temp);
 			temp = "";
 		}
 		else
 			temp += ch;
 	}
 
-	temp = "";
-	for (auto ch : sentence2)
+	char first = v[0][0];
+	char last = v[0][v[0].length() - 1];
+
+	for (int i = 1; i < v.size(); i++)
+	{
+		if (last != v[i][0])
+			return false;
+		else
+			last = v[i][v[i].length() - 1];
+	}
+
+	return (first == last); // last char in the last letter and first char in the first letter
+}
+
+// 3ms 8MB
+bool isCircularSentence(string sentence) {
+	sentence += ' ';
+	string temp = "";
+	vector<string> v;
+
+	for (auto ch : sentence)
 	{
 		if (ch == ' ')
 		{
-			b.push_back(temp);
+			v.push_back(temp);
 			temp = "";
 		}
 		else
 			temp += ch;
 	}
 
-	while (!a.empty() && !b.empty() && (a.front() == b.front()))
-		a.pop_front(), b.pop_front();
+	string curr = v[0];
+	char first = curr[0];
+	char last = curr[curr.length() - 1];
 
-	while (!a.empty() && !b.empty() && (a.back() == b.back()))
-		a.pop_back(), b.pop_back();
+	for (int i = 1; i < v.size(); i++)
+	{
+		curr = v[i];
+		if (last != curr[0]) // the last character of a word is equal to the first character of the next word.
+			return false;
+		else
+			last = curr[curr.length() - 1];
 
-	return (a.empty() || b.empty()); // if one of these empty mean the one is similar of another
+	}
+
+	return (first == last); // the last character of the last word is equal to the first character of the first word.
+}
+
+// web 0ms real 0ms 7MB
+bool isCircularSentence(string sentence) {
+	int n = sentence.length();
+	if (sentence[0] != sentence[n - 1])
+		return false;
+	for (int i = 0; i < n; i++)
+	{
+		if (sentence[i] == ' ' && (sentence[i - 1] != sentence[i + 1]))
+			return false;
+	}
+
+	return true;
 }
 
 int main() {

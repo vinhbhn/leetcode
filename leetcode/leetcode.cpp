@@ -17,49 +17,109 @@
 
 using namespace std;
 
-// 3ms 7.4MB
-bool isIsomorphic(string s, string t) {
-	if (s.length() != t.length())
+// 128/134 
+vector<string> split(string str, char delimiter)
+{
+	stringstream ss(str);
+	vector<string> res;
+	string word;
+	while (getline(ss, word, delimiter))
+		res.push_back(word);
+
+	return res;
+}
+bool areSentencesSimilar(string sentence1, string sentence2) {
+	vector<string> s1 = split(sentence1, ' ');
+	vector<string> s2 = split(sentence2, ' ');
+
+	if (s1[0] == s2[0])
+	{
+		s1.begin() = s1.erase(s1.begin());
+		s2.begin() = s2.erase(s2.begin());
+	}
+	else
 		return false;
 
-	unordered_map<char, char> ms, mt; // map char in string t to s and vice verse
-	for (int i = 0; i < s.length(); i++)
-	{
-		if (!ms.contains(s[i]))
-			ms[s[i]] = t[i];
-		else
-		{
-			if (ms[s[i]] != t[i])
-				return false;
-		}
+	if (!s1.empty() && !s2.empty())
+		if (*s1.crbegin() != *s2.crbegin())
+			return false;
 
-		if (!mt.contains(t[i]))
-			mt[t[i]] = s[i];
-		else
+	return true;
+}
+
+// https://leetcode.com/problems/sentence-similarity-iii/solutions/1140673/simple-cpp-solution/
+// 4ms 7MB
+vector<string> split(string str, char delimiter)
+{
+	stringstream ss(str);
+	vector<string> res;
+	string word;
+	while (getline(ss, word, delimiter))
+		res.push_back(word);
+
+	return res;
+}
+bool areSentencesSimilar(string sentence1, string sentence2) {
+	vector<string> s1 = split(sentence1, ' ');
+	vector<string> s2 = split(sentence2, ' ');
+
+	int start1 = 0, start2 = 0, end1 = s1.size() - 1, end2 = s2.size() - 1;
+	while (start1 <= end1 && start2 <= end2)
+	{
+		if (s1[start1] == s2[start2]) // if start of both vectors are equal
 		{
-			if (mt[t[i]] != s[i])
-				return false;
+			start1++;
+			start2++;
 		}
+		else if (s1[end1] == s2[end2]) // if end of both vectors are equal
+		{
+			end1--;
+			end2--;
+		}
+		else
+			return false;
 	}
 
 	return true;
 }
 
-// web 1ms real 2ms 7.4MB
-bool isIsomorphic(string s, string t) {
-	if (s.length() != t.length())
-		return false;
-
-	int m1[256] = { 0 }, m2[256] = { 0 };
-	for (int i = 0; i < s.length(); i++)
+// https://leetcode.com/problems/sentence-similarity-iii/solutions/1145427/easy-c-explanation-deque/
+// 0ms 7.2MB
+bool areSentencesSimilar(string sentence1, string sentence2)
+{
+	deque<string> a, b;
+	sentence1 += ' ', sentence2 += ' ';
+	string temp = "";
+	for (auto ch : sentence1)
 	{
-		if (m1[s[i]] != m2[t[i]])
-			return false;
-
-		m1[s[i]] = m2[t[i]] = i + 1; // map char in s and t to i + 1
+		if (ch == ' ')
+		{
+			a.push_back(temp);
+			temp = "";
+		}
+		else
+			temp += ch;
 	}
 
-	return true;
+	temp = "";
+	for (auto ch : sentence2)
+	{
+		if (ch == ' ')
+		{
+			b.push_back(temp);
+			temp = "";
+		}
+		else
+			temp += ch;
+	}
+
+	while (!a.empty() && !b.empty() && (a.front() == b.front()))
+		a.pop_front(), b.pop_front();
+
+	while (!a.empty() && !b.empty() && (a.back() == b.back()))
+		a.pop_back(), b.pop_back();
+
+	return (a.empty() || b.empty()); // if one of these empty mean the one is similar of another
 }
 
 int main() {

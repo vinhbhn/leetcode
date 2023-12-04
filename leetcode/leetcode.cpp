@@ -17,84 +17,54 @@
 
 using namespace std;
 
-// 0ms 8.9MB
-vector<int> decrypt(vector<int>& code, int k) {
-	int n = code.size();
-	vector<int> temp = code, res(n, 0);
-
-	// 5ms 8.8MB
-	/*temp.resize(2 * n);
-	for (int i = n; i < 2 * n; i++)
-		temp[i] = temp[i - n];*/
-		// replace by this
-	temp.insert(temp.end(), temp.begin(), temp.end());
-
-	if (k == 0)
-		return res;
-	else if (k > 0)
+// 33ms 15.5MB O(n) O(n)
+bool isOdd(char ch)
+{
+	switch (ch)
 	{
-		for (int i = 0; i < n; i++)
-			res[i] = accumulate(temp.begin() + i + 1, temp.begin() + i + 1 + k, 0);
-	}
-	else if (k < 0)
-	{
-		for (int i = 0; i < n; i++)
-			res[i] = accumulate(temp.begin() + i + n + k, temp.begin() + i + n, 0);
+	case '1':
+	case '3':
+	case '5':
+	case '7':
+	case '9':
+		return true;
+		break;
 	}
 
-	return res;
+	return false;
 }
-
-// https://leetcode.com/problems/defuse-the-bomb/solutions/3367476/defuse-the-bomb-solution-in-c/
-// 0ms 8.8MB
-vector<int> decrypt(vector<int>& code, int k) {
-	int n = code.size();
-	vector<int> res(n, 0);
-	for (int i = 0; i < n; i++)
+string largestOddNumber(string num) {
+	string res = "";
+	for (int i = num.size() - 1; i >= 0; i--)
 	{
-		int sum = 0, m = abs(k), j = i;
-		while (m--)
+		if (isOdd(num[i]))
 		{
-			if (k < 0)
-			{
-				j--;
-				if (j < 0)
-					j += n;
-				sum += code[j];
-			}
-			else if (k > 0)
-			{
-				j++;
-				if (j >= n)
-					j -= n;
-				sum += code[j];
-			}
+			res = num.substr(0, i + 1);
+			break;
 		}
-		res[i] = sum;
 	}
 
 	return res;
 }
+
+// string % 2 worked, 16ms 15.5MB
+string largestOddNumber(string num) {
+	string res = "";
+	for (int i = num.size() - 1; i >= 0; i--)
+	{
+		if (num[i] % 2 != 0)
+		{
+			res = num.substr(0, i + 1);
+			break;
+		}
+	}
+
+	return res;
+}
+
 
 int main() {
 	cout << boolalpha;
-	vector<int> code = { 5,7,1,4 };
-	int k = 3;
-	for (auto& x : decrypt(code, k))
-		cout << x << ' ';
-	cout << '\n';
-
-	code = { 5,7,1,4 };
-	k = 0;
-	for (auto& x : decrypt(code, k))
-		cout << x << ' ';
-	cout << '\n';
-
-	code = { 2,4,9,3 };
-	k = -2;
-	for (auto& x : decrypt(code, k))
-		cout << x << ' ';
-	cout << '\n';
 
 	return 0;
 }

@@ -47,12 +47,12 @@ string largestOddNumber(string num) {
 	return res;
 }
 
-// string % 2 worked, 16ms 15.5MB
+// 16ms 15.5MB
 string largestOddNumber(string num) {
 	string res = "";
 	for (int i = num.size() - 1; i >= 0; i--)
 	{
-		if (num[i] % 2 != 0)
+		if (num[i] % 2 != 0) // char % 2
 		{
 			res = num.substr(0, i + 1);
 			break;

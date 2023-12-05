@@ -17,54 +17,94 @@
 
 using namespace std;
 
-// 33ms 15.5MB O(n) O(n)
-bool isOdd(char ch)
-{
-	switch (ch)
+// 6ms 7.5MB O(k+m) O(1)
+//string decodeMessage(string key, string message) {
+//	// map the first appearance of all 26 lowercase letters in key to character
+//	unordered_map<char, char> mp;
+//	char character = 'a';
+//	for (auto ch : key)
+//	{
+//		if (ch != ' ' && !mp.contains(ch))
+//		{
+//			mp[ch] = character;
+//			character++;
+//		}
+//	}
+//
+//	// decode with constructed map
+//	string res = "";
+//	for (auto ch : message)
+//	{
+//		if (ch != ' ')
+//		{
+//			res += mp[ch];
+//		}
+//		else
+//			res += ' ';
+//	}
+//
+//	return res;
+//}
+
+// web 0ms real 5ms 7.3MB
+string decodeMessage(string key, string message) {
+	// map the first appearance of all 26 lowercase letters in key to table
+	string table = "";
+	for (auto ch : key)
 	{
-	case '1':
-	case '3':
-	case '5':
-	case '7':
-	case '9':
-		return true;
-		break;
+		if (ch != ' ' && table.find(ch) == string::npos)
+		{
+			table += ch;
+		}
 	}
 
-	return false;
-}
-string largestOddNumber(string num) {
+	// decode with constructed map
 	string res = "";
-	for (int i = num.size() - 1; i >= 0; i--)
+	for (auto ch : message)
 	{
-		if (isOdd(num[i]))
+		if (ch != ' ')
 		{
-			res = num.substr(0, i + 1);
-			break;
+			auto index = table.find(ch);
+			res += index + 'a';
 		}
+		else
+			res += ' ';
 	}
 
 	return res;
 }
 
-// 16ms 15.5MB
-string largestOddNumber(string num) {
-	string res = "";
-	for (int i = num.size() - 1; i >= 0; i--)
+// web 0ms real 3ms 7.2MB
+string decodeMessage(string key, string message) {
+	// map the first appearance of all 26 lowercase letters in key to table
+	string table = "";
+	for (int i = 0; i < key.size(); i++)
 	{
-		if (num[i] % 2 != 0) // char % 2
+		if (key[i] != ' ' && table.find(key[i]) == string::npos)
 		{
-			res = num.substr(0, i + 1);
-			break;
+			table += key[i];
 		}
+	}
+
+	// decode with constructed map
+	string res = "";
+	for (int i = 0; i < message.size(); i++)
+	{
+		if (message[i] != ' ')
+		{
+			res += table.find(message[i]) + 'a'; // index + 'a'
+		}
+		else
+			res += " ";
 	}
 
 	return res;
 }
-
 
 int main() {
 	cout << boolalpha;
+	string key = "the quick brown fox jumps over the lazy dog", message = "vkbs bs t suepuv";
+	cout << decodeMessage(key, message) << '\n';
 
 	return 0;
 }

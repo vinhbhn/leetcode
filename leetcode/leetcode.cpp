@@ -17,41 +17,57 @@
 
 using namespace std;
 
-// 5ms 11MB
-vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
-	vector<int> temp = nums;
-	sort(temp.begin(), temp.end());
+// 62ms 14.1MB O(nlogn + (n * q)) O(n)
+vector<int> answerQueries(vector<int>& nums, vector<int>& queries) {
+	sort(nums.begin(), nums.end());
 
-	unordered_map<int, int> mp;
-	for (int i = 0; i < temp.size(); i++)
+	for (int i = 0; i < queries.size(); i++)
 	{
-		if (!mp.contains(temp[i]))
-			mp[temp[i]] = i;
+		int sum = 0, count = 0;
+		for (int j = 0; j < nums.size(); j++)
+		{
+			if (nums[j] <= queries[i] && sum + nums[j] <= queries[i])
+			{
+				sum += nums[j];
+				count++;
+			}
+			else
+				break;
+		}
+
+		queries[i] = count;
 	}
 
-	vector<int> res;
-	for (int i = 0; i < nums.size(); i++)
-	{
-		res.push_back(mp[nums[i]]);
-	}
-
-	return res;
+	return queries;
 }
 
-// 4ms 11MB
-vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
-	int n = nums.size();
-	vector<int> temp = nums;
-	sort(temp.begin(), temp.end());
+// web 3ms real 14ms 13.9MB
+vector<int> answerQueries(vector<int>& nums, vector<int>& queries) {
+	sort(nums.begin(), nums.end());
+	for (int i = 1; i < nums.size(); i++)
+	{
+		nums[i] += nums[i - 1];
+	}
 
-	unordered_map<int, int> mp;
-	for (int i = n - 1; i >= 0; i--)
-			mp[temp[i]] = i;
+	for (int i = 0; i < queries.size(); i++)
+	{
+		int low = 0, high = nums.size() - 1, ans = 0;
+		while(low <= high)
+		{
+			int mid = (low + high) / 2;
+			if (nums[mid] <= queries[i])
+			{
+				ans = max(ans, mid + 1);
+				low = mid + 1;
+			}
+			else
+				high = mid - 1;
+		}
 
-	for (int i = 0; i < nums.size(); i++)
-		nums[i] = mp[nums[i]];
+		queries[i] = ans;
+	}
 
-	return nums;
+	return queries;
 }
 
 int main() {

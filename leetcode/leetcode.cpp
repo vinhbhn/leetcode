@@ -17,59 +17,42 @@
 
 using namespace std;
 
-// 6ms 7.7MB 
-int canBeTypedWords(string text, string brokenLetters) {
-	vector<string> t;
-	stringstream ss(text);
-	string word;
-	while (getline(ss, word, ' '))
-		t.push_back(word);
+// 5ms 11MB
+vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+	vector<int> temp = nums;
+	sort(temp.begin(), temp.end());
 
-	int count = 0;
-	for (auto& te : t)
+	unordered_map<int, int> mp;
+	for (int i = 0; i < temp.size(); i++)
 	{
-		bool fail = false;
-		for (char brokenKey : brokenLetters)
-		{
-			if (te.find(brokenKey) != string::npos)
-			{
-				fail = true;
-				break;
-			}
-		}
-
-		if (!fail)
-			count++;
+		if (!mp.contains(temp[i]))
+			mp[temp[i]] = i;
 	}
 
-	return count;
-}
-
-// web 0ms real 2ms 7.1MB
-int canBeTypedWords(string text, string brokenLetters) {
-	int count = 0;
-	unordered_set<char> brokenKey;
-	for (auto& key : brokenLetters)
-		brokenKey.insert(key);
-
-	bool hasBrokenKey = false;
-	text += ' ';
-	for (auto& ch : text)
+	vector<int> res;
+	for (int i = 0; i < nums.size(); i++)
 	{
-		if (ch != ' ' && brokenKey.contains(ch))
-			hasBrokenKey = true;
-		else if (ch == ' ')
-		{
-			if (!hasBrokenKey)
-				count++;
-			else
-				hasBrokenKey = false;
-		}
+		res.push_back(mp[nums[i]]);
 	}
 
-	return count;
+	return res;
 }
 
+// 4ms 11MB
+vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+	int n = nums.size();
+	vector<int> temp = nums;
+	sort(temp.begin(), temp.end());
+
+	unordered_map<int, int> mp;
+	for (int i = n - 1; i >= 0; i--)
+			mp[temp[i]] = i;
+
+	for (int i = 0; i < nums.size(); i++)
+		nums[i] = mp[nums[i]];
+
+	return nums;
+}
 
 int main() {
 	cout << boolalpha;

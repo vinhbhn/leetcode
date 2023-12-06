@@ -17,55 +17,62 @@
 
 using namespace std;
 
-// 4ms 8.2MB
-string reformat(string s) {
-	string al = "", digit = "";
-	for (int i = 0; i < s.length(); i++)
-	{
-		if (isdigit(s[i]))
-			digit += s[i];
-		else
-			al += s[i];
-	}
+// 6ms 7.7MB 
+int canBeTypedWords(string text, string brokenLetters) {
+	vector<string> t;
+	stringstream ss(text);
+	string word;
+	while (getline(ss, word, ' '))
+		t.push_back(word);
 
-	int l = al.length();
-	int d = digit.length();
-	if (abs(l - d) > 1)
+	int count = 0;
+	for (auto& te : t)
 	{
-		return "";
-	}
-
-	int i = 0;
-	string res = "";
-	while (i < l && i < d)
-	{
-		if (l < d)
+		bool fail = false;
+		for (char brokenKey : brokenLetters)
 		{
-			res += digit[i];
-			res += al[i];
-		}
-		else
-		{
-			res += al[i];
-			res += digit[i];
+			if (te.find(brokenKey) != string::npos)
+			{
+				fail = true;
+				break;
+			}
 		}
 
-		i++;
+		if (!fail)
+			count++;
 	}
-	// last char
-	if (i < l)
-		res += al[i];
-	if (i < d)
-		res += digit[i];
 
-	return res;
+	return count;
+}
+
+// web 0ms real 2ms 7.1MB
+int canBeTypedWords(string text, string brokenLetters) {
+	int count = 0;
+	unordered_set<char> brokenKey;
+	for (auto& key : brokenLetters)
+		brokenKey.insert(key);
+
+	bool hasBrokenKey = false;
+	text += ' ';
+	for (auto& ch : text)
+	{
+		if (ch != ' ' && brokenKey.contains(ch))
+			hasBrokenKey = true;
+		else if (ch == ' ')
+		{
+			if (!hasBrokenKey)
+				count++;
+			else
+				hasBrokenKey = false;
+		}
+	}
+
+	return count;
 }
 
 
 int main() {
 	cout << boolalpha;
-	cout << reformat("a0b1c2") << '\n';
-	cout << reformat("covid2019") << '\n';
 
 	return 0;
 }

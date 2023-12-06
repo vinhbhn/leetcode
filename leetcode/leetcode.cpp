@@ -17,94 +17,63 @@
 
 using namespace std;
 
-// 6ms 7.5MB O(k+m) O(1)
-//string decodeMessage(string key, string message) {
-//	// map the first appearance of all 26 lowercase letters in key to character
-//	unordered_map<char, char> mp;
-//	char character = 'a';
-//	for (auto ch : key)
+// 3ms 6.2MB
+//int totalMoney(int n) {
+//	int count_day = 0, count_total_day = 0, total = 0, start = 1, raise_every_Monday = 1;
+//	while (count_total_day != n)
 //	{
-//		if (ch != ' ' && !mp.contains(ch))
+//		total += start;
+//		start++;
+//		count_day++;
+//		count_total_day++;
+//		if (count_day == 7)
 //		{
-//			mp[ch] = character;
-//			character++;
+//			start = ++raise_every_Monday;
+//			count_day = 0;
 //		}
 //	}
 //
-//	// decode with constructed map
-//	string res = "";
-//	for (auto ch : message)
-//	{
-//		if (ch != ' ')
-//		{
-//			res += mp[ch];
-//		}
-//		else
-//			res += ' ';
-//	}
+//	return total;
 //
-//	return res;
 //}
 
-// web 0ms real 5ms 7.3MB
-string decodeMessage(string key, string message) {
-	// map the first appearance of all 26 lowercase letters in key to table
-	string table = "";
-	for (auto ch : key)
+// 3ms 6.2MB O(n)
+int totalMoney(int n) {
+	int countDay = 0, total = 0, start = 1;
+	while (countDay != n)
 	{
-		if (ch != ' ' && table.find(ch) == string::npos)
+		total += start;
+		start++;
+		countDay++;
+		if (countDay % 7 == 0)
 		{
-			table += ch;
+			start = (countDay / 7) + 1;
 		}
 	}
 
-	// decode with constructed map
-	string res = "";
-	for (auto ch : message)
-	{
-		if (ch != ' ')
-		{
-			auto index = table.find(ch);
-			res += index + 'a';
-		}
-		else
-			res += ' ';
-	}
-
-	return res;
+	return total;
 }
 
-// web 0ms real 3ms 7.2MB
-string decodeMessage(string key, string message) {
-	// map the first appearance of all 26 lowercase letters in key to table
-	string table = "";
-	for (int i = 0; i < key.size(); i++)
-	{
-		if (key[i] != ' ' && table.find(key[i]) == string::npos)
-		{
-			table += key[i];
-		}
-	}
+// https://leetcode.com/problems/calculate-money-in-leetcode-bank/solutions/4367796/beats-100-c-java-python-js-explained-with-video-o-1-time-and-space/?envType=daily-question&envId=2023-12-06
+// 0ms 6.5MB O(1)
+int totalMoney(int n) {
+	int week_count = n / 7;
+	int remaining_days = n % 7;
 
-	// decode with constructed map
-	string res = "";
-	for (int i = 0; i < message.size(); i++)
-	{
-		if (message[i] != ' ')
-		{
-			res += table.find(message[i]) + 'a'; // index + 'a'
-		}
-		else
-			res += " ";
-	}
+	int total = ((week_count) * (week_count - 1) / 2) * 7; // contribution from complete weeks
+	total += week_count * 28; // contribution form complete weeks (additional on Mondays)
+	total += ((remaining_days * (remaining_days + 1)) / 2) + (week_count * remaining_days); // contribution from remaining days
 
-	return res;
+	return total;
 }
+
 
 int main() {
 	cout << boolalpha;
-	string key = "the quick brown fox jumps over the lazy dog", message = "vkbs bs t suepuv";
-	cout << decodeMessage(key, message) << '\n';
+	cout << totalMoney(4) << '\n';
+	cout << totalMoney(10) << '\n';
+	cout << totalMoney(20) << '\n';
+
 
 	return 0;
 }

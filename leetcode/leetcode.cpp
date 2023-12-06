@@ -17,19 +17,46 @@
 
 using namespace std;
 
-// 0ms 9.3MB O(n) O(n)
-vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
-	int n = candies.size();
-	auto greatest = max_element(candies.begin(), candies.end());
-	vector<bool> res;
-
-	for (int i = 0; i < n; i++)
+// 4ms 8.2MB
+string reformat(string s) {
+	string al = "", digit = "";
+	for (int i = 0; i < s.length(); i++)
 	{
-		if (candies[i] + extraCandies >= *greatest)
-			res.push_back(true);
+		if (isdigit(s[i]))
+			digit += s[i];
 		else
-			res.push_back(false);
+			al += s[i];
 	}
+
+	int l = al.length();
+	int d = digit.length();
+	if (abs(l - d) > 1)
+	{
+		return "";
+	}
+
+	int i = 0;
+	string res = "";
+	while (i < l && i < d)
+	{
+		if (l < d)
+		{
+			res += digit[i];
+			res += al[i];
+		}
+		else
+		{
+			res += al[i];
+			res += digit[i];
+		}
+
+		i++;
+	}
+	// last char
+	if (i < l)
+		res += al[i];
+	if (i < d)
+		res += digit[i];
 
 	return res;
 }
@@ -37,6 +64,8 @@ vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
 
 int main() {
 	cout << boolalpha;
+	cout << reformat("a0b1c2") << '\n';
+	cout << reformat("covid2019") << '\n';
 
 	return 0;
 }

@@ -17,86 +17,19 @@
 
 using namespace std;
 
-//171ms 94.7MB
-int findCenter(vector<vector<int>>& edges) {
-	vector<int> v(1e5+1, 0);
-	int max = 0, maxi = 0;
-	for (int i = 0; i < edges.size(); i++)
+// 0ms 14.5MB
+int finalValueAfterOperations(vector<string>& operations) {
+	int res = 0;
+	for (int i = 0; i < operations.size(); i++)
 	{
-		if (++v[edges[i][0]] > max)
-		{
-			max = v[edges[i][0]];
-			maxi = edges[i][0];
-		}
-		if (++v[edges[i][1]] > max)
-		{
-			max = v[edges[i][1]];
-			maxi = edges[i][1];
-		}
-	}
-
-	return maxi;
-}
-
-//162ms 94.7MB
-int findCenter(vector<vector<int>>& edges) {
-	vector<int> v(1e5 + 1, 0);
-	int maxc = 0, maxi = 0;
-	int n = edges.size();
-	for (int i = 0; i < n; i++)
-	{
-		if (++v[edges[i][0]] > maxc)
-		{
-			maxc = v[edges[i][0]];
-			maxi = edges[i][0];
-		}
-		if (++v[edges[i][1]] > maxc)
-		{
-			maxc = v[edges[i][1]];
-			maxi = edges[i][1];
-		}
-
-		if (maxc > n / 2)
-			return maxi;
-	}
-
-	return maxi;
-}
-
-//151ms 94.5MB
-int findCenter(vector<vector<int>>& edges) {
-	vector<int> v(1e5 + 1, 0);
-	int maxc = 0, maxi = 0;
-	int n = edges.size();
-	for (int i = 0; i < n; i++)
-	{
-		if (++v[edges[i][0]] > ++v[edges[i][1]])
-		{
-			maxc = v[edges[i][0]];
-			maxi = edges[i][0];
-		}
+		if (operations[i] == "X++" || operations[i] == "++X")
+			res++;
 		else
-		{
-			maxc = v[edges[i][1]];
-			maxi = edges[i][1];
-		}
-
-		if (maxc > n / 2)
-			return maxi;
+			res--;
 	}
 
-	return maxi;
+	return res;
 }
-
-// web 1ms real 139ms 67.7MB
-int findCenter(vector<vector<int>>& ed) {
-	if (ed[0][0] == ed[1][0] || ed[0][0] == ed[1][1])
-		return ed[0][0];
-
-	return ed[0][1];
-}
-
-
 
 int main() {
 	cout << boolalpha;

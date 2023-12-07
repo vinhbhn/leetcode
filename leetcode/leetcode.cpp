@@ -17,58 +17,86 @@
 
 using namespace std;
 
-// 62ms 14.1MB O(nlogn + (n * q)) O(n)
-vector<int> answerQueries(vector<int>& nums, vector<int>& queries) {
-	sort(nums.begin(), nums.end());
-
-	for (int i = 0; i < queries.size(); i++)
+//171ms 94.7MB
+int findCenter(vector<vector<int>>& edges) {
+	vector<int> v(1e5+1, 0);
+	int max = 0, maxi = 0;
+	for (int i = 0; i < edges.size(); i++)
 	{
-		int sum = 0, count = 0;
-		for (int j = 0; j < nums.size(); j++)
+		if (++v[edges[i][0]] > max)
 		{
-			if (nums[j] <= queries[i] && sum + nums[j] <= queries[i])
-			{
-				sum += nums[j];
-				count++;
-			}
-			else
-				break;
+			max = v[edges[i][0]];
+			maxi = edges[i][0];
 		}
-
-		queries[i] = count;
+		if (++v[edges[i][1]] > max)
+		{
+			max = v[edges[i][1]];
+			maxi = edges[i][1];
+		}
 	}
 
-	return queries;
+	return maxi;
 }
 
-// web 3ms real 14ms 13.9MB
-vector<int> answerQueries(vector<int>& nums, vector<int>& queries) {
-	sort(nums.begin(), nums.end());
-	for (int i = 1; i < nums.size(); i++)
+//162ms 94.7MB
+int findCenter(vector<vector<int>>& edges) {
+	vector<int> v(1e5 + 1, 0);
+	int maxc = 0, maxi = 0;
+	int n = edges.size();
+	for (int i = 0; i < n; i++)
 	{
-		nums[i] += nums[i - 1];
-	}
-
-	for (int i = 0; i < queries.size(); i++)
-	{
-		int low = 0, high = nums.size() - 1, ans = 0;
-		while(low <= high)
+		if (++v[edges[i][0]] > maxc)
 		{
-			int mid = (low + high) / 2;
-			if (nums[mid] <= queries[i])
-			{
-				ans = max(ans, mid + 1);
-				low = mid + 1;
-			}
-			else
-				high = mid - 1;
+			maxc = v[edges[i][0]];
+			maxi = edges[i][0];
+		}
+		if (++v[edges[i][1]] > maxc)
+		{
+			maxc = v[edges[i][1]];
+			maxi = edges[i][1];
 		}
 
-		queries[i] = ans;
+		if (maxc > n / 2)
+			return maxi;
 	}
 
-	return queries;
+	return maxi;
 }
+
+//151ms 94.5MB
+int findCenter(vector<vector<int>>& edges) {
+	vector<int> v(1e5 + 1, 0);
+	int maxc = 0, maxi = 0;
+	int n = edges.size();
+	for (int i = 0; i < n; i++)
+	{
+		if (++v[edges[i][0]] > ++v[edges[i][1]])
+		{
+			maxc = v[edges[i][0]];
+			maxi = edges[i][0];
+		}
+		else
+		{
+			maxc = v[edges[i][1]];
+			maxi = edges[i][1];
+		}
+
+		if (maxc > n / 2)
+			return maxi;
+	}
+
+	return maxi;
+}
+
+// web 1ms real 139ms 67.7MB
+int findCenter(vector<vector<int>>& ed) {
+	if (ed[0][0] == ed[1][0] || ed[0][0] == ed[1][1])
+		return ed[0][0];
+
+	return ed[0][1];
+}
+
+
 
 int main() {
 	cout << boolalpha;
@@ -76,11 +104,29 @@ int main() {
 	return 0;
 }
 
-//#define need_for_speed ios_base::sync_with_stdio(false); cin.tie(NULL);
-//ios_base::sync_with_stdio(false);
-//cin.tie(nullptr);
-//cout.tie(nullptr);
-/*Solution() {
-ios::sync_with_stdio(0);
-cin.tie(0);
-	}*/
+/*
+static auto init = [](){
+	ios_base::sync_with_stdio(false);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
+	return 0;
+}();
+*/
+/*
+int init = [] {
+	ios_base::sync_with_stdio(false);
+	cin.tie(nullptr);
+	ofstream out("user.out");
+	cout.rdbuf(out.rdbuf());
+	for (string line; getline(cin, line); cout << '\n') {
+		istringstream ss(line);
+		char ch;
+		int a, b, c, d;
+		ss >> ch >> ch >> a >> ch >> b >> ch >> ch >> ch >> c >> ch >> d;
+		if (a == c || a == d) cout << a;
+		else cout << b;
+	}
+	exit(0);
+	return 0;
+}();
+*/

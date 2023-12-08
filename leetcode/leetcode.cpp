@@ -17,15 +17,13 @@
 
 using namespace std;
 
-// 0ms 14.5MB
-int finalValueAfterOperations(vector<string>& operations) {
-	int res = 0;
-	for (int i = 0; i < operations.size(); i++)
+// 7ms 29.1MB
+vector<int> findWordsContaining(vector<string>& words, char x) {
+	vector<int> res;
+	for (int i = 0; i < words.size(); i++)
 	{
-		if (operations[i] == "X++" || operations[i] == "++X")
-			res++;
-		else
-			res--;
+		if (words[i].find(x) != string::npos)
+			res.push_back(i);
 	}
 
 	return res;

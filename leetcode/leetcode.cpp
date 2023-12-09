@@ -17,23 +17,19 @@
 
 using namespace std;
 
-// 4ms 7MB
-bool checkIfPangram(string sentence) {
-	vector<bool> alpha(26, false);
-	for (auto ch : sentence)
-		alpha[ch - 'a'] = true;
-
-	for (int i = 0; i < alpha.size(); i++)
+// 0ms 6.6MB
+string replaceDigits(string s) {
+	for (int i = 1; i < s.size(); i += 2)
 	{
-		if (alpha[i] == false)
-			return false;
+		s[i] = s[i - 1] + (s[i] - '0'); 
 	}
 
-	return true;
+	return s;
 }
 
 int main() {
 	cout << boolalpha;
+	cout << replaceDigits("a1c1e1") << '\n';
 
 	return 0;
 }

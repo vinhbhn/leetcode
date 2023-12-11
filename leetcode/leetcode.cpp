@@ -17,68 +17,41 @@
 
 using namespace std;
 
-// 9ms 12.8MB O(n-quater) O(1)
-int findSpecialInteger(vector<int>& arr) {
-	int n = arr.size(), quarter = n /  4;
-	for (int i = 0; i < n - quarter; i++)
+// 4ms 11MB O(m*n) O(m*n)
+vector<vector<int>> transpose(vector<vector<int>>& matrix) {
+	int m = matrix.size(), n = matrix[0].size();
+
+	// matrix m * n transpose n * m
+	vector<vector<int>> res;
+	for (int i = 0; i < n; i++)
 	{
-		if (arr[i] == arr[i + quarter]) 
-			return arr[i];
-	}
-
-	return -1;
-}
-
-// https://leetcode.com/problems/element-appearing-more-than-25-in-sorted-array/solutions/4388310/video-give-me-5-minutes-2-solutions-how-we-think-about-a-solution/?envType=daily-question&envId=2023-12-11
-// 12ms 12.7MB O(clogn) O(1) c = (n-quarter)/quarter
-int binarySearch(const vector<int>& arr, int target, bool isFirst)
-{
-	int left = 0, right = arr.size() - 1, result = -1;
-
-	while (left <= right)
-	{
-		int mid = left + (right - left) / 2;
-
-		if (arr[mid] == target)
+		vector<int> temp;
+		for (int j = 0; j < m; j++)
 		{
-			result = mid;
-			if (isFirst)
-				right = mid - 1;
-			else
-				left = mid + 1;
+			temp.push_back(matrix[j][i]);
 		}
-		else if (arr[mid] < target)
-			left = mid + 1;
-		else
-			right = mid - 1;
+		res.push_back(temp);
 	}
 
-	return result;
+	return res;
 }
-int findSpecialInteger(vector<int>& arr) {
-	int n = arr.size(), quarter = n / 4;
 
-	// Handle the case where quater is zero
-	if (quarter == 0)
-		return (n > 0) ? arr[0] : -1;
+// web 0ms real 7ms 10.9MB
+vector<vector<int>> transpose(vector<vector<int>>& matrix) {
+	int m = matrix.size(), n = matrix[0].size();
 
-	// Check every possible candidate element
-	for (int i = quarter; i < n; i += quarter)
+	// matrix m * n transpose n * m
+	vector<vector<int>> res(n, vector<int>(m));
+	for (int i = 0; i < m; i++)
 	{
-		// Use binary search to find the first and last occurrence of the card
-		int leftOccurrence = binarySearch(arr, arr[i], true);
-		int rightOccurrence = binarySearch(arr, arr[i], false);
-
-		// Check if the frequency is greater than 25%
-		if (rightOccurrence - leftOccurrence + 1 > quarter)
-			return arr[i];
+		for (int j = 0; j < n; j++)
+		{
+			res[j][i] = matrix[i][j];
+		}
 	}
 
-	return -1;
+	return res;
 }
-
-
-
 
 int main() {
 	cout << boolalpha;

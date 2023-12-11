@@ -17,80 +17,71 @@
 
 using namespace std;
 
-// 44/57 left to right
-//char shift(char ch, int num)
-//{
-//	num %= 26; // if num > 26
-//
-//	if (ch + num > 'z')
-//	{
-//		num -= 'z' - ch;
-//		num--; // wrap
-//		ch = 'a';
-//	}
-//
-//	return (ch + num);
-//}
-//string shiftingLetters(string s, vector<int>& shifts) {
-//	for (int i = 0; i < shifts.size(); i++)
-//	{
-//		// if shifts[i] > 26
-//		shifts[i] %= 26;
-//		for (int j = 0; j <= i; j++)
-//		{
-//			s[j] = shift(s[j], shifts[i]);
-//		}
-//	}
-//
-//	return s;
-//}
-
-// 101ms 68.3MB
-char shift(char ch, int num)
-{
-	if (ch + num > 'z')
+// 9ms 12.8MB O(n-quater) O(1)
+int findSpecialInteger(vector<int>& arr) {
+	int n = arr.size(), quarter = n /  4;
+	for (int i = 0; i < n - quarter; i++)
 	{
-		num -= 'z' - ch;
-		num--; // wrap
-		ch = 'a';
+		if (arr[i] == arr[i + quarter]) 
+			return arr[i];
 	}
 
-	return (ch + num);
+	return -1;
 }
-string shiftingLetters(string s, vector<int>& shifts) {
-	int sum = 0;
-	for (int i = shifts.size() - 1; i >= 0; i--)
+
+// https://leetcode.com/problems/element-appearing-more-than-25-in-sorted-array/solutions/4388310/video-give-me-5-minutes-2-solutions-how-we-think-about-a-solution/?envType=daily-question&envId=2023-12-11
+// 12ms 12.7MB O(clogn) O(1) c = (n-quarter)/quarter
+int binarySearch(const vector<int>& arr, int target, bool isFirst)
+{
+	int left = 0, right = arr.size() - 1, result = -1;
+
+	while (left <= right)
 	{
-		// if sum > 26
-		sum += shifts[i];
-		sum %= 26;
-		s[i] = shift(s[i], sum);
+		int mid = left + (right - left) / 2;
+
+		if (arr[mid] == target)
+		{
+			result = mid;
+			if (isFirst)
+				right = mid - 1;
+			else
+				left = mid + 1;
+		}
+		else if (arr[mid] < target)
+			left = mid + 1;
+		else
+			right = mid - 1;
 	}
 
-	return s;
+	return result;
+}
+int findSpecialInteger(vector<int>& arr) {
+	int n = arr.size(), quarter = n / 4;
+
+	// Handle the case where quater is zero
+	if (quarter == 0)
+		return (n > 0) ? arr[0] : -1;
+
+	// Check every possible candidate element
+	for (int i = quarter; i < n; i += quarter)
+	{
+		// Use binary search to find the first and last occurrence of the card
+		int leftOccurrence = binarySearch(arr, arr[i], true);
+		int rightOccurrence = binarySearch(arr, arr[i], false);
+
+		// Check if the frequency is greater than 25%
+		if (rightOccurrence - leftOccurrence + 1 > quarter)
+			return arr[i];
+	}
+
+	return -1;
 }
 
-// web
-char shift(char ch, int num)
-{
-	return (ch - 'a' + num) % 26 + 'a';
-}
+
+
 
 int main() {
 	cout << boolalpha;
-	cout << shift('a', 1) << '\n';
-	cout << shift('z', 1) << '\n';
-	cout << shift('y', 1) << '\n';
-	cout << shift('y', 2) << '\n';
-	cout << shift('y', 3) << '\n';
-	cout << shift('y', 4) << '\n';
-	vector<int> shifts = { 3,5,9 };
-	cout << shiftingLetters("abc", shifts) << '\n';
-	shifts = { 52 };
-	cout << shiftingLetters("z", shifts) << '\n';
-
-	cout << shift('z', 52) << '\n'; // curr not work with z because num % 26
-	cout << shift('b', 14) << '\n';
 
 	return 0;
 }

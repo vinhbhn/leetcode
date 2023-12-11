@@ -17,40 +17,22 @@
 
 using namespace std;
 
-// 4ms 11MB O(m*n) O(m*n)
-vector<vector<int>> transpose(vector<vector<int>>& matrix) {
-	int m = matrix.size(), n = matrix[0].size();
+// 68ms 31.2MB O(n) O(n)
+int countMatches(vector<vector<string>>& items, string ruleKey, string ruleValue) {
+	int count = 0, key = 0; // default to type
+	// items[i] = [typeI, colorI, nameI]
+	if (ruleKey == "color")
+		key = 1;
+	else if (ruleKey == "name")
+		key = 2;
 
-	// matrix m * n transpose n * m
-	vector<vector<int>> res;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < items.size(); i++)
 	{
-		vector<int> temp;
-		for (int j = 0; j < m; j++)
-		{
-			temp.push_back(matrix[j][i]);
-		}
-		res.push_back(temp);
+		if (items[i][key] == ruleValue)
+			count++;
 	}
 
-	return res;
-}
-
-// web 0ms real 7ms 10.9MB
-vector<vector<int>> transpose(vector<vector<int>>& matrix) {
-	int m = matrix.size(), n = matrix[0].size();
-
-	// matrix m * n transpose n * m
-	vector<vector<int>> res(n, vector<int>(m));
-	for (int i = 0; i < m; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			res[j][i] = matrix[i][j];
-		}
-	}
-
-	return res;
+	return count;
 }
 
 int main() {

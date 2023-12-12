@@ -17,22 +17,17 @@
 
 using namespace std;
 
-// 68ms 31.2MB O(n) O(n)
-int countMatches(vector<vector<string>>& items, string ruleKey, string ruleValue) {
-	int count = 0, key = 0; // default to type
-	// items[i] = [typeI, colorI, nameI]
-	if (ruleKey == "color")
-		key = 1;
-	else if (ruleKey == "name")
-		key = 2;
+// 4ms 10.1MB O(nlogn) O(1)
+int maxProduct(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+	int n = nums.size();
 
-	for (int i = 0; i < items.size(); i++)
-	{
-		if (items[i][key] == ruleValue)
-			count++;
-	}
+	return (nums[n - 2] - 1) * (nums[n - 1] - 1);
+}
 
-	return count;
+int maxProduct(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+	return (nums[nums.size() - 2] - 1) * (nums[nums.size() - 1] - 1);
 }
 
 int main() {

@@ -17,38 +17,36 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/special-positions-in-a-binary-matrix/solutions/4397677/beats-100-explained-with-video-check-row-and-column-c-java-python-js-visualized/?envType=daily-question&envId=2023-12-13
-// 15ms 13MB O(n*m) O(1)
-int checkRow(std::vector<std::vector<int>>& mat, int i) {
-	int index = -1;
-	for (int j = 0; j < mat[0].size(); j++) {
-		if (mat[i][j] == 1) {
-			if (index >= 0)
-				return -1;
-			else
-				index = j;
+// 0ms 6.5MB 
+string reversePrefix(string word, char ch) {
+	int pos = word.find(ch);
+
+	if (pos != string::npos)
+	{
+		int i = 0;
+		while (i <= pos)
+		{
+			swap(word[i], word[pos]);
+
+			i++;
+			pos--;
 		}
 	}
-	return index;
-}
-bool checkColumn(std::vector<std::vector<int>>& mat, int i, int index) {
-	for (int j = 0; j < mat.size(); j++) {
-		if (mat[j][index] == 1 && j != i)
-			return false;
-	}
-	return true;
-}
-int numSpecial(std::vector<std::vector<int>>& mat) {
-	int specials = 0;
 
-	for (int i = 0; i < mat.size(); i++) {
-		int index = checkRow(mat, i);
-		if (index >= 0 && checkColumn(mat, i, index))
-			specials++;
+	return word;
+}
+
+string reversePrefix(string word, char ch) {
+	int pos = word.find(ch);
+
+	if (pos != string::npos)
+	{
+		reverse(word.begin(), word.begin() + pos + 1);
 	}
 
-	return specials;
+	return word;
 }
+
 
 int main() {
 	cout << boolalpha;

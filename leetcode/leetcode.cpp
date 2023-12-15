@@ -17,33 +17,39 @@
 
 using namespace std;
 
-string destCity(vector<vector<string>>& paths) {
-	unordered_set<string> st;
-
-	for (int i = 0; i < paths.size(); i++)
-		st.insert(paths[i][0]); // insert all cityA
-
-	for (int i = 0; i < paths.size(); i++)
+// 4ms 10.9MB
+vector<int> decompressRLElist(vector<int>& nums) {
+	vector<int> res;
+	for (int i = 0; i < nums.size(); i+=2)
 	{
-		// if cityB not in st, then cityB is destination city
-		if (!st.contains(paths[i][1]))
-			return paths[i][1];
+		vector<int> temp(nums[i], nums[i + 1]);
+		res.insert(res.end(), temp.begin(), temp.end());
 	}
 
-	return "";
+	return res;
+}
+
+// 4ms 10.3MB 
+vector<int> decompressRLElist(vector<int>& nums) {
+	vector<int> res;
+	for (int i = 0; i < nums.size(); i += 2)
+	{
+		for (int j = 0; j < nums[i]; j++)
+		{
+			res.push_back(nums[i + 1]);
+		}
+	}
+
+	return res;
 }
 
 
 int main() {
 	cout << boolalpha;
-	vector<vector<int>> mat = { {1,0,0}, {0,0,1}, {1,0,0} };
-	cout << numSpecial(mat) << '\n';
-
-	mat = { {1,0,0}, {0,1,0}, {0,0,1} };
-	cout << numSpecial(mat) << '\n';
-
-	mat = { {0,0}, {0,0}, {1,0} };
-	cout << numSpecial(mat) << '\n';
+	vector<int> nums = { 1,2,3,4 };
+	for (auto& x : decompressRLElist(nums))
+		cout << x << ' ';
+	cout << '\n';
 
 	return 0;
 }

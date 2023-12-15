@@ -17,39 +17,41 @@
 
 using namespace std;
 
-// 4ms 10.9MB
-vector<int> decompressRLElist(vector<int>& nums) {
-	vector<int> res;
-	for (int i = 0; i < nums.size(); i+=2)
+// 0ms 6.4MB 
+int subtractProductAndSum(int n) {
+	vector<int> nums;
+	while (n)
 	{
-		vector<int> temp(nums[i], nums[i + 1]);
-		res.insert(res.end(), temp.begin(), temp.end());
+		nums.push_back(n % 10);
+		n /= 10;
 	}
 
-	return res;
+	int productOfDigits = nums[0];
+	for (int i = 1; i < nums.size(); i++)
+		productOfDigits *= nums[i];
+
+	int sum = accumulate(nums.begin(), nums.end(), 0);
+
+	return productOfDigits - sum;
 }
 
-// 4ms 10.3MB 
-vector<int> decompressRLElist(vector<int>& nums) {
-	vector<int> res;
-	for (int i = 0; i < nums.size(); i += 2)
+// 2ms 6.3MB
+int subtractProductAndSum(int n) {
+	int productOfDigits = 1, sum = 0;
+
+	while (n)
 	{
-		for (int j = 0; j < nums[i]; j++)
-		{
-			res.push_back(nums[i + 1]);
-		}
+		int digit = n % 10;
+		productOfDigits *= digit;
+		sum += digit;
+		n /= 10;
 	}
 
-	return res;
+	return productOfDigits - sum;
 }
-
 
 int main() {
 	cout << boolalpha;
-	vector<int> nums = { 1,2,3,4 };
-	for (auto& x : decompressRLElist(nums))
-		cout << x << ' ';
-	cout << '\n';
 
 	return 0;
 }

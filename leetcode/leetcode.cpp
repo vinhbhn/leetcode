@@ -17,34 +17,20 @@
 
 using namespace std;
 
-// 0ms 6.5MB 
-string reversePrefix(string word, char ch) {
-	int pos = word.find(ch);
+string destCity(vector<vector<string>>& paths) {
+	unordered_set<string> st;
 
-	if (pos != string::npos)
+	for (int i = 0; i < paths.size(); i++)
+		st.insert(paths[i][0]); // insert all cityA
+
+	for (int i = 0; i < paths.size(); i++)
 	{
-		int i = 0;
-		while (i <= pos)
-		{
-			swap(word[i], word[pos]);
-
-			i++;
-			pos--;
-		}
+		// if cityB not in st, then cityB is destination city
+		if (!st.contains(paths[i][1]))
+			return paths[i][1];
 	}
 
-	return word;
-}
-
-string reversePrefix(string word, char ch) {
-	int pos = word.find(ch);
-
-	if (pos != string::npos)
-	{
-		reverse(word.begin(), word.begin() + pos + 1);
-	}
-
-	return word;
+	return "";
 }
 
 

@@ -17,37 +17,35 @@
 
 using namespace std;
 
-// 0ms 6.4MB 
-int subtractProductAndSum(int n) {
-	vector<int> nums;
-	while (n)
+// 0ms 8.6MB 
+int getDecimalValue(ListNode* head) {
+	vector<int> res;
+	while (head != nullptr)
 	{
-		nums.push_back(n % 10);
-		n /= 10;
+		res.push_back(head->val);
+		head = head->next;
 	}
 
-	int productOfDigits = nums[0];
-	for (int i = 1; i < nums.size(); i++)
-		productOfDigits *= nums[i];
+	int ans = 0, b = 1;
+	for (int i = res.size() - 1; i >= 0; i--)
+	{
+		ans += res[i] * b;
+		b *= 2;
+	}
 
-	int sum = accumulate(nums.begin(), nums.end(), 0);
-
-	return productOfDigits - sum;
+	return ans;
 }
 
-// 2ms 6.3MB
-int subtractProductAndSum(int n) {
-	int productOfDigits = 1, sum = 0;
-
-	while (n)
+// web 1ms real 4ms 8.5MB
+int getDecimalValue(ListNode* head) {
+	int ans = 0;
+	while (head != nullptr)
 	{
-		int digit = n % 10;
-		productOfDigits *= digit;
-		sum += digit;
-		n /= 10;
+		ans = ans * 2 + head->val;
+		head = head->next;
 	}
 
-	return productOfDigits - sum;
+	return ans;
 }
 
 int main() {

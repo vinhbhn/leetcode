@@ -17,35 +17,36 @@
 
 using namespace std;
 
-// 0ms 8.6MB 
-int getDecimalValue(ListNode* head) {
-	vector<int> res;
-	while (head != nullptr)
+// 0ms 6.6MB
+string freqAlphabets(string s) {
+	string res = "", temp = "";
+
+	int i = s.size() - 1;
+	// right to left
+	while (i >= 0)
 	{
-		res.push_back(head->val);
-		head = head->next;
+		// j -> z: '`' + (int)temp
+		if (s[i] == '#')
+		{
+			temp += s[i - 2];
+			temp += s[i - 1];
+
+			res += '`' + stoi(temp);
+			temp = "";
+
+			i -= 3;
+		}
+		else
+		{
+			// a -> i is 1 -> 9 
+			// '`' + (char - 48) // char to int
+			res += '`' + (s[i] - 48);
+			i--;
+		}
 	}
 
-	int ans = 0, b = 1;
-	for (int i = res.size() - 1; i >= 0; i--)
-	{
-		ans += res[i] * b;
-		b *= 2;
-	}
-
-	return ans;
-}
-
-// web 1ms real 4ms 8.5MB
-int getDecimalValue(ListNode* head) {
-	int ans = 0;
-	while (head != nullptr)
-	{
-		ans = ans * 2 + head->val;
-		head = head->next;
-	}
-
-	return ans;
+	reverse(res.begin(), res.end());
+	return res;
 }
 
 int main() {

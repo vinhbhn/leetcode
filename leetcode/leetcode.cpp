@@ -17,40 +17,53 @@
 
 using namespace std;
 
-// 0ms 6.6MB
-string freqAlphabets(string s) {
-	string res = "", temp = "";
+// 4ms 7.9MB O(s+t) O(vs+vt)
+bool isAnagram(string s, string t) {
+	if (s.size() != t.size())
+		return false;
 
-	int i = s.size() - 1;
-	// right to left
-	while (i >= 0)
+	vector<int> vs(26, 0), vt(26, 0);
+	for (int i = 0; i < s.size(); i++)
 	{
-		// j -> z: '`' + (int)temp
-		if (s[i] == '#')
-		{
-			temp += s[i - 2];
-			temp += s[i - 1];
-
-			res += '`' + stoi(temp);
-			temp = "";
-
-			i -= 3;
-		}
-		else
-		{
-			// a -> i is 1 -> 9 
-			// '`' + (char - 48) // char to int
-			res += '`' + (s[i] - 48);
-			i--;
-		}
+		vs[s[i] - 'a']++;
+		vt[t[i] - 'a']++;
 	}
 
-	reverse(res.begin(), res.end());
-	return res;
+	for (int i = 0; i < 26; i++)
+	{
+		if (vs[i] != vt[i]) // letter in s not present/equal quantity in t
+			return false;
+	}
+
+	return true;
+}
+
+// web 0ms real 3ms 7.8MB
+bool isAnagram(string s, string t) {
+	if (s.size() != t.size())
+		return false;
+
+	vector<int> count(26, 0);
+	for (int i = 0; i < s.size(); i++)
+	{
+		count[s[i] - 'a']++;
+		count[t[i] - 'a']--;
+	}
+
+	for (int i = 0; i < 26; i++)
+	{
+		if (count[i] != 0) // letter in s not present/equal quantity in t
+			return false;
+	}
+
+	return true;
 }
 
 int main() {
 	cout << boolalpha;
+	string  s = "anagram", t = "nagaram";
+	cout << isAnagram(s, t) << '\n';
+
 
 	return 0;
 }

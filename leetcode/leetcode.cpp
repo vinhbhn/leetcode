@@ -59,6 +59,8 @@ bool isAnagram(string s, string t) {
 	return true;
 }
 
+// sorting (s) == sorting (t)
+
 int main() {
 	cout << boolalpha;
 	string  s = "anagram", t = "nagaram";

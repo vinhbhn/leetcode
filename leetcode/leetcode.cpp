@@ -17,31 +17,17 @@
 
 using namespace std;
 
-// 13ms 12.6MB O(n^2) O(1)
-int countKDifference(vector<int>& nums, int k) {
-	int count = 0;
-	for (int i = 0; i < nums.size() - 1; i++)
+// 8ms 12.3MB O(n^2) O(n)
+int countPairs(vector<int>& nums, int k) {
+	int count = 0, n = nums.size();
+
+	for (int i = 0; i < n - 1; i++)
 	{
-		for (int j = i + 1; j < nums.size(); j++)
+		for (int j = i + 1; j < n; j++)
 		{
-			if (abs(nums[i] - nums[j]) == k)
+			if ((nums[i] == nums[j]) && (i * j % k == 0))
 				count++;
 		}
-	}
-
-	return count;
-}
-
-// web 0ms real 0ms 12.9MB 
-int countKDifference(vector<int>& nums, int k) {
-	int count = 0;
-	vector<int> m(101);
-	for (auto num : nums)
-		m[num]++;
-
-	for (int i = 1; i < 101 - k; i++)
-	{
-		count += m[i] * m[i + k];
 	}
 
 	return count;

@@ -17,61 +17,34 @@
 
 using namespace std;
 
-// 7ms 12MB O(2n + n/2) O(2n)
-vector<int> leftRightDifference(vector<int>& nums) {
-	int n = nums.size();
-	if (n == 1)
-		return { 0 };
-
-	int left = 0, right = 0;
-	vector<int> l = { 0 }, r = { 0 };
-	for (int i = 0; i < n - 1; i++)
+// 13ms 12.6MB O(n^2) O(1)
+int countKDifference(vector<int>& nums, int k) {
+	int count = 0;
+	for (int i = 0; i < nums.size() - 1; i++)
 	{
-		left += nums[i];
-		l.push_back(left);
-	}
-	for (int i = n - 1; i >= 1; i--)
-	{
-		right += nums[i];
-		r.push_back(right);
-	}
-	reverse(r.begin(), r.end());
-
-	for (int i = 0; i < n; i++)
-	{
-		nums[i] = abs(l[i] - r[i]);
+		for (int j = i + 1; j < nums.size(); j++)
+		{
+			if (abs(nums[i] - nums[j]) == k)
+				count++;
+		}
 	}
 
-	return nums;
+	return count;
 }
 
-// 6ms 11.4MB 
-vector<int> leftRightDifference(vector<int>& nums) {
-	int left = 0, right = accumulate(nums.begin(), nums.end(), 0), temp = 0;
-	for (int i = 0; i < nums.size(); i++)
-	{
-		temp = nums[i];
-		right -= temp;
-		nums[i] = abs(left - right);
-		left += temp;
+// web 0ms real 0ms 12.9MB 
+int countKDifference(vector<int>& nums, int k) {
+	int count = 0;
+	vector<int> m(101);
+	for (auto num : nums)
+		m[num]++;
 
+	for (int i = 1; i < 101 - k; i++)
+	{
+		count += m[i] * m[i + k];
 	}
 
-	return nums;
-}
-
-//web 0ms real 10ms 11.3MB O(n) O(n)
-vector<int> leftRightDifference(vector<int>& nums) {
-	int left = 0, right = accumulate(nums.begin(), nums.end(), 0);
-	vector<int> res;
-	for (int i = 0; i < nums.size(); i++)
-	{
-		right -= nums[i];
-		res.push_back(abs(left - right));
-		left += nums[i];
-	}
-
-	return res;
+	return count;
 }
 
 int main() {

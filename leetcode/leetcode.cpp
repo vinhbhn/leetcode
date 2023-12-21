@@ -17,20 +17,16 @@
 
 using namespace std;
 
-// 8ms 12.3MB O(n^2) O(n)
-int countPairs(vector<int>& nums, int k) {
-	int count = 0, n = nums.size();
-
-	for (int i = 0; i < n - 1; i++)
+// 13ms 10.2MB O(n) O(n*m) n = sentences.size(), m = sentence.size()
+int mostWordsFound(vector<string>& sentences) {
+	int res = 0, whitespace = 0;
+	for (auto& sentence : sentences)
 	{
-		for (int j = i + 1; j < n; j++)
-		{
-			if ((nums[i] == nums[j]) && (i * j % k == 0))
-				count++;
-		}
+		whitespace = count(sentence.begin(), sentence.end(), ' ');
+		res = max(res, whitespace);
 	}
 
-	return count;
+	return res + 1; // whitespace 
 }
 
 int main() {

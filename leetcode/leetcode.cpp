@@ -17,20 +17,53 @@
 
 using namespace std;
 
-// 13ms 10.2MB O(n) O(n*m) n = sentences.size(), m = sentence.size()
-int mostWordsFound(vector<string>& sentences) {
-	int res = 0, whitespace = 0;
-	for (auto& sentence : sentences)
+// 38ms 15.3MB O(n) O(n/2)
+string makeSmallestPalindrome(string s) {
+	int n = s.length(), i = 0;
+
+	while (true)
 	{
-		whitespace = count(sentence.begin(), sentence.end(), ' ');
-		res = max(res, whitespace);
+		if (i >= n - 1 - i)
+			break;
+
+		if (s[i] > s[n - 1 - i])
+			s[i] = s[n - 1 - i];
+		else if (s[i] < s[n - 1 - i])
+			s[n - 1 - i] = s[i];
+
+		i++;
 	}
 
-	return res + 1; // whitespace 
+	return s;
+}
+
+// web 19ms real 31ms 15.3MB
+string makeSmallestPalindrome(string s) {
+	int l = 0, r = s.length() - 1;
+
+	while (l <= r)
+	{
+		if (s[l] > s[r])
+			s[l] = s[r];
+		else if (s[l] < s[r])
+			s[r] = s[l];
+		l++;
+		r--;
+	}
+
+	return s;
 }
 
 int main() {
 	cout << boolalpha;
+	string s = "egcfe";
+	cout << makeSmallestPalindrome(s) << '\n';
+
+	s = "abcd";
+	cout << makeSmallestPalindrome(s) << '\n';
+
+	s = "seven";
+	cout << makeSmallestPalindrome(s) << '\n';
 
 
 	return 0;

@@ -17,21 +17,41 @@
 
 using namespace std;
 
-// 0ms 6.2MB
-int commonFactors(int a, int b) {
+// 2ms 7.9MB
+std::vector<std::string> split(const std::string& s, char delim) {
+	std::stringstream ss(s);
+	std::string item;
+	std::vector<std::string> elems;
+	while (std::getline(ss, item, delim)) {
+		elems.push_back(item);
+	}
+	return elems;
+}
+int countAsterisks(string s) {
+	vector<string> v = split(s, '|');
+
 	int count = 0;
-	// count divisible by both A and B from 1 to 1000
-	for (int i = 1; i <= 1000; i++)
+	for (int i = 0; i < v.size(); i += 2)
 	{
-		if ((a % i == 0) && (b % i == 0))
-			count++;
+		count += ::count(v[i].begin(), v[i].end(), '*');
 	}
 
-	// duplicate because from 1 to 1000 have a and b
-	if (a == b)
-		count--;
+	return count;
+}
 
-	return (b % a == 0) ? count + 1 : count;
+// web 0ms real 3ms 6.9MB
+int countAsterisks(string s) {
+	int count = 0,vbar = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] == '*' && vbar % 2 == 0)
+			count++;
+
+		if (s[i] == '|')
+			vbar++;
+	}
+
+	return count;
 }
 
 int main() {

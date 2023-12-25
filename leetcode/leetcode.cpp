@@ -17,42 +17,37 @@
 
 using namespace std;
 
-// 2ms 7.9MB
-std::vector<std::string> split(const std::string& s, char delim) {
-	std::stringstream ss(s);
-	std::string item;
-	std::vector<std::string> elems;
-	while (std::getline(ss, item, delim)) {
-		elems.push_back(item);
-	}
-	return elems;
-}
-int countAsterisks(string s) {
-	vector<string> v = split(s, '|');
+// https://leetcode.com/problems/path-crossing/solutions/4443651/beats-100-explained-with-video-c-java-python-js-map-single-pass-visualized/?envType=daily-question&envId=2023-12-23
+// O(n) O(n) 5ms 7.1MB
+bool isPathCrossing(string path) {
+	unordered_map<char, pair<int, int>> moves;
+	moves['N'] = { 0, 1 };
+	moves['S'] = { 0, -1 };
+	moves['W'] = { -1, 0 };
+	moves['E'] = { 1, 0 };
 
-	int count = 0;
-	for (int i = 0; i < v.size(); i += 2)
+	unordered_set<string> visited;
+	visited.insert("0,0");
+
+	int  x = 0, y = 0;
+	for (char c : path)
 	{
-		count += ::count(v[i].begin(), v[i].end(), '*');
+		pair<int, int> curr = moves[c];
+		x += curr.first;
+		y += curr.second;
+
+		string hash = to_string(x) + "," + to_string(y);
+
+		if (visited.contains(hash))
+			return true;
+
+		visited.insert(hash);
 	}
 
-	return count;
+	return false;
 }
 
-// web 0ms real 3ms 6.9MB
-int countAsterisks(string s) {
-	int count = 0,vbar = 0;
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (s[i] == '*' && vbar % 2 == 0)
-			count++;
 
-		if (s[i] == '|')
-			vbar++;
-	}
-
-	return count;
-}
 
 int main() {
 	cout << boolalpha;

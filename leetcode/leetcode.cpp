@@ -17,29 +17,37 @@
 
 using namespace std;
 
-// 3ms 7.1MB O(n) O(n)
-string greatestLetter(string s) {
-	// 2 vectors to store upper and lower letters
-	vector<bool> u(26, false), l(26, false);
-	for (auto ch : s)
+// 2ms 8.2MB
+vector<string> cellsInRange(string s) {
+	vector<string> res;
+	string temp = "";
+	for (auto startR = s[0]; startR <= s[3]; startR++)
 	{
-		if (isupper(ch))
-			u[ch - 'A'] = true;
-		else if (islower(ch))
-			l[ch - 'a'] = true;
+		for (auto startC = s[1]; startC <= s[4]; startC++)
+		{
+			temp += startR;
+			temp += startC;
+			res.push_back(temp);
+			temp = "";
+		}
 	}
 
-	// traverse z to a to find greatest english letter
-	for (int i = u.size() - 1; i >= 0; i--)
-	{
-		if (u[i] && l[i])
-			return string(1, i + 'A');
-	}
-
-	return "";
+	return res;
 }
 
+// 3ms 8.1MB
+vector<string> cellsInRange(string s) {
+	vector<string> res;
+	for (auto startR = s[0]; startR <= s[3]; startR++)
+	{
+		for (auto startC = s[1]; startC <= s[4]; startC++)
+		{
+			res.push_back(string() + startR + startC);
+		}
+	}
 
+	return res;
+}
 
 int main() {
 	cout << boolalpha;

@@ -17,34 +17,26 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/path-crossing/solutions/4443651/beats-100-explained-with-video-c-java-python-js-map-single-pass-visualized/?envType=daily-question&envId=2023-12-23
-// O(n) O(n) 5ms 7.1MB
-bool isPathCrossing(string path) {
-	unordered_map<char, pair<int, int>> moves;
-	moves['N'] = { 0, 1 };
-	moves['S'] = { 0, -1 };
-	moves['W'] = { -1, 0 };
-	moves['E'] = { 1, 0 };
-
-	unordered_set<string> visited;
-	visited.insert("0,0");
-
-	int  x = 0, y = 0;
-	for (char c : path)
+// 3ms 7.1MB O(n) O(n)
+string greatestLetter(string s) {
+	// 2 vectors to store upper and lower letters
+	vector<bool> u(26, false), l(26, false);
+	for (auto ch : s)
 	{
-		pair<int, int> curr = moves[c];
-		x += curr.first;
-		y += curr.second;
-
-		string hash = to_string(x) + "," + to_string(y);
-
-		if (visited.contains(hash))
-			return true;
-
-		visited.insert(hash);
+		if (isupper(ch))
+			u[ch - 'A'] = true;
+		else if (islower(ch))
+			l[ch - 'a'] = true;
 	}
 
-	return false;
+	// traverse z to a to find greatest english letter
+	for (int i = u.size() - 1; i >= 0; i--)
+	{
+		if (u[i] && l[i])
+			return string(1, i + 'A');
+	}
+
+	return "";
 }
 
 

@@ -17,51 +17,45 @@
 
 using namespace std;
 
-// 44ms 30.2MB
-int countConsistentStrings(string allowed, vector<string>& words) {
-	int count = 0;
+// 89ms 33.6MB
+int similarPairs(vector<string>& words) {
+	vector<set<char>> v;
 	for (auto& word : words)
 	{
-		bool contain = true;
-		for (auto ch : word)
-		{
-			if (allowed.find(ch) == string::npos)
-			{
-				contain = false;
-				break;
-			}
-		}
+		set<char> temp(word.begin(), word.end());
+		v.push_back(temp);
+	}
 
-		if (contain)
-			count++;
+	int count = 0;
+	for (int i = 0; i < v.size() - 1; i++)
+	{
+		for (int j = i + 1; j < v.size(); j++)
+		{
+			if (v[i] == v[j])
+				count++;
+		}
 	}
 
 	return count;
 }
 
-// web 27ms real 50ms 30.4MB
-int countConsistentStrings(string allowed, vector<string>& words) {
-	bool hash[26] = {};
-	for (int i = 0; i < allowed.size(); i++)
+// 83ms 28.6MB https://leetcode.com/problems/count-pairs-of-similar-strings/solutions/2923595/c-hashing-easy-solution/
+int similarPairs(vector<string>& words) {
+	map<set<char>, int> mp;
+	for (auto& word : words)
 	{
-		hash[allowed[i] - 'a'] = true;
+		set<char> temp(word.begin(), word.end());
+		mp[temp]++;
 	}
 
 	int count = 0;
-	for (auto& word : words)
+	for (auto &p : mp)
 	{
-		bool contain = true;
-		for (auto ch : word)
+		if (p.second > 1)
 		{
-			if (!hash[ch - 'a'])
-			{
-				contain = false;
-				break;
-			}
+			int n = p.second;
+			count += (n * (n - 1)) / 2;
 		}
-
-		if (contain)
-			count++;
 	}
 
 	return count;

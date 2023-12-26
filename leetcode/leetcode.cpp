@@ -17,36 +17,54 @@
 
 using namespace std;
 
-// 2ms 8.2MB
-vector<string> cellsInRange(string s) {
-	vector<string> res;
-	string temp = "";
-	for (auto startR = s[0]; startR <= s[3]; startR++)
+// 44ms 30.2MB
+int countConsistentStrings(string allowed, vector<string>& words) {
+	int count = 0;
+	for (auto& word : words)
 	{
-		for (auto startC = s[1]; startC <= s[4]; startC++)
+		bool contain = true;
+		for (auto ch : word)
 		{
-			temp += startR;
-			temp += startC;
-			res.push_back(temp);
-			temp = "";
+			if (allowed.find(ch) == string::npos)
+			{
+				contain = false;
+				break;
+			}
 		}
+
+		if (contain)
+			count++;
 	}
 
-	return res;
+	return count;
 }
 
-// 3ms 8.1MB
-vector<string> cellsInRange(string s) {
-	vector<string> res;
-	for (auto startR = s[0]; startR <= s[3]; startR++)
+// web 27ms real 50ms 30.4MB
+int countConsistentStrings(string allowed, vector<string>& words) {
+	bool hash[26] = {};
+	for (int i = 0; i < allowed.size(); i++)
 	{
-		for (auto startC = s[1]; startC <= s[4]; startC++)
-		{
-			res.push_back(string() + startR + startC);
-		}
+		hash[allowed[i] - 'a'] = true;
 	}
 
-	return res;
+	int count = 0;
+	for (auto& word : words)
+	{
+		bool contain = true;
+		for (auto ch : word)
+		{
+			if (!hash[ch - 'a'])
+			{
+				contain = false;
+				break;
+			}
+		}
+
+		if (contain)
+			count++;
+	}
+
+	return count;
 }
 
 int main() {

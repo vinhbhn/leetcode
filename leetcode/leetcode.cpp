@@ -17,44 +17,37 @@
 
 using namespace std;
 
-// 89ms 33.6MB
-int similarPairs(vector<string>& words) {
-	vector<set<char>> v;
-	for (auto& word : words)
-	{
-		set<char> temp(word.begin(), word.end());
-		v.push_back(temp);
-	}
-
+// 83ms 12.4MB O(m*n) O(m*n)
+int minDeletionSize(vector<string>& strs) {
 	int count = 0;
-	for (int i = 0; i < v.size() - 1; i++)
+	for (int j = 0; j < strs[0].size(); j++)
 	{
-		for (int j = i + 1; j < v.size(); j++)
+		bool flag = false;
+		for (int i = 1; i < strs.size(); i++)
 		{
-			if (v[i] == v[j])
-				count++;
+			if (strs[i][j] < strs[i - 1][j])
+				flag = true;
 		}
+
+		if (flag)
+			count++;
 	}
 
 	return count;
 }
 
-// 83ms 28.6MB https://leetcode.com/problems/count-pairs-of-similar-strings/solutions/2923595/c-hashing-easy-solution/
-int similarPairs(vector<string>& words) {
-	map<set<char>, int> mp;
-	for (auto& word : words)
-	{
-		set<char> temp(word.begin(), word.end());
-		mp[temp]++;
-	}
-
+// 36ms 12.8MB
+int minDeletionSize(vector<string>& strs) {
 	int count = 0;
-	for (auto &p : mp)
+	for (int j = 0; j < strs[0].size(); j++)
 	{
-		if (p.second > 1)
+		for (int i = 1; i < strs.size(); i++)
 		{
-			int n = p.second;
-			count += (n * (n - 1)) / 2;
+			if (strs[i][j] < strs[i - 1][j])
+			{
+				count++;
+				break;
+			}
 		}
 	}
 

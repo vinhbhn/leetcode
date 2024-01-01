@@ -17,41 +17,20 @@
 
 using namespace std;
 
-// 83ms 12.4MB O(m*n) O(m*n)
-int minDeletionSize(vector<string>& strs) {
-	int count = 0;
-	for (int j = 0; j < strs[0].size(); j++)
-	{
-		bool flag = false;
-		for (int i = 1; i < strs.size(); i++)
-		{
-			if (strs[i][j] < strs[i - 1][j])
-				flag = true;
-		}
+// 4ms 7.4MB O(nlogn + n/2) O(1)
+int distinctAverages(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+	unordered_set<float> st;
 
-		if (flag)
-			count++;
+	int i = 0, j = nums.size() - 1;
+	while (i <= j)
+	{
+		st.insert((nums[i] + nums[j]) / 2.0); // different between 2 and 2.0
+		i++;
+		j--;
 	}
 
-	return count;
-}
-
-// 36ms 12.8MB
-int minDeletionSize(vector<string>& strs) {
-	int count = 0;
-	for (int j = 0; j < strs[0].size(); j++)
-	{
-		for (int i = 1; i < strs.size(); i++)
-		{
-			if (strs[i][j] < strs[i - 1][j])
-			{
-				count++;
-				break;
-			}
-		}
-	}
-
-	return count;
+	return static_cast<int>(st.size());
 }
 
 int main() {

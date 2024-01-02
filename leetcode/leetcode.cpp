@@ -17,9 +17,17 @@
 
 using namespace std;
 
-// 0ms 6.3MB 
-int theMaximumAchievableX(int num, int t) {
-	return num + 2 * t;
+// 4ms 8.4MB O(n) O(n)
+int largestAltitude(vector<int>& gain) {
+	int highest = 0, n = gain.size(), curr = 0;
+
+	for (int i = 0; i < n; i++)
+	{
+		curr += gain[i];
+		highest = max(highest, curr);
+	}
+
+	return highest;
 }
 
 int main() {

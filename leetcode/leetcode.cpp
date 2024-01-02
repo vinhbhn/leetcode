@@ -17,28 +17,27 @@
 
 using namespace std;
 
-// 22ms 24.4MB O(nlogn + n/2) O(n)
-vector<int> numberGame(vector<int>& nums) {
-	sort(nums.begin(), nums.end());
-
-	vector<int> res;
-	for (int i = 0; i < nums.size() - 1; i += 2)
+// 32ms 16.6MB O(n) O(n)
+vector<int> buildArray(vector<int>& nums) {
+	int n = nums.size();
+	vector<int> ans(n, 0);
+	for (int i = 0; i < n; i++)
 	{
-		res.push_back(nums[i + 1]); // bob remove second minimum then append first
-		res.push_back(nums[i]); // alice remove first minimum then append after Bob
+		ans[i] = nums[nums[i]];
 	}
 
-	return res;
+	return ans;
 }
 
-// 23ms 24.4MB O(nlogn + n/2) O(n)
-vector<int> numberGame(vector<int>& nums) {
-	sort(nums.begin(), nums.end());
+vector<int> buildArray(vector<int>& nums) {
+	int n = nums.size();
+	vector<int> ans;
+	for (int i = 0; i < n; i++)
+	{
+		ans.push_back(nums[nums[i]]);
+	}
 
-	for (int i = 0; i < nums.size() - 1; i += 2)
-		swap(nums[i], nums[i + 1]);
-
-	return nums;
+	return ans;
 }
 
 int main() {

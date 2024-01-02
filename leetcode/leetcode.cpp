@@ -17,27 +17,9 @@
 
 using namespace std;
 
-// 32ms 16.6MB O(n) O(n)
-vector<int> buildArray(vector<int>& nums) {
-	int n = nums.size();
-	vector<int> ans(n, 0);
-	for (int i = 0; i < n; i++)
-	{
-		ans[i] = nums[nums[i]];
-	}
-
-	return ans;
-}
-
-vector<int> buildArray(vector<int>& nums) {
-	int n = nums.size();
-	vector<int> ans;
-	for (int i = 0; i < n; i++)
-	{
-		ans.push_back(nums[nums[i]]);
-	}
-
-	return ans;
+// 0ms 6.3MB 
+int theMaximumAchievableX(int num, int t) {
+	return num + 2 * t;
 }
 
 int main() {

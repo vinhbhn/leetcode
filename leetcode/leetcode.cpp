@@ -17,23 +17,16 @@
 
 using namespace std;
 
-// 168ms 68.7MB O(nlogn)
-int maxWidthOfVerticalArea(vector<vector<int>>& points) {
-	vector<int> x;
-	for (int i = 0; i < points.size(); i++)
+// 0ms 20.7MB O(n)
+int numberOfEmployeesWhoMetTarget(vector<int>& hours, int target) {
+	int count = 0;
+	for (auto hour : hours)
 	{
-		x.push_back(points[i][0]);
+		if (hour >= target)
+			count++;
 	}
 
-	sort(x.begin(), x.end());
-
-	int res = 0;
-	for (int i = 1; i < x.size(); i++)
-	{
-		res = max(res, x[i] - x[i - 1]);
-	}
-
-	return res;
+	return count;
 }
 
 int main() {

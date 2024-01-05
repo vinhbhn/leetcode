@@ -17,39 +17,61 @@
 
 using namespace std;
 
-// 36ms 71MB O(n+k)
-int maximizeSum(vector<int>& nums, int k) {
-	int largestNum = *max_element(nums.begin(), nums.end());
-	int sum = largestNum;
-
-	k--; // after init sum = largest element in num
-	while (k)
+// 10ms 21.2MB O(n^2)
+int maximumNumberOfStringPairs(vector<string>& words) {
+	int count = 0;
+	unordered_set<int> st; // add known pair, each string can belong in at most one pair
+	for (int i = 0; i < words.size() - 1; i++)
 	{
-		largestNum++;
-		sum += largestNum;
-
-		k--;
+		for (int j = i + 1; j < words.size(); j++)
+		{
+			if (!st.contains(i) and !st.contains(j))
+			{
+				if ((words[i][0] == words[j][1]) and (words[i][1] == words[j][0]))
+				{
+					count++;
+					st.insert(i);
+					st.insert(j);
+				}
+			}
+		}
 	}
 
-	return sum;
+	return count;
 }
 
-// https://leetcode.com/problems/maximum-sum-with-exactly-k-elements/solutions/3466875/very-simple-easy-to-understand-solution/
-// 34ms 71.1MB O(n+k)
-int sumUptoN(int n)
-{
-	return (n * (n + 1) / 2);
-}
-int maximizeSum(vector<int>& nums, int k) {
-	int largestNum = *max_element(nums.begin(), nums.end());
-	return sumUptoN(largestNum+k-1) - sumUptoN(largestNum-1);
+// web 0ms real 17ms 21.6MB 
+int maximumNumberOfStringPairs(vector<string>& words) {
+	int count = 0;
+	unordered_set<string> st; // add known string, each string can belong in at most one pair
+	for (int i = 0; i < words.size(); i++)
+	{
+		string temp = words[i];
+		reverse(temp.begin(), temp.end());
+		if (st.contains(temp))
+			count++;
+		else
+			st.insert(words[i]);
+	}
+
+	return count;
 }
 
-// web 4ms real 16ms 71.1MB O(n)
-int maximizeSum(vector<int>& nums, int k) {
-	int largestNum = *max_element(nums.begin(), nums.end());
-	double k_over_2 = k / 2.0;
-	return k * largestNum + k_over_2 * (k+1) - k;
+// web 0ms real 0ms 21.7MB // st.contain vs st.find
+int maximumNumberOfStringPairs(vector<string>& words) {
+	int count = 0;
+	unordered_set<string> st; // add known string, each string can belong in at most one pair
+	for (int i = 0; i < words.size(); i++)
+	{
+		string temp = words[i];
+		reverse(temp.begin(), temp.end());
+		if (st.find(temp) != st.end())
+			count++;
+		else
+			st.insert(words[i]);
+	}
+
+	return count;
 }
 
 int main() {

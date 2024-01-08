@@ -17,20 +17,33 @@
 
 using namespace std;
 
-// 0ms 6.5MB O(n)
-int maxDepth(string s) {
-	int count = 0, maxCount = 0;
-	for (auto ch : s)
-	{
-		if (ch == '(')
-			count++;
-		else if (ch == ')')
-			count--;
+// 43ms 23.5MB O(words.size() * s.size())
+bool isPalindrome(string s)
+{
+	return equal(s.cbegin(), s.cbegin() + s.size() / 2, s.crbegin());
+}
+string firstPalindrome(vector<string>& words) {
+	for (auto& word : words)
+		if (isPalindrome(word))
+			return word;
 
-		maxCount = max(maxCount, count);
-	}
+	return "";
+}
 
-	return maxCount;
+// 39ms 23.3MB
+string firstPalindrome(vector<string>& words) {
+	for (auto& word : words)
+		if (isPalindrome(word))
+			return word;
+
+	return "";
+}
+string firstPalindrome(vector<string>& words) {
+	for (auto& word : words)
+		if (isPalindrome(word))
+			return word;
+
+	return "";
 }
 
 int main() {

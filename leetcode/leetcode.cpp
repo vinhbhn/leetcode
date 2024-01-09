@@ -17,19 +17,9 @@
 
 using namespace std;
 
-// 17ms 16.1MB
-int minOperations(vector<int>& nums) {
-	int count = 0;
-	for (int i = 1; i < nums.size(); i++)
-	{
-		if (nums[i] <= nums[i - 1])
-		{
-			count += nums[i - 1] + 1 - nums[i];
-			nums[i] = nums[i - 1] + 1;
-		}
-	}
-
-	return count;
+// 0ms 13MB
+bool checkTree(TreeNode* root) {
+	return (root->val == (root->left->val + root->right->val));
 }
 
 int main() {

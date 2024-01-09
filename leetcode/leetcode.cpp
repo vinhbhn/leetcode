@@ -17,51 +17,87 @@
 
 using namespace std;
 
-// 11ms 26.8MB O(n1 + n2 + n3 + res)
-vector<int> countFreq(vector<int>& v, vector<int>& nums)
-{
-	for (int i = 0; i < nums.size(); i++)
+// 40ms 65.8MB
+vector<int> findIntersectionValues(vector<int>& nums1, vector<int>& nums2) {
+	unordered_set st1(nums1.begin(), nums1.end());
+	unordered_set st2(nums2.begin(), nums2.end());
+
+	vector<int> res;
+	int count = 0;
+	for (int num : nums1)
 	{
-		v[nums[i]]++;
+		if (st2.contains(num))
+			count++;
 	}
+	res.push_back(count);
+	count = 0;
+	for (int num : nums2)
+	{
+		if (st1.contains(num))
+			count++;
+	}
+	res.push_back(count);
+
+	return res;
+}
+
+// 14ms 61MB
+vector<bool> countFreq(vector<bool>& v, vector<int>& nums)
+{
+	for (int& num : nums)
+		v[num] = true;
 
 	return v;
 }
-vector<int> twoOutOfThree(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3) {
-	vector<int> n1(101, 0), n2(101, 0), n3(101, 0);
+int countInter(vector<int>& nums, vector<bool>& v)
+{
+	int count = 0;
+	for (int& num : nums)
+	{
+		if (v[num])
+			count++;
+	}
 
-	countFreq(n1, nums1);
-	countFreq(n2, nums2);
-	countFreq(n3, nums3);
+	return count;
+}
+vector<int> findIntersectionValues(vector<int>& nums1, vector<int>& nums2) {
+	vector<bool> v1(101, false), v2(101, false);
+	countFreq(v1, nums1);
+	countFreq(v2, nums2);
 
 	vector<int> res;
-	for (int i = 1; i <= 100; i++)
-	{
-		if ((n1[i] and n2[i]) or (n1[i] and n3[i]) or (n2[i] and n3[i]))
-			res.push_back(i);
-	}
+	res.push_back(countInter(nums1, v2));
+	res.push_back(countInter(nums2, v1));
 
 	return res;
 }
 
-// web 0ms real 12ms 25.6MB
-vector<int> twoOutOfThree(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3) {
-	bitset<101> bit1, bit2, bit3;
 
-	for (const int& num : nums1) bit1.set(num);
-	for (const int& num : nums2) bit2.set(num);
-	for (const int& num : nums3) bit3.set(num);
+// 19ms 60.9MB
+vector<bool> countFreq(vector<bool>& v, vector<int>& nums)
+{
+	for (int& num : nums)
+		v[num] = true;
 
-	vector<int> res;
-	bitset<101> intersect = (bit1 & bit2) | (bit1 & bit3) | (bit2 & bit3);
-
-	for (size_t i = 0; i < intersect.size(); i++)
+	return v;
+}
+int countInter(vector<int>& nums, vector<bool>& v)
+{
+	int count = 0;
+	for (int& num : nums)
 	{
-		if (intersect[i])
-			res.push_back(static_cast<int>(i));
+		if (v[num])
+			count++;
 	}
 
-	return res;
+	return count;
+}
+vector<int> findIntersectionValues(vector<int>& nums1, vector<int>& nums2) {
+	vector<bool> v1(101, false), v2(101, false);
+	countFreq(v1, nums1);
+	countFreq(v2, nums2);
+
+	return { countInter(nums1, v2), countInter(nums2, v1) };
 }
 
 int main() {

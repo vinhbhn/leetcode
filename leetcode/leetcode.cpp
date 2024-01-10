@@ -17,88 +17,97 @@
 
 using namespace std;
 
-// 40ms 65.8MB
-vector<int> findIntersectionValues(vector<int>& nums1, vector<int>& nums2) {
-	unordered_set st1(nums1.begin(), nums1.end());
-	unordered_set st2(nums2.begin(), nums2.end());
-
-	vector<int> res;
-	int count = 0;
-	for (int num : nums1)
-	{
-		if (st2.contains(num))
-			count++;
-	}
-	res.push_back(count);
-	count = 0;
-	for (int num : nums2)
-	{
-		if (st1.contains(num))
-			count++;
-	}
-	res.push_back(count);
-
-	return res;
-}
-
-// 14ms 61MB
-vector<bool> countFreq(vector<bool>& v, vector<int>& nums)
-{
-	for (int& num : nums)
-		v[num] = true;
-
-	return v;
-}
-int countInter(vector<int>& nums, vector<bool>& v)
-{
-	int count = 0;
-	for (int& num : nums)
-	{
-		if (v[num])
-			count++;
+class ParkingSystem {
+private:
+	int m_big{};
+	int m_medium{};
+	int m_small{};
+public:
+	ParkingSystem(int big = 0, int medium = 0, int small = 0) : m_big{ big }, m_medium{ medium }, m_small{ small } {
 	}
 
-	return count;
-}
-vector<int> findIntersectionValues(vector<int>& nums1, vector<int>& nums2) {
-	vector<bool> v1(101, false), v2(101, false);
-	countFreq(v1, nums1);
-	countFreq(v2, nums2);
+	bool addCar(int carType) {
+		if (carType == 1)
+		{
+			if (m_big > 0)
+			{
+				m_big -= 1;
+				return true;
+			}
+		}
+		else if (carType == 2)
+		{
+			if (m_medium > 0)
+			{
+				m_medium -= 1;
+				return true;
+			}
+		}
+		else if (carType == 3)
+		{
+			if (m_small > 0)
+			{
+				m_small -= 1;
+				return true;
+			}
+		}
 
-	vector<int> res;
-	res.push_back(countInter(nums1, v2));
-	res.push_back(countInter(nums2, v1));
+		return false;
+	}
+};
 
-	return res;
-}
-
-
-// 19ms 60.9MB
-vector<bool> countFreq(vector<bool>& v, vector<int>& nums)
-{
-	for (int& num : nums)
-		v[num] = true;
-
-	return v;
-}
-int countInter(vector<int>& nums, vector<bool>& v)
-{
-	int count = 0;
-	for (int& num : nums)
-	{
-		if (v[num])
-			count++;
+// 52ms 33.5MB
+class ParkingSystem {
+private:
+	int m_big{};
+	int m_medium{};
+	int m_small{};
+public:
+	ParkingSystem(int big = 0, int medium = 0, int small = 0) : m_big{ big }, m_medium{ medium }, m_small{ small } {
 	}
 
-	return count;
-}
-vector<int> findIntersectionValues(vector<int>& nums1, vector<int>& nums2) {
-	vector<bool> v1(101, false), v2(101, false);
-	countFreq(v1, nums1);
-	countFreq(v2, nums2);
+	bool addCar(int carType) {
+		if (carType == 1 and m_big > 0)
+		{
+			m_big -= 1;
+			return true;
+		}
+		else if (carType == 2 and m_medium > 0)
+		{
+			m_medium -= 1;
+			return true;
+		}
+		else if (carType == 3 and m_small > 0)
+		{
+			m_small -= 1;
+			return true;
+		}
 
-	return { countInter(nums1, v2), countInter(nums2, v1) };
-}
+		return false;
+	}
+};
+
+// web 24ms real 56ms 33.4MB
+class ParkingSystem {
+private:
+	int m_parking[3] = { 0 };
+public:
+	ParkingSystem(int big = 0, int medium = 0, int small = 0) {
+		m_parking[0] = big;
+		m_parking[1] = medium;
+		m_parking[2] = small;
+	}
+
+	bool addCar(int carType) {
+		if (m_parking[carType - 1])
+		{
+			--m_parking[carType - 1];
+			return true;
+		}
+
+		return false;
+	}
+};
 
 int main() {
 	cout << boolalpha;

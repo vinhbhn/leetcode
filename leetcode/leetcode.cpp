@@ -17,49 +17,25 @@
 
 using namespace std;
 
-// 17ms 10MB O(n*m*n)
-int deleteGreatestValue(vector<vector<int>>& grid) {
-	int res = 0;
+// 2ms 6.2MB
+bool squareIsWhite(string coordinates) {
+	int x = coordinates[0] - 'a', y = coordinates[1] - '1';
 
-	// if grid.empty() is [], while not work
-	while (!grid[0].empty())
+	if (x % 2 == 0)
 	{
-		int max_c = 0;
-		for (int i = 0; i < grid.size(); i++)
-		{
-			auto temp = max_element(grid[i].begin(), grid[i].end());
-
-			max_c = max(max_c, *temp);
-
-			grid[i].erase(temp); // delete the greatest value in row
-		}
-
-		res += max_c; // add the greatest value in grid after loop
+		return (y % 2 != 0); // x and y is even mean it is black (false), eg: a1
+	}
+	else
+	{
+		return (y % 2 == 0);
 	}
 
-	return res;
+	return 0;
 }
 
-// web 0ms real 8ms 9.7MB O(mlogm + m*n)
-int deleteGreatestValue(vector<vector<int>>& grid) {
-	int res = 0;
-	for (int i = 0; i < grid.size(); i++)
-	{
-		sort(grid[i].begin(), grid[i].end());
-	}
-
-	for (int j = 0; j < grid[0].size(); j++)
-	{
-		int max_c = 0;
-		for (int i = 0; i < grid.size(); i++)
-		{
-			max_c = max(max_c, grid[i][j]);
-		}
-
-		res += max_c; // add the greatest value in col grid after loop
-	}
-
-	return res;
+// web 0ms real 2ms 6.4MB
+bool squareIsWhite(string coordinates) {
+	return ((coordinates[0] + coordinates[1]) % 2 != 0); // ascii: even decial is false
 }
 
 

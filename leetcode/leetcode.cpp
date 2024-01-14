@@ -17,25 +17,51 @@
 
 using namespace std;
 
-// 0ms 7.1MB O(n)
-bool isVowel(char ch)
-{
-	return (ch == 'a' or ch == 'e' or ch == 'i' or ch == 'o' or ch == 'u' or ch == 'A' or ch == 'E' or ch == 'I' or ch == 'O' or ch == 'U');
-}
-bool halvesAreAlike(string s) {
-	int n = s.length(), half = n / 2, countA = 0, countB = 0;
+// 17ms 10MB O(n*m*n)
+int deleteGreatestValue(vector<vector<int>>& grid) {
+	int res = 0;
 
-	for (int i = 0; i < half; i++)
+	// if grid.empty() is [], while not work
+	while (!grid[0].empty())
 	{
-		if (isVowel(s[i]))
-			countA++;
+		int max_c = 0;
+		for (int i = 0; i < grid.size(); i++)
+		{
+			auto temp = max_element(grid[i].begin(), grid[i].end());
 
-		if (isVowel(s[i + half]))
-			countB++;
+			max_c = max(max_c, *temp);
+
+			grid[i].erase(temp); // delete the greatest value in row
+		}
+
+		res += max_c; // add the greatest value in grid after loop
 	}
 
-	return (countA == countB);
+	return res;
 }
+
+// web 0ms real 8ms 9.7MB O(mlogm + m*n)
+int deleteGreatestValue(vector<vector<int>>& grid) {
+	int res = 0;
+	for (int i = 0; i < grid.size(); i++)
+	{
+		sort(grid[i].begin(), grid[i].end());
+	}
+
+	for (int j = 0; j < grid[0].size(); j++)
+	{
+		int max_c = 0;
+		for (int i = 0; i < grid.size(); i++)
+		{
+			max_c = max(max_c, grid[i][j]);
+		}
+
+		res += max_c; // add the greatest value in col grid after loop
+	}
+
+	return res;
+}
+
 
 int main() {
 	cout << boolalpha;

@@ -17,44 +17,45 @@
 
 using namespace std;
 
-// 8ms 14MB
-int averageValue(vector<int>& nums) {
-	int count = 0, sum = 0;
+// 25ms 25.1MB
+vector<int> decode(vector<int>& encoded, int first) {
+	int n = encoded.size();
+	vector<int> res(n + 1, 0);
+	res[0] = first;
 
-	for (int i = 0; i < nums.size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		if (nums[i] % 2 == 0 and nums[i] % 3 == 0)
-		{
-			sum += nums[i];
-			count++;
-		}
+		res[i + 1] = res[i] ^ encoded[i];
 	}
 
-	if (count == 0)
-		return 0; 
-
-	return sum / count;
+	return res;
 }
 
-// web 4ms 14.1MB
-int averageValue(vector<int>& nums) {
-	int count = 0, sum = 0;
+// 19ms 25.4MB
+vector<int> decode(vector<int>& encoded, int first) {
+	int n = encoded.size();
+	vector<int> res(n + 1, first);
 
-	for (int i = 0; i < nums.size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		if (nums[i] % 6 == 0)
-		{
-			sum += nums[i];
-			count++;
-		}
+		res[i + 1] = res[i] ^ encoded[i];
 	}
 
-	if (count == 0)
-		return 0;
-
-	return sum / count;
+	return res;
 }
 
+// 24ms 26.5MB
+vector<int> decode(vector<int>& encoded, int first) {
+	int n = encoded.size();
+	vector<int> res = { first };
+
+	for (int i = 0; i < n; i++)
+	{
+		res.push_back(res[i] ^ encoded[i]);
+	}
+
+	return res;
+}
 
 int main() {
 	cout << boolalpha;

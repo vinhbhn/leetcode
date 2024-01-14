@@ -17,43 +17,15 @@
 
 using namespace std;
 
-// 25ms 25.1MB
-vector<int> decode(vector<int>& encoded, int first) {
-	int n = encoded.size();
-	vector<int> res(n + 1, 0);
-	res[0] = first;
+// 91ms 79.6MB
+vector<int> findArray(vector<int>& pref) {
+	vector<int> res = { pref[0] };
 
-	for (int i = 0; i < n; i++)
+	for (int i = 1; i < pref.size(); i++)
 	{
-		res[i + 1] = res[i] ^ encoded[i];
+		res.push_back(pref[i] ^ pref[i - 1]);
 	}
-
-	return res;
-}
-
-// 19ms 25.4MB
-vector<int> decode(vector<int>& encoded, int first) {
-	int n = encoded.size();
-	vector<int> res(n + 1, first);
-
-	for (int i = 0; i < n; i++)
-	{
-		res[i + 1] = res[i] ^ encoded[i];
-	}
-
-	return res;
-}
-
-// 24ms 26.5MB
-vector<int> decode(vector<int>& encoded, int first) {
-	int n = encoded.size();
-	vector<int> res = { first };
-
-	for (int i = 0; i < n; i++)
-	{
-		res.push_back(res[i] ^ encoded[i]);
-	}
-
+	
 	return res;
 }
 

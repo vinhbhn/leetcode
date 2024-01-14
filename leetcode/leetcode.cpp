@@ -17,25 +17,42 @@
 
 using namespace std;
 
-// 2ms 6.2MB
-bool squareIsWhite(string coordinates) {
-	int x = coordinates[0] - 'a', y = coordinates[1] - '1';
+// 8ms 14MB
+int averageValue(vector<int>& nums) {
+	int count = 0, sum = 0;
 
-	if (x % 2 == 0)
+	for (int i = 0; i < nums.size(); i++)
 	{
-		return (y % 2 != 0); // x and y is even mean it is black (false), eg: a1
-	}
-	else
-	{
-		return (y % 2 == 0);
+		if (nums[i] % 2 == 0 and nums[i] % 3 == 0)
+		{
+			sum += nums[i];
+			count++;
+		}
 	}
 
-	return 0;
+	if (count == 0)
+		return 0; 
+
+	return sum / count;
 }
 
-// web 0ms real 2ms 6.4MB
-bool squareIsWhite(string coordinates) {
-	return ((coordinates[0] + coordinates[1]) % 2 != 0); // ascii: even decial is false
+// web 4ms 14.1MB
+int averageValue(vector<int>& nums) {
+	int count = 0, sum = 0;
+
+	for (int i = 0; i < nums.size(); i++)
+	{
+		if (nums[i] % 6 == 0)
+		{
+			sum += nums[i];
+			count++;
+		}
+	}
+
+	if (count == 0)
+		return 0;
+
+	return sum / count;
 }
 
 

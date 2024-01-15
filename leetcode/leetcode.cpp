@@ -17,16 +17,20 @@
 
 using namespace std;
 
-// 91ms 79.6MB
-vector<int> findArray(vector<int>& pref) {
-	vector<int> res = { pref[0] };
+// 12ms 10.7MB O(m*n)
+int countNegatives(vector<vector<int>>& grid) {
+	int count = 0;
 
-	for (int i = 1; i < pref.size(); i++)
+	for (int i = 0; i < grid.size(); i++)
 	{
-		res.push_back(pref[i] ^ pref[i - 1]);
+		for (int j = 0; j < grid[0].size(); j++)
+		{
+			if (grid[i][j] < 0)
+				count++;
+		}
 	}
-	
-	return res;
+
+	return count;
 }
 
 int main() {

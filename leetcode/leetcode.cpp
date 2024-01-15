@@ -17,20 +17,28 @@
 
 using namespace std;
 
-// 12ms 10.7MB O(m*n)
-int countNegatives(vector<vector<int>>& grid) {
-	int count = 0;
+// 16ms 18.1MB O(n)
+int maximumCount(vector<int>& nums) {
+	int pos = 0, neg = 0;
 
-	for (int i = 0; i < grid.size(); i++)
+	for (int i = 0; i < nums.size(); i++)
 	{
-		for (int j = 0; j < grid[0].size(); j++)
-		{
-			if (grid[i][j] < 0)
-				count++;
-		}
+		if (nums[i] > 0)
+			pos++;
+		else if (nums[i] < 0)
+			neg++;
 	}
 
-	return count;
+	return max(pos, neg);
+}
+
+// web 3ms real 15ms 18.2MB
+int maximumCount(vector<int>& nums) {
+	int p0 = lower_bound(nums.begin(), nums.end(), 0) - nums.begin();
+	int p1 = upper_bound(nums.begin(), nums.end(), 0) - nums.begin();
+	int n = nums.size();
+
+	return max(p0, n - p1);
 }
 
 int main() {

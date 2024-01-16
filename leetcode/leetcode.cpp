@@ -17,21 +17,32 @@
 
 using namespace std;
 
-// 25ms 27.8MBS
-int search(vector<int>& nums, int target) {
-	int low = 0, high = nums.size() - 1;
-	while (low <= high)
+// 11ms 9.3MB
+string removeTrailingZeros(string num) {
+	int count = 0;
+	for (int i = num.length() - 1; i >= 0; i--)
 	{
-		int mid = low + (high - low) / 2;
-		if (nums[mid] < target)
-			low = mid + 1;
-		else if (nums[mid] > target)
-			high = mid - 1;
+		if (num[i] == '0')
+			count++;
 		else
-			return mid;
+			break;
 	}
 
-	return -1;
+	return num.substr(0, num.length() - count);
+}
+
+// web 0ms real 12ms 9.7MB
+string removeTrailingZeros(string num) {
+	int j = num.length() - 1;
+	while (num[j] == '0')
+		j--;
+
+	string res = "";
+	for (int i = 0; i <= j; i++)
+	{
+		res += num[i];
+	}
+	return res;
 }
 
 int main() {

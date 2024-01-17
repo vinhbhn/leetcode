@@ -17,31 +17,14 @@
 
 using namespace std;
 
-// 11ms 12.3MB
-int maxValueInMatrix3x3(vector<vector<int>>& grid, int row, int col)
-{
-	int val = 0;
-	for (int i = row; i < row + 3; i++)
-	{
-		for (int j = col; j < col + 3; j++)
-		{
-			val = max(val, grid[i][j]);
-		}
-	}
+// 0ms 21.1MB
+vector<int> findPeaks(vector<int>& m) {
+	vector<int> res;
 
-	return val;
-}
-vector<vector<int>> largestLocal(vector<vector<int>>& grid) {
-	vector<vector<int>> res;
-
-	for (int i = 0; i < grid.size() - 2; i++)
+	for (int i = 1; i < m.size() - 1; i++)
 	{
-		vector<int> t;
-		for (int j = 0; j < grid[0].size() - 2; j++)
-		{
-			t.push_back(maxValueInMatrix3x3(grid, i, j));
-		}
-		res.push_back(t);
+		if (m[i - 1] < m[i] and m[i] > m[i + 1])
+			res.push_back(i);
 	}
 
 	return res;

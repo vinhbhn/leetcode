@@ -17,35 +17,13 @@
 
 using namespace std;
 
-// 8ms 12.2MB
-int findNumbers(vector<int>& nums) {
+// 0ms 7.1MB
+int sumBase(int n, int k) {
 	int res = 0;
-	for (auto& num : nums)
+	while (n)
 	{
-		int count = 0, temp = num;
-		while (temp)
-		{
-			count++;
-			temp /= 10;
-		}
-
-		if (count % 2 == 0)
-			res++;
-	}
-
-	return res;
-}
-
-
-// web 2ms real 3ms 13.2MB
-int findNumbers(vector<int>& nums) {
-	int res = 0;
-	for (auto& num : nums)
-	{
-		string temp = to_string(num);
-
-		if (temp.length() % 2 == 0)
-			res++;
+		res += n % k;
+		n /= k;
 	}
 
 	return res;

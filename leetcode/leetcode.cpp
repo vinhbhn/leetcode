@@ -17,14 +17,35 @@
 
 using namespace std;
 
-// 0ms 21.1MB
-vector<int> findPeaks(vector<int>& m) {
-	vector<int> res;
-
-	for (int i = 1; i < m.size() - 1; i++)
+// 8ms 12.2MB
+int findNumbers(vector<int>& nums) {
+	int res = 0;
+	for (auto& num : nums)
 	{
-		if (m[i - 1] < m[i] and m[i] > m[i + 1])
-			res.push_back(i);
+		int count = 0, temp = num;
+		while (temp)
+		{
+			count++;
+			temp /= 10;
+		}
+
+		if (count % 2 == 0)
+			res++;
+	}
+
+	return res;
+}
+
+
+// web 2ms real 3ms 13.2MB
+int findNumbers(vector<int>& nums) {
+	int res = 0;
+	for (auto& num : nums)
+	{
+		string temp = to_string(num);
+
+		if (temp.length() % 2 == 0)
+			res++;
 	}
 
 	return res;

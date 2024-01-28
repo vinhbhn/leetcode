@@ -17,131 +17,41 @@
 
 using namespace std;
 
-// 139ms 10MB
-int countSymmetricIntegers(int low, int high) {
-	int count = 0;
+// 11ms 10.7MB O(n^2)
+int maximumDifference(vector<int>& nums) {
+	int res = INT_MIN;
 
-	for (int num = low; num <= high; num++)
+	for (int i = 0; i < nums.size() - 1; i++)
 	{
-		string numStr = to_string(num);
-
-		if (numStr.length() % 2 == 0)
+		for (int j = i + 1; j < nums.size(); j++)
 		{
-			int n = numStr.length();
-			string left = numStr.substr(0, n / 2);
-			string right = numStr.substr(n / 2, n);
-
-			int l = stoi(left), r = stoi(right);
-
-			int checkL = 0, checkR = 0;
-
-			while (l)
-			{
-				checkL += l % 10;
-				l /= 10;
-			}
-
-			while (r)
-			{
-				checkR += r % 10;
-				r /= 10;
-			}
-
-			count += (checkL == checkR);
+			res = max(res, nums[j] - nums[i]);
 		}
 	}
 
-	return count;
+	return (res <= 0) ? -1 : res;
 }
 
-
-// 104ms 10.2MB
-int sumDigit(string s)
+// web 0ms real 0ms 10.8MB
+int maximumDifference(vector<int>& nums)
 {
-	int sum = 0;
-	for (int i = 0; i < s.length(); i++)
+	int res = -1, n = nums.size(), mi = nums[0];
+	vector<int> m(n, INT_MAX);
+	for (int i = 0; i < n; i++)
 	{
-		int number = s[i] + '0';
-		sum += number;
+		m[i] = mi;
+		mi = min(mi, nums[i]);
 	}
 
-	return sum;
-}
-int countSymmetricIntegers(int low, int high) {
-	int count = 0;
-
-	for (int num = low; num <= high; num++)
+	mi = nums[n - 1];
+	for (int i = n - 1; i >= 0; i--)
 	{
-		string numStr = to_string(num);
-
-		if (numStr.length() % 2 == 0)
-		{
-			int n = numStr.length();
-			string left = numStr.substr(0, n / 2);
-			string right = numStr.substr(n / 2, n);
-
-			count += (sumDigit(left) == sumDigit(right));
-		}
+		mi = max(mi, nums[i]);
+		if (mi > m[i])
+			res = max(res, mi - m[i]);
 	}
 
-	return count;
-}
-
-// 75ms 9.7MB
-int sumDigit(string& s)
-{
-	int sum = 0;
-	for (int i = 0; i < s.length(); i++)
-	{
-		sum += s[i] + '0';
-	}
-
-	return sum;
-}
-int countSymmetricIntegers(int low, int high) {
-	int count = 0;
-
-	for (int num = low; num <= high; num++)
-	{
-		string numStr = to_string(num);
-
-		if (numStr.length() % 2 == 0)
-		{
-			int n = numStr.length();
-			string left = numStr.substr(0, n / 2);
-			string right = numStr.substr(n / 2, n);
-
-			count += (sumDigit(left) == sumDigit(right));
-		}
-	}
-
-	return count;
-}
-
-// web 10ms real 8ms 8.1MB
-bool isSymetricIntegers(int num)
-{
-	if (num >= 10 and num <= 99)
-		return (num / 10 == num % 10);
-	else if (num >= 1000 and num <= 9999)
-	{
-		const int left = num / 100;
-		const int right = num % 100;
-		return (left / 10 + left % 10 == right / 10 + right % 10);
-	}
-
-	return false;
-}
-int countSymmetricIntegers(int low, int high) {
-	int count = 0;
-
-	for (int num = low; num <= high; num++)
-	{
-		if (isSymetricIntegers(num))
-			count++;
-	}
-
-	return count;
+	return res;
 }
 
 int main() {

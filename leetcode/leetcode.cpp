@@ -17,54 +17,132 @@
 
 using namespace std;
 
-// 31ms 32MB O(n^2)
-vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
-	int miss = 0, repeated = 0, n = grid.size() * grid[0].size();
+// 139ms 10MB
+int countSymmetricIntegers(int low, int high) {
+	int count = 0;
 
-	unordered_map<int, int> mp;
-	for (int i = 0; i < grid.size(); i++)
+	for (int num = low; num <= high; num++)
 	{
-		for (int j = 0; j < grid[0].size(); j++)
+		string numStr = to_string(num);
+
+		if (numStr.length() % 2 == 0)
 		{
-			mp[grid[i][j]]++;
+			int n = numStr.length();
+			string left = numStr.substr(0, n / 2);
+			string right = numStr.substr(n / 2, n);
+
+			int l = stoi(left), r = stoi(right);
+
+			int checkL = 0, checkR = 0;
+
+			while (l)
+			{
+				checkL += l % 10;
+				l /= 10;
+			}
+
+			while (r)
+			{
+				checkR += r % 10;
+				r /= 10;
+			}
+
+			count += (checkL == checkR);
 		}
 	}
 
-	for (int i = 1; i <= n; i++)
-	{
-		if (mp[i] == 2)
-			repeated = i;
-		else if (mp[i] == 0)
-			miss = i;
-	}
-
-	return { repeated, miss };
+	return count;
 }
 
-// web 0ms real 10ms 25.7MB
-vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
-	int miss = 0, repeated = 0, n = grid.size();
 
-	vector<int> f(n * n + 1, 0);
-	for (int i = 0; i < n; i++)
+// 104ms 10.2MB
+int sumDigit(string s)
+{
+	int sum = 0;
+	for (int i = 0; i < s.length(); i++)
 	{
-		for (int j = 0; j < n; j++)
+		int number = s[i] + '0';
+		sum += number;
+	}
+
+	return sum;
+}
+int countSymmetricIntegers(int low, int high) {
+	int count = 0;
+
+	for (int num = low; num <= high; num++)
+	{
+		string numStr = to_string(num);
+
+		if (numStr.length() % 2 == 0)
 		{
-			f[grid[i][j]]++;
+			int n = numStr.length();
+			string left = numStr.substr(0, n / 2);
+			string right = numStr.substr(n / 2, n);
+
+			count += (sumDigit(left) == sumDigit(right));
 		}
 	}
 
-	for (int i = 1; i <= n * n; i++)
-	{
-		if (f[i] == 2)
-			repeated = i;
-		else if (f[i] == 0)
-			miss = i;
-	}
-
-	return { repeated, miss };
+	return count;
 }
 
+// 75ms 9.7MB
+int sumDigit(string& s)
+{
+	int sum = 0;
+	for (int i = 0; i < s.length(); i++)
+	{
+		sum += s[i] + '0';
+	}
+
+	return sum;
+}
+int countSymmetricIntegers(int low, int high) {
+	int count = 0;
+
+	for (int num = low; num <= high; num++)
+	{
+		string numStr = to_string(num);
+
+		if (numStr.length() % 2 == 0)
+		{
+			int n = numStr.length();
+			string left = numStr.substr(0, n / 2);
+			string right = numStr.substr(n / 2, n);
+
+			count += (sumDigit(left) == sumDigit(right));
+		}
+	}
+
+	return count;
+}
+
+// web 10ms real 8ms 8.1MB
+bool isSymetricIntegers(int num)
+{
+	if (num >= 10 and num <= 99)
+		return (num / 10 == num % 10);
+	else if (num >= 1000 and num <= 9999)
+	{
+		const int left = num / 100;
+		const int right = num % 100;
+		return (left / 10 + left % 10 == right / 10 + right % 10);
+	}
+
+	return false;
+}
+int countSymmetricIntegers(int low, int high) {
+	int count = 0;
+
+	for (int num = low; num <= high; num++)
+	{
+		if (isSymetricIntegers(num))
+			count++;
+	}
+
+	return count;
+}
 
 int main() {
 	cout << boolalpha;

@@ -17,42 +17,44 @@
 
 using namespace std;
 
-// 11ms 10.7MB O(n^2)
-int maximumDifference(vector<int>& nums) {
-	int res = INT_MIN;
+// https://leetcode.com/problems/implement-queue-using-stacks/solutions/4641109/beats-100-users-c-java-python-javascript-explained/?envType=daily-question&envId=2024-01-29
 
-	for (int i = 0; i < nums.size() - 1; i++)
-	{
-		for (int j = i + 1; j < nums.size(); j++)
-		{
-			res = max(res, nums[j] - nums[i]);
-		}
-	}
+class MyQueue {
+private:
+    stack<int> s1, s2;
+public:
+    MyQueue() {
+        
+    }
 
-	return (res <= 0) ? -1 : res;
-}
+    void push(int x) {
+        while (!s1.empty())
+        {
+            s2.push(s1.top());
+            s1.pop();
+        }
+        s1.push(x);
+        while (!s2.empty())
+        {
+            s1.push(s2.top());
+            s2.pop();
+        }
+    }
 
-// web 0ms real 0ms 10.8MB
-int maximumDifference(vector<int>& nums)
-{
-	int res = -1, n = nums.size(), mi = nums[0];
-	vector<int> m(n, INT_MAX);
-	for (int i = 0; i < n; i++)
-	{
-		m[i] = mi;
-		mi = min(mi, nums[i]);
-	}
+    int pop() {
+        int temp = s1.top();
+        s1.pop();
+        return temp;
+    }
 
-	mi = nums[n - 1];
-	for (int i = n - 1; i >= 0; i--)
-	{
-		mi = max(mi, nums[i]);
-		if (mi > m[i])
-			res = max(res, mi - m[i]);
-	}
+    int peek() {
+        return s1.top();
+    }
 
-	return res;
-}
+    bool empty() {
+        return s1.empty();
+    }
+};
 
 int main() {
 	cout << boolalpha;

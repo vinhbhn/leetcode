@@ -17,44 +17,78 @@
 
 using namespace std;
 
-// https://leetcode.com/problems/implement-queue-using-stacks/solutions/4641109/beats-100-users-c-java-python-javascript-explained/?envType=daily-question&envId=2024-01-29
-
-class MyQueue {
+// 0ms 8.2MB
+class MyStack {
 private:
-    stack<int> s1, s2;
+    queue<int> q1, q2;
 public:
-    MyQueue() {
-        
+    MyStack() {
+
     }
 
     void push(int x) {
-        while (!s1.empty())
+        while (!q1.empty())
         {
-            s2.push(s1.top());
-            s1.pop();
+            q2.push(q1.front());
+            q1.pop();
         }
-        s1.push(x);
-        while (!s2.empty())
+        q1.push(x);
+        while (!q2.empty())
         {
-            s1.push(s2.top());
-            s2.pop();
+            q1.push(q2.front());
+            q2.pop();
         }
     }
 
     int pop() {
-        int temp = s1.top();
-        s1.pop();
+        int temp = q1.front();
+        q1.pop();
         return temp;
     }
 
-    int peek() {
-        return s1.top();
+    int top() {
+        return q1.front();
     }
 
     bool empty() {
-        return s1.empty();
+        return q1.empty();
     }
 };
+
+// one queue
+// https://leetcode.com/problems/implement-stack-using-queues/solutions/3969470/99-74-one-queue-approach/
+// 0ms 8.2MB
+class MyStack {
+private:
+    queue<int> q;
+public:
+    MyStack() {
+    }
+
+    void push(int x) {
+        q.push(x);
+        for (int i = 0; i < q.size() - 1; i++)
+        {
+            q.push(q.front());
+            q.pop();
+        }
+    }
+
+    int pop() {
+        int temp = q.front();
+        q.pop();
+        return temp;
+    }
+
+    int top() {
+        return q.front();
+    }
+
+    bool empty() {
+        return q.empty();
+    }
+};
+
 
 int main() {
 	cout << boolalpha;

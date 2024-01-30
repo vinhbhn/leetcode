@@ -17,22 +17,20 @@
 
 using namespace std;
 
-// 8ms 9.3MB
-bool judgeCircle(string moves) {
-	int x = 0, y = 0;
-	for (auto& move : moves)
+// 0ms 8.2MB O(n)
+int furthestDistanceFromOrigin(string moves) {
+	int l = 0, r = 0, u = 0;
+	for (int i = 0; i < moves.size(); i++)
 	{
-		if (move == 'U')
-			y++;
-		else if (move == 'D')
-			y--;
-		else if (move == 'L')
-			x--;
-		else if (move == 'R')
-			x++;
+		if (moves[i] == 'L')
+			l++;
+		else if (moves[i] == 'R')
+			r++;
+		else
+			u++;
 	}
 
-	return (x == 0 and y == 0);
+	return (l >= r) ? (l - r + u) : (r - l + u);
 }
 
 int main() {

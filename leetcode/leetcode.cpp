@@ -17,31 +17,22 @@
 
 using namespace std;
 
-// 0ms 17.2MB
-int countSeniors(vector<string>& details) {
-	int count = 0;
-	for (auto& detail : details)
+// 8ms 9.3MB
+bool judgeCircle(string moves) {
+	int x = 0, y = 0;
+	for (auto& move : moves)
 	{
-		char f = detail[11], s = detail[12];
-		if (f - '0' > 6)
-			count++;
-		else if (f - '0' == 6 and s - '0' > 0) // more then 60 years old
-			count++;
+		if (move == 'U')
+			y++;
+		else if (move == 'D')
+			y--;
+		else if (move == 'L')
+			x--;
+		else if (move == 'R')
+			x++;
 	}
 
-	return count;
-}
-
-// 0ms 17.2MB
-int countSeniors(vector<string>& details) {
-	int count = 0;
-	for (auto& detail : details)
-	{
-		int age = (detail[11] - '0') * 10 + (detail[12] - '0');
-		count += age > 60;
-	}
-
-	return count;
+	return (x == 0 and y == 0);
 }
 
 int main() {

@@ -17,78 +17,32 @@
 
 using namespace std;
 
-// 0ms 8.2MB
-class MyStack {
-private:
-    queue<int> q1, q2;
-public:
-    MyStack() {
+// 0ms 17.2MB
+int countSeniors(vector<string>& details) {
+	int count = 0;
+	for (auto& detail : details)
+	{
+		char f = detail[11], s = detail[12];
+		if (f - '0' > 6)
+			count++;
+		else if (f - '0' == 6 and s - '0' > 0) // more then 60 years old
+			count++;
+	}
 
-    }
+	return count;
+}
 
-    void push(int x) {
-        while (!q1.empty())
-        {
-            q2.push(q1.front());
-            q1.pop();
-        }
-        q1.push(x);
-        while (!q2.empty())
-        {
-            q1.push(q2.front());
-            q2.pop();
-        }
-    }
+// 0ms 17.2MB
+int countSeniors(vector<string>& details) {
+	int count = 0;
+	for (auto& detail : details)
+	{
+		int age = (detail[11] - '0') * 10 + (detail[12] - '0');
+		count += age > 60;
+	}
 
-    int pop() {
-        int temp = q1.front();
-        q1.pop();
-        return temp;
-    }
-
-    int top() {
-        return q1.front();
-    }
-
-    bool empty() {
-        return q1.empty();
-    }
-};
-
-// one queue
-// https://leetcode.com/problems/implement-stack-using-queues/solutions/3969470/99-74-one-queue-approach/
-// 0ms 8.2MB
-class MyStack {
-private:
-    queue<int> q;
-public:
-    MyStack() {
-    }
-
-    void push(int x) {
-        q.push(x);
-        for (int i = 0; i < q.size() - 1; i++)
-        {
-            q.push(q.front());
-            q.pop();
-        }
-    }
-
-    int pop() {
-        int temp = q.front();
-        q.pop();
-        return temp;
-    }
-
-    int top() {
-        return q.front();
-    }
-
-    bool empty() {
-        return q.empty();
-    }
-};
-
+	return count;
+}
 
 int main() {
 	cout << boolalpha;

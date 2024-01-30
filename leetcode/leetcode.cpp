@@ -33,6 +33,22 @@ int furthestDistanceFromOrigin(string moves) {
 	return (l >= r) ? (l - r + u) : (r - l + u);
 }
 
+// 3ms 8.2MB O(n)
+int furthestDistanceFromOrigin(string moves) {
+	int u = 0, n = moves.size(), c = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (moves[i] == 'L')
+			c--;
+		else if (moves[i] == 'R')
+			c++;
+		else
+			u++;
+	}
+
+	return abs(c) + u;
+}
+
 int main() {
 	cout << boolalpha;
 

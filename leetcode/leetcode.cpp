@@ -17,42 +17,39 @@
 
 using namespace std;
 
-// 0ms 7.5MB
-string digitSum(string s, int k) {
-	while (s.length() > k)
+// 4ms 9.5MB
+vector<int> evenOddBit(int n) {
+	vector<int> temp;
+	while (n)
 	{
-		string newS = "";
-		int step = 0, sum = 0;
-		for (int i = 0; i < s.length(); i++)
-		{
-			sum += s[i] - '0';
-			step++;
-
-			if (step == k)
-			{
-				newS += to_string(sum);
-				cout << newS << " ";
-				sum = 0;
-				step = 0;
-			}
-		}
-		if (step != 0)
-			newS += to_string(sum); // add rest of s
-		cout << "new " << newS << '\n';
-
-
-		s = newS;
+		temp.push_back(n % 2);
+		n /= 2;
 	}
 
-	return s;
+	int even = 0, odd = 0;
+	for (int i = 0; i < temp.size(); i++)
+	{
+		if (temp[i] == 1)
+		{
+			i % 2 == 0 ? even++ : odd++;
+		}
+	}
+
+	return { even, odd };
 }
+
 
 int main() {
 	cout << boolalpha;
-	string s = "11111222223";
-	int k = 3;
 
-	cout << digitSum(s, k) << '\n';
+	for (auto& x : evenOddBit(17))
+		cout << x << " ";
+	cout << '\n';
+
+	for (auto& x : evenOddBit(2))
+		cout << x << " ";
+	cout << '\n';
+
 
 	return 0;
 }

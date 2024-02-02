@@ -17,37 +17,40 @@
 
 using namespace std;
 
-// 4ms 9.5MB
-vector<int> evenOddBit(int n) {
-	vector<int> temp;
-	while (n)
-	{
-		temp.push_back(n % 2);
-		n /= 2;
-	}
+// 0ms 7.3MB 
+vector<int> sequentialDigits(int low, int high) {
+	vector<int> res;
+	string d = "123456789";
 
-	int even = 0, odd = 0;
-	for (int i = 0; i < temp.size(); i++)
+	int ls = to_string(low).size(), hs = to_string(high).size();
+
+	for (int k = ls; k <= hs; k++)
 	{
-		if (temp[i] == 1)
+		// because substr take [i, k) 
+		for (int i = 0; i + k <= d.size(); i++)
 		{
-			i % 2 == 0 ? even++ : odd++;
+			int temp = stoi(d.substr(i, k));
+
+			if (low <= temp and temp <= high)
+				res.push_back(temp);
 		}
 	}
 
-	return { even, odd };
+	return res;
 }
-
 
 int main() {
 	cout << boolalpha;
 
-	for (auto& x : evenOddBit(17))
-		cout << x << " ";
+	int low = 100, high = 300;
+	for (auto& x : sequentialDigits(low, high))
+		cout << x << ' ';
+	cout << '\n';
 	cout << '\n';
 
-	for (auto& x : evenOddBit(2))
-		cout << x << " ";
+	int lows = 1000, highs = 13000;
+	for (auto& x : sequentialDigits(lows, highs))
+		cout << x << ' ';
 	cout << '\n';
 
 

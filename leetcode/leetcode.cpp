@@ -17,42 +17,107 @@
 
 using namespace std;
 
-// 0ms 7.3MB 
-vector<int> sequentialDigits(int low, int high) {
-	vector<int> res;
-	string d = "123456789";
+// pass 151/212
+//int maxProfit(vector<int>& prices) {
+//
+//	auto min_price_it = min_element(prices.begin(), prices.end());
+//
+//	// case 1: vi tri cua min_price == ngay cuoi, nghia la khong the mua sau do ban, chuoi giam dan 
+//	if (min_price_it == prices.end() - 1)
+//		return 0;
+//
+//	// case 2: bat dau tai vi tri min_price, xet cac so dang sau tru di no, sau do lay so lon nhat
+//	int max_profit = 0;
+//	for (auto it{ min_price_it }; it < prices.end(); it++)
+//		max_profit = max(max_profit, *it - *min_price_it);
+//
+//	return max_profit;
+//}
 
-	int ls = to_string(low).size(), hs = to_string(high).size();
+// O(n^2), pass 200/212
+//int maxProfit(vector<int>& prices) {
+//	int ps = static_cast<int>(prices.size());
+//
+//	// neu chi co 1 ngay, thi tra ve 0 do khong the mua hoac ban
+//	if (ps == 1)
+//		return 0;
+//
+//	vector<int> res;
+//	int mp = 0; // max profit in a day
+//	// bat dau tu ngay 2, cu lay ngay hom sau tru cho ngay dau
+//	for (int location = 0; location < ps - 1; location++)
+//	{
+//		mp = 0;
+//		for (int after_day_of_location = location + 1; after_day_of_location < ps; after_day_of_location++)
+//		{
+//			if (prices[location] < prices[after_day_of_location])
+//				mp = max(mp, prices[after_day_of_location] - prices[location]);
+//		}
+//		res.push_back(mp); // luu ket qua lon nhat sau khi tru cua tung ngay
+//	}
+//	
+//	return *max_element(res.begin(), res.end());
+//}
 
-	for (int k = ls; k <= hs; k++)
+// O(n^2)
+//int maxProfit(vector<int>& prices) {
+//	// lay ngay sau tru cho ngay dau, sau do tang vi tri ngay dau, tiep tuc cho den cuoi
+//	// sau do tim so lon nhat tu vi tri 0 cho den vi tri cuoi - 1
+//	int mp = 0;
+//	for (int i = 0; i < prices.size() - 1; i++)
+//	{
+//		for (int j = i + 1; j < prices.size(); j++)
+//		{
+//			mp = max(mp, prices[j] - prices[i]);
+//		}
+//	}
+//
+//	return mp;
+//}
+
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/solutions/5361970/video-keep-minimum-price-solution/
+// O(n)
+//int maxProfit(vector<int>& prices) {
+//	int profit = 0, buyPrice = prices[0];
+//	for (int i = 1; i < prices.size(); i++)
+//	{
+//		// keep buyPrice is minimum because profit is largest
+//		if (buyPrice > prices[i])
+//			buyPrice = prices[i];
+//
+//		profit = max(profit, prices[i] - buyPrice);
+//	}
+//
+//	return profit;
+//}
+
+int maxProfit(vector<int>& prices) {
+	int profit = 0, buyPrice = prices[0];
+	for (int i = 1; i < prices.size(); i++)
 	{
-		// because substr take [i, k) 
-		for (int i = 0; i + k <= d.size(); i++)
-		{
-			int temp = stoi(d.substr(i, k));
-
-			if (low <= temp and temp <= high)
-				res.push_back(temp);
-		}
+		// keep buyPrice is minimum because profit is largest
+		buyPrice = min(buyPrice, prices[i]);
+		profit = max(profit, prices[i] - buyPrice);
 	}
 
-	return res;
+	return profit;
 }
+
 
 int main() {
 	cout << boolalpha;
 
-	int low = 100, high = 300;
-	for (auto& x : sequentialDigits(low, high))
-		cout << x << ' ';
-	cout << '\n';
-	cout << '\n';
+	vector<int> a{ 7, 1, 5, 3, 6, 4 };
+	cout << maxProfit(a) << '\n';
 
-	int lows = 1000, highs = 13000;
-	for (auto& x : sequentialDigits(lows, highs))
-		cout << x << ' ';
-	cout << '\n';
+	vector<int> b{ 7,6,4,3,1 };
+	cout << maxProfit(b) << '\n';
 
+	vector<int> c{ 2,4,1 };
+	cout << maxProfit(c) << '\n';
+
+	vector<int> d{ 1 };
+	cout << maxProfit(d) << '\n';
 
 	return 0;
 }

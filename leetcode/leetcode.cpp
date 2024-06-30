@@ -17,41 +17,27 @@
 
 using namespace std;
 
-string convertToBase7(int num) {
-	if (num == 0)
-		return "0";
+int sumOfTheDigitsOfHarshadNumber(int x) {
+	int sum = 0, num = x;
 
-	string res = "";
-
-	// save '-' if any
-	bool minus = false;
-	if (num < 0)
+	while (num)
 	{
-		num = -num;
-		minus = true;
+		sum += num % 10;
+		num /= 10;
 	}
 
-	while (num > 0)
-	{
-		res += to_string(num % 7);
-		num /= 7;
-	}
+	if (x % sum == 0)
+		return sum;
 
-
-	// revert minus if any then reverse
-	if (minus)
-		res += '-';
-	reverse(res.begin(), res.end());
-
-	return res;
+	return -1;
 }
 
 int main() {
 	cout << boolalpha;
 	
-	cout << convertToBase7(100) << '\n';
-	cout << convertToBase7(-7) << '\n';
-	cout << convertToBase7(0) << '\n';
+	cout << sumOfTheDigitsOfHarshadNumber(18) << '\n';
+	cout << sumOfTheDigitsOfHarshadNumber(23) << '\n';
+
 
 	return 0;
 }

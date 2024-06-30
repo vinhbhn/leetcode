@@ -17,26 +17,44 @@
 
 using namespace std;
 
-int sumOfTheDigitsOfHarshadNumber(int x) {
-	int sum = 0, num = x;
+// 6ms 8.7MB O(n) O(1)
+string maximumOddBinaryNumber(string s) {
+	int c0 = 0, c1 = 0;
 
-	while (num)
+	for (int i = 0; i < s.size(); i++)
 	{
-		sum += num % 10;
-		num /= 10;
+		if (s[i] == '0')
+			c0++;
+		else
+			c1++;
 	}
 
-	if (x % sum == 0)
-		return sum;
+	string res = "";
+	// if c1 >= 2, then fill up with "1" until c1 equal 1
+	// fill up res with "0" until c0 equal 0
+	// fill "1" end of res
+	while (c1 > 1)
+	{
+		res += "1";
+		c1--;
+	}
+	while (c0)
+	{
+		res += "0";
+		c0--;
+	}
+	res += "1";
 
-	return -1;
+	return res;
 }
 
 int main() {
 	cout << boolalpha;
 	
-	cout << sumOfTheDigitsOfHarshadNumber(18) << '\n';
-	cout << sumOfTheDigitsOfHarshadNumber(23) << '\n';
+	cout << maximumOddBinaryNumber("010") << '\n';
+	cout << maximumOddBinaryNumber("0101") << '\n';
+	cout << maximumOddBinaryNumber("1") << '\n';
+	cout << maximumOddBinaryNumber("0111") << '\n';
 
 
 	return 0;

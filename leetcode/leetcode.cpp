@@ -17,17 +17,15 @@
 
 using namespace std;
 
-
-// O(n) O(1) 3ms 7.8MB
-int countKeyChanges(string s) {
-	transform(s.begin(), s.end(), s.begin(), ::tolower);
-
-	int count = 0;
-	for (int i = 0; i < s.size() - 1; i++)
+// O(n*m) 6ms 41MB
+int numberOfPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+	int count = 0; // count good pair
+	for (int i = 0; i < nums1.size(); i++)
 	{
-		if (s[i] != s[i + 1])
+		for (int j = 0; j < nums2.size(); j++)
 		{
-			count++;
+			if (nums1[i] % (nums2[j] * k) == 0)
+				count++;
 		}
 	}
 
@@ -37,11 +35,6 @@ int countKeyChanges(string s) {
 int main() {
 	cout << boolalpha;
 	
-	cout << countKeyChanges("aAbBcC") << '\n';
-	cout << countKeyChanges("AaAaAaaA") << '\n';
-	cout << countKeyChanges("AaAaAaaAb") << '\n';
-
-
 
 	return 0;
 }

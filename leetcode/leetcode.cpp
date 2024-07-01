@@ -17,24 +17,38 @@
 
 using namespace std;
 
-// O(n*m) 6ms 41MB
-int numberOfPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-	int count = 0; // count good pair
-	for (int i = 0; i < nums1.size(); i++)
+// O(n) 4ms 22.1MB
+int minimumOperations(vector<int>& nums) {
+	int res = 0;
+
+	for (int i = 0; i < nums.size(); i++)
 	{
-		for (int j = 0; j < nums2.size(); j++)
+		if (nums[i] % 3 != 0)
 		{
-			if (nums1[i] % (nums2[j] * k) == 0)
-				count++;
+			// add 1 or sub 1
+			if (((nums[i] + 1) % 3 == 0) || ((nums[i] - 1) % 3 == 0))
+				res++;
 		}
 	}
 
-	return count;
+	return res;
+}
+
+int minimumOperations(vector<int>& nums) {
+	int res = 0;
+
+	// because every number in 1 <= nums[i] <= 50 will % 3 == 0 (with or not with add 1 or sub 1)
+	for (int i = 0; i < nums.size(); i++)
+	{
+		res += (nums[i] % 3 != 0);
+	}
+
+	return res;
 }
 
 int main() {
 	cout << boolalpha;
-	
+
 
 	return 0;
 }

@@ -17,33 +17,19 @@
 
 using namespace std;
 
-// O(nlogn) 0ms 23.9MB
-int minOperations(vector<int>& nums, int k) {
-	sort(nums.begin(), nums.end());
-
+// O(n) 3ms 8.3MB
+int findPermutationDifference(string s, string t) {
 	int res = 0;
-	for (int i = 0; i < nums.size(); i++)
+
+	for (int i = 0; i < s.size(); i++)
 	{
-		if (nums[i] < k)
-			res++; // the number of elements < k
-		else
-			break;
+		// permutation difference between index 
+		res += abs(static_cast<int>(t.find(s[i])) - i);
 	}
 
 	return res;
 }
 
-// O(n) 
-int minOperations(vector<int>& nums, int k) {
-	int res = 0;
-	for (int i = 0; i < nums.size(); i++)
-	{
-		if (nums[i] < k)
-			res++; // the number of elements < k
-	}
-
-	return res;
-}
 
 int main() {
 	cout << boolalpha;

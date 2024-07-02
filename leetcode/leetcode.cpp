@@ -17,36 +17,17 @@
 
 using namespace std;
 
-// O(n) 0ms 8MB
-int minimumChairs(string s) {
-	int count = 0, res = 0;
-	for (auto ch : s)
-	{
-		if (ch == 'E')
-			count++;
-		else 
-		{
-			// res is max the number of people use chair when they still in room
-			res = max(res, count);
-			count--;
-		}
-	}
+int addedInteger(vector<int>& nums1, vector<int>& nums2) {
+	sort(nums1.begin(), nums1.end());
+	sort(nums2.begin(), nums2.end());
 
-	// if in the end: count != 0
-	res = max(res, count);
-
-	return res;
+	// find the minimum of two arrays
+	// "x" is 
+	return nums2[0] - nums1[0];
 }
 
 int main() {
 	cout << boolalpha;
-
-	cout << minimumChairs("EEEEEEE") << '\n';
-	cout << minimumChairs("ELELEEL") << '\n';
-	cout << minimumChairs("ELEELEELLL") << '\n';
-
-	cout << minimumChairs("ELEE") << '\n';
-
 
 
 	return 0;

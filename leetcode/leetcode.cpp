@@ -17,37 +17,36 @@
 
 using namespace std;
 
-// O(n) 4ms 22.1MB
-int minimumOperations(vector<int>& nums) {
-	int res = 0;
-
-	for (int i = 0; i < nums.size(); i++)
+// O(n) 0ms 8MB
+int minimumChairs(string s) {
+	int count = 0, res = 0;
+	for (auto ch : s)
 	{
-		if (nums[i] % 3 != 0)
+		if (ch == 'E')
+			count++;
+		else 
 		{
-			// add 1 or sub 1
-			if (((nums[i] + 1) % 3 == 0) || ((nums[i] - 1) % 3 == 0))
-				res++;
+			// res is max the number of people use chair when they still in room
+			res = max(res, count);
+			count--;
 		}
 	}
 
-	return res;
-}
-
-int minimumOperations(vector<int>& nums) {
-	int res = 0;
-
-	// because every number in 1 <= nums[i] <= 50 will % 3 == 0 (with or not with add 1 or sub 1)
-	for (int i = 0; i < nums.size(); i++)
-	{
-		res += (nums[i] % 3 != 0);
-	}
+	// if in the end: count != 0
+	res = max(res, count);
 
 	return res;
 }
 
 int main() {
 	cout << boolalpha;
+
+	cout << minimumChairs("EEEEEEE") << '\n';
+	cout << minimumChairs("ELELEEL") << '\n';
+	cout << minimumChairs("ELEELEELLL") << '\n';
+
+	cout << minimumChairs("ELEE") << '\n';
+
 
 
 	return 0;

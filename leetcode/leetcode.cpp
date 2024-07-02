@@ -17,13 +17,32 @@
 
 using namespace std;
 
-int addedInteger(vector<int>& nums1, vector<int>& nums2) {
-	sort(nums1.begin(), nums1.end());
-	sort(nums2.begin(), nums2.end());
+// O(nlogn) 0ms 23.9MB
+int minOperations(vector<int>& nums, int k) {
+	sort(nums.begin(), nums.end());
 
-	// find the minimum of two arrays
-	// "x" is 
-	return nums2[0] - nums1[0];
+	int res = 0;
+	for (int i = 0; i < nums.size(); i++)
+	{
+		if (nums[i] < k)
+			res++; // the number of elements < k
+		else
+			break;
+	}
+
+	return res;
+}
+
+// O(n) 
+int minOperations(vector<int>& nums, int k) {
+	int res = 0;
+	for (int i = 0; i < nums.size(); i++)
+	{
+		if (nums[i] < k)
+			res++; // the number of elements < k
+	}
+
+	return res;
 }
 
 int main() {

@@ -17,49 +17,56 @@
 
 using namespace std;
 
-// O(n) 2ms 7.8MB
-string removeOuterParentheses(string s) {
-	string res = "";
+// O(1) 0ms 7.4MB
+//int minBitFlips(int start, int goal) {
+//	// no need to flip
+//	if (start == goal)
+//		return 0;
+//
+//	bitset<32> s(start), g(goal);
+//	string ss = s.to_string(), sg = g.to_string();
+//
+//	int i = ss.size() - 1, j = sg.size() - 1;
+//	int count = 0;
+//	while (i >= 0 && j >= 0)
+//	{
+//		if (ss[i] != sg[j])
+//			count++;
+//
+//		i--;
+//		j--;
+//	}
+//
+//	return count;
+//}
 
-	// count (: c1
-	// count ): c2
-	int c1 = 0, c2 = 0;
+int minBitFlips(int start, int goal) {
+	// no need to flip
+	if (start == goal)
+		return 0;
 
-	for (auto ch : s)
+	int xorNum = start ^ goal;
+	int res = 0;
+	while (xorNum)
 	{
-		if (ch == '(')
-		{
-			c1++;
-			// outer appear
-			if (c1 > c2 + 1)
-			{
-				res += "(";
-			}
-		}
+		if (xorNum & 1) // check lsb == 1
+			res++;
 
-		if (ch == ')')
-		{
-			c2++;
-			// c1 == c2: outer remove
-			if (c1 > c2)
-			{
-				res += ")";
-				c2--;
-				c1--;
-			} 
-		}
+		xorNum >>= 1;
 	}
 
 	return res;
 }
 
-
 int main() {
 	cout << boolalpha;
 
-	cout << removeOuterParentheses("(()())(())") << '\n';
-	cout << removeOuterParentheses("(()())(())(()(()))") << '\n';
-	cout << removeOuterParentheses("()()") << '\n';
+	cout << minBitFlips(10, 7) << '\n';
+	cout << minBitFlips(3, 4) << '\n';
+
+	cout << minBitFlips(90977991, 38037526) << '\n';
+
+
 
 
 	return 0;

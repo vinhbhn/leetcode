@@ -17,45 +17,49 @@
 
 using namespace std;
 
-// O(1) 0ms 7.4MB
-//int minBitFlips(int start, int goal) {
-//	// no need to flip
-//	if (start == goal)
-//		return 0;
-//
-//	bitset<32> s(start), g(goal);
-//	string ss = s.to_string(), sg = g.to_string();
-//
-//	int i = ss.size() - 1, j = sg.size() - 1;
-//	int count = 0;
-//	while (i >= 0 && j >= 0)
-//	{
-//		if (ss[i] != sg[j])
-//			count++;
-//
-//		i--;
-//		j--;
-//	}
-//
-//	return count;
-//}
+// psionl0 idea O(n) O(1) 0ms 10.7MB
+int countStudents(vector<int>& students, vector<int>& sandwiches) {
 
-int minBitFlips(int start, int goal) {
-	// no need to flip
-	if (start == goal)
-		return 0;
-
-	int xorNum = start ^ goal;
-	int res = 0;
-	while (xorNum)
+	// count student like 0 (circular sandwichs) or 1 (square sandwichs)
+	int c0 = 0, c1 = 0;
+	for (int j = 0; j < students.size(); j++)
 	{
-		if (xorNum & 1) // check lsb == 1
-			res++;
-
-		xorNum >>= 1;
+		if (students[j] == 0)
+			c0++;
+		else
+			c1++;
 	}
 
-	return res;
+	int student_eat = 0;
+	// no need to do a full simulation
+	// keep trach number of remaining students that prefer type of sandwich
+	// if no more student choose type of sandwich that is currently on top of the stack
+	// means they dont eat
+	for (int i = 0; i < sandwiches.size(); i++)
+	{
+		if (sandwiches[i] == 0)
+		{
+			if (c0)
+			{
+				student_eat++;
+				c0--;
+			}
+			else
+				break;
+		}
+		else
+		{
+			if (c1)
+			{
+				student_eat++;
+				c1--;
+			}
+			else
+				break;
+		}
+	}
+
+	return static_cast<int>(students.size()) - student_eat;
 }
 
 int main() {

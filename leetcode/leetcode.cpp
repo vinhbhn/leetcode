@@ -17,60 +17,51 @@
 
 using namespace std;
 
-// psionl0 idea O(n) O(1) 0ms 10.7MB
-int countStudents(vector<int>& students, vector<int>& sandwiches) {
+// O(nlogn) O(n) 12ms 25MB
+//double minimumAverage(vector<int>& nums) {
+//	sort(nums.begin(), nums.end());
+//
+//	// based on problem conditions
+//	double min_average = 50.0;
+//
+//	int i = 0, j = nums.size() - 1;
+//	while (i < j)
+//	{
+//		double num = (nums[i] + nums[j]) / 2.0;
+//		min_average = min(min_average, num);
+//
+//		i++;
+//		j--;
+//	}
+//
+//	return min_average;
+//}
 
-	// count student like 0 (circular sandwichs) or 1 (square sandwichs)
-	int c0 = 0, c1 = 0;
-	for (int j = 0; j < students.size(); j++)
+// O(nlogn) O(n) 11ms 25MB
+double minimumAverage(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+	int n = nums.size();
+
+	// based on problem conditions
+	double min_average = 50.0;
+
+	for (int i = 0; i < n / 2; i++)
 	{
-		if (students[j] == 0)
-			c0++;
-		else
-			c1++;
+		double num = (nums[i] + nums[n - 1 - i]) / 2.0;
+		min_average = min(min_average, num);
 	}
 
-	int student_eat = 0;
-	// no need to do a full simulation
-	// keep trach number of remaining students that prefer type of sandwich
-	// if no more student choose type of sandwich that is currently on top of the stack
-	// means they dont eat
-	for (int i = 0; i < sandwiches.size(); i++)
-	{
-		if (sandwiches[i] == 0)
-		{
-			if (c0)
-			{
-				student_eat++;
-				c0--;
-			}
-			else
-				break;
-		}
-		else
-		{
-			if (c1)
-			{
-				student_eat++;
-				c1--;
-			}
-			else
-				break;
-		}
-	}
-
-	return static_cast<int>(students.size()) - student_eat;
+	return min_average;
 }
 
 int main() {
 	cout << boolalpha;
 
-	cout << minBitFlips(10, 7) << '\n';
-	cout << minBitFlips(3, 4) << '\n';
+	vector<int>  nums = { 7, 8, 3, 4, 15, 13, 4, 1 };
+	cout << minimumAverage(nums) << '\n';
 
-	cout << minBitFlips(90977991, 38037526) << '\n';
-
-
+	nums = { 1,9,8,3,10,5 };
+	cout << minimumAverage(nums) << '\n';
 
 
 	return 0;

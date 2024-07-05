@@ -17,26 +17,14 @@
 
 using namespace std;
 
-// O(n) 9ms 22.7MB
-int maxFrequencyElements(vector<int>& nums) {
-	unordered_map<int, int> mp;
-
-	for (int num : nums)
-	{
-		mp[num]++;
-	}
-
-	int max_freq = 0;
-	for (auto& [num, freq] : mp)
-	{
-		max_freq = max(max_freq, freq);
-	}
-
+// O(n) O(1) 6ms 20.2MB
+int countTestedDevices(vector<int>& batteryPercentages) {
+	// batteryPercentages - res (decrease) <= 0, move to the next
 	int res = 0;
-	for (auto& [num, freq] : mp)
+	for (int bP : batteryPercentages)
 	{
-		if (freq == max_freq)
-			res += max_freq;
+		if (bP - res > 0)
+			res++;
 	}
 
 	return res;
@@ -44,13 +32,11 @@ int maxFrequencyElements(vector<int>& nums) {
 
 int main() {
 	cout << boolalpha;
+	vector<int> batteryPercentages = { 1, 1, 2, 1, 3 };
+	cout << countTestedDevices(batteryPercentages) << '\n';
 
-	vector<int>  nums = { 7, 8, 3, 4, 15, 13, 4, 1 };
-	cout << minimumAverage(nums) << '\n';
-
-	nums = { 1,9,8,3,10,5 };
-	cout << minimumAverage(nums) << '\n';
-
+	batteryPercentages = { 0, 1, 2 };
+	cout << countTestedDevices(batteryPercentages) << '\n';
 
 	return 0;
 }

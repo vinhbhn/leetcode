@@ -17,41 +17,29 @@
 
 using namespace std;
 
-// O(nlogn) O(n) 12ms 25MB
-//double minimumAverage(vector<int>& nums) {
-//	sort(nums.begin(), nums.end());
-//
-//	// based on problem conditions
-//	double min_average = 50.0;
-//
-//	int i = 0, j = nums.size() - 1;
-//	while (i < j)
-//	{
-//		double num = (nums[i] + nums[j]) / 2.0;
-//		min_average = min(min_average, num);
-//
-//		i++;
-//		j--;
-//	}
-//
-//	return min_average;
-//}
+// O(n) 9ms 22.7MB
+int maxFrequencyElements(vector<int>& nums) {
+	unordered_map<int, int> mp;
 
-// O(nlogn) O(n) 11ms 25MB
-double minimumAverage(vector<int>& nums) {
-	sort(nums.begin(), nums.end());
-	int n = nums.size();
-
-	// based on problem conditions
-	double min_average = 50.0;
-
-	for (int i = 0; i < n / 2; i++)
+	for (int num : nums)
 	{
-		double num = (nums[i] + nums[n - 1 - i]) / 2.0;
-		min_average = min(min_average, num);
+		mp[num]++;
 	}
 
-	return min_average;
+	int max_freq = 0;
+	for (auto& [num, freq] : mp)
+	{
+		max_freq = max(max_freq, freq);
+	}
+
+	int res = 0;
+	for (auto& [num, freq] : mp)
+	{
+		if (freq == max_freq)
+			res += max_freq;
+	}
+
+	return res;
 }
 
 int main() {

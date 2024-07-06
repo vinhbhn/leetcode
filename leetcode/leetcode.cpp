@@ -17,26 +17,38 @@
 
 using namespace std;
 
-// O(n) O(1) 6ms 20.2MB
-int countTestedDevices(vector<int>& batteryPercentages) {
-	// batteryPercentages - res (decrease) <= 0, move to the next
-	int res = 0;
-	for (int bP : batteryPercentages)
+// O(n) O(1) n==time, 2ms 7MB
+int passThePillow(int n, int time) {
+	// range from 1 to n
+	// maintain direction variable and index variable
+	// while time is positive, update current index with current direction
+	// if the index reach the end of the line, multiply direction by -1.
+
+	int i = 1, direction = 1;
+	while (time)
 	{
-		if (bP - res > 0)
-			res++;
+		i += direction;
+
+		// reverse the direction if the next position is out of bounds
+		if (i == n || i == 1)
+			direction = -direction;
+
+		time--;
 	}
 
-	return res;
+	return i;
 }
+
 
 int main() {
 	cout << boolalpha;
-	vector<int> batteryPercentages = { 1, 1, 2, 1, 3 };
-	cout << countTestedDevices(batteryPercentages) << '\n';
 
-	batteryPercentages = { 0, 1, 2 };
-	cout << countTestedDevices(batteryPercentages) << '\n';
+	cout << passThePillow(4, 5) << '\n';
+	cout << passThePillow(3, 2) << '\n';
+
+	cout << passThePillow(4, 8) << '\n';
+
+
 
 	return 0;
 }

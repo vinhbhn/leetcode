@@ -17,26 +17,58 @@
 
 using namespace std;
 
-// O(logN) O(1) N = numBottle, 3ms 7.2MB
-int numWaterBottles(int numBottles, int numExchange) {
-	int numEmptyBottle = numBottles;
+// O(N^2) O(1) 4ms 26.8MB
+//int maximumStrongPairXor(vector<int>& nums) {
+//	int res = 0;
+//
+//	sort(nums.begin(), nums.end());
+//
+//	for (int i = 0; i < nums.size() - 1; i++)
+//	{
+//		for (int j = i; j < nums.size(); j++)
+//		{
+//			if (abs(nums[i] - nums[j]) <= min(nums[i], nums[j]))
+//			{
+//				// XOR
+//				res = max(res, nums[i] ^ nums[j]);
+//			}
+//			else
+//				break;
+//		}
+//	}
+//
+//	return res;
+//}
 
-	while (numEmptyBottle >= numExchange)
+// O(N^2) O(1) 13ms 26.4MB
+int maximumStrongPairXor(vector<int>& nums) {
+	int res = 0;
+
+	for (auto x : nums)
 	{
-		numBottles += numEmptyBottle / numExchange;
-
-															// rest
-		numEmptyBottle = (numEmptyBottle / numExchange) + numEmptyBottle % numExchange;
+		for (auto y : nums)
+		{
+			if (abs(x - y) <= min(x, y))
+			{
+				res = max(res, x ^ y);
+			}
+		}
 	}
 
-	return numBottles;
+	return res;
 }
 
 int main() {
 	cout << boolalpha;
 
-	cout << numWaterBottles(9, 3) << '\n';
-	cout << numWaterBottles(15, 4) << '\n';
+	vector<int> nums = { 1,2,3,4,5 };
+	cout << maximumStrongPairXor(nums) << '\n';
+
+	nums = { 10,100 };
+	cout << maximumStrongPairXor(nums) << '\n';
+
+	nums = { 5,6,25,30 };
+	cout << maximumStrongPairXor(nums) << '\n';
 
 	return 0;
 }

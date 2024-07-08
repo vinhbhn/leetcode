@@ -17,58 +17,41 @@
 
 using namespace std;
 
-// O(N^2) O(1) 4ms 26.8MB
-//int maximumStrongPairXor(vector<int>& nums) {
-//	int res = 0;
+//https://en.wikipedia.org/wiki/Josephus_problem#The_general_case
+// O(n) O(n) 0ms 7.1MB
+//int findTheWinner(int n, int k) {
+//	if (n == 1)
+//		return 1;
 //
-//	sort(nums.begin(), nums.end());
-//
-//	for (int i = 0; i < nums.size() - 1; i++)
-//	{
-//		for (int j = i; j < nums.size(); j++)
-//		{
-//			if (abs(nums[i] - nums[j]) <= min(nums[i], nums[j]))
-//			{
-//				// XOR
-//				res = max(res, nums[i] ^ nums[j]);
-//			}
-//			else
-//				break;
-//		}
-//	}
-//
-//	return res;
+//	return ((findTheWinner(n - 1, k) + k - 1) % n) + 1;
 //}
 
-// O(N^2) O(1) 13ms 26.4MB
-int maximumStrongPairXor(vector<int>& nums) {
-	int res = 0;
-
-	for (auto x : nums)
+// https://leetcode.com/problems/find-the-winner-of-the-circular-game/solutions/5438775/explanations-no-one-will-give-you-3-detailed-approaches-extremely-simple-and-effective/?envType=daily-question&envId=2024-07-08
+// O(N^2) O(N)
+int findTheWinner(int n, int k) {
+	vector<int> circle;
+	for (int i = 1; i <= n; i++)
 	{
-		for (auto y : nums)
-		{
-			if (abs(x - y) <= min(x, y))
-			{
-				res = max(res, x ^ y);
-			}
-		}
+		circle.push_back(i);
 	}
 
-	return res;
+	int cur_ind = 0;
+	while (circle.size() > 1)
+	{
+		int next_to_remove = (cur_ind + k - 1) % circle.size();
+		circle.erase(circle.begin() + next_to_remove);
+		cur_ind = next_to_remove;
+	}
+
+	return circle[0];
 }
 
 int main() {
 	cout << boolalpha;
 
-	vector<int> nums = { 1,2,3,4,5 };
-	cout << maximumStrongPairXor(nums) << '\n';
+	cout << findTheWinner(5, 2) << '\n';
+	cout << findTheWinner(6, 5) << '\n';
 
-	nums = { 10,100 };
-	cout << maximumStrongPairXor(nums) << '\n';
-
-	nums = { 5,6,25,30 };
-	cout << maximumStrongPairXor(nums) << '\n';
 
 	return 0;
 }

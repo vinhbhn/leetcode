@@ -17,40 +17,59 @@
 
 using namespace std;
 
-//https://en.wikipedia.org/wiki/Josephus_problem#The_general_case
-// O(n) O(n) 0ms 7.1MB
-//int findTheWinner(int n, int k) {
-//	if (n == 1)
-//		return 1;
+// pass 24/38
+//string reverseParentheses(string s) {
+//	string t = "()";
+//	while (s.find(t) != string::npos)
+//	{
+//		s.erase(s.find(t), t.size());
+//	}
 //
-//	return ((findTheWinner(n - 1, k) + k - 1) % n) + 1;
+//	while (s.find('(') != string::npos)
+//	{
+//		int i = s.find('('), j = s.find_last_of(')');
+//		cout << s << '\n';
+//
+//		// eg: (x) -> x
+//		if (s[i + 2] == ')')
+//		{
+//			// delete ')' first then come '('
+//			if ((i + 2) < s.size())
+//			{
+//				s.erase(s.begin() + i + 2);
+//				s.erase(s.begin() + i);
+//			}
+//		}
+//		else
+//		{
+//			if (i > j)
+//				swap(i, j);
+//
+//			reverse(s.begin() + i + 1, s.begin() + j);
+//
+//			// delete ')' first then come '('
+//			s.erase(s.begin() + j);
+//			s.erase(s.begin() + i);
+//		}
+//	}
+//
+//	return s;
 //}
 
-// https://leetcode.com/problems/find-the-winner-of-the-circular-game/solutions/5438775/explanations-no-one-will-give-you-3-detailed-approaches-extremely-simple-and-effective/?envType=daily-question&envId=2024-07-08
-// O(N^2) O(N)
-int findTheWinner(int n, int k) {
-	vector<int> circle;
-	for (int i = 1; i <= n; i++)
-	{
-		circle.push_back(i);
-	}
 
-	int cur_ind = 0;
-	while (circle.size() > 1)
-	{
-		int next_to_remove = (cur_ind + k - 1) % circle.size();
-		circle.erase(circle.begin() + next_to_remove);
-		cur_ind = next_to_remove;
-	}
-
-	return circle[0];
-}
 
 int main() {
 	cout << boolalpha;
 
-	cout << findTheWinner(5, 2) << '\n';
-	cout << findTheWinner(6, 5) << '\n';
+	/*cout << reverseParentheses("(abcd)") << '\n';
+	cout << reverseParentheses("(u(love)i)") << '\n';
+	cout << reverseParentheses("(ed(et(oc))el)") << '\n';*/
+
+	cout << reverseParentheses("ta()usw((((a))))") << '\n';
+	cout << reverseParentheses("sxmdll(q)eki(x)") << '\n';
+
+
+
 
 
 	return 0;

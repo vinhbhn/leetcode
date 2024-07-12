@@ -56,14 +56,66 @@ using namespace std;
 //	return s;
 //}
 
+// 0ms 8MB
+string reverseParentheses(string s) {
+	stack<int> ind;
+	vector<char> res;
+
+	for (char ch : s)
+	{
+		if (ch == '(')
+		{
+			ind.push(res.size());
+		}
+		else if (ch == ')')
+		{
+			int start_ind = ind.top();
+			ind.pop();
+			reverse(res.begin() + start_ind, res.end());
+		}
+		else
+		{
+			res.push_back(ch);
+		}
+	}
+
+	return string(res.begin(), res.end());
+}
+
+// https://leetcode.com/problems/reverse-substrings-between-each-pair-of-parentheses/solutions/5458638/explanations-no-one-will-give-you-2-detailed-approaches-extremely-simple-and-effective/?envType=daily-question&envId=2024-07-11
+// O(n^2) O(n) 3ms 8MB
+//string reverseParentheses(string s) {
+//	deque<int> ind_stack;
+//	vector<char> res;
+//
+//	for (char ch : s)
+//	{
+//		if (ch == '(')
+//		{
+//			ind_stack.push_back(res.size());
+//		}
+//		else if (ch == ')')
+//		{
+//			int start_ind = ind_stack.back();
+//			ind_stack.pop_back();
+//			reverse(res.begin() + start_ind, res.end());
+//		}
+//		else
+//		{
+//			res.push_back(ch);
+//		}
+//	}
+//
+//	return string(res.begin(), res.end());
+//}
 
 
 int main() {
 	cout << boolalpha;
 
-	/*cout << reverseParentheses("(abcd)") << '\n';
+	cout << reverseParentheses("(abcd)") << '\n';
 	cout << reverseParentheses("(u(love)i)") << '\n';
-	cout << reverseParentheses("(ed(et(oc))el)") << '\n';*/
+	cout << reverseParentheses("(ed(et(oc))el)") << '\n';
 
 	cout << reverseParentheses("ta()usw((((a))))") << '\n';
 	cout << reverseParentheses("sxmdll(q)eki(x)") << '\n';

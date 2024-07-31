@@ -17,25 +17,45 @@
 
 using namespace std;
 
-// O(NlogN) O(1) 0ms 8.9MB
-string clearDigits(string s) {
-	stack<char> st;
 
-	for (auto ch : s)
+// O(n) O(n) 3ms 7.9MB
+//vector<int> distributeCandies(int candies, int num_people) {
+//	vector<int> ans(num_people, 0);
+//
+//	int give = 0, i = 0;
+//	while (candies > give)
+//	{
+//		give++;
+//		ans[i % num_people] += give;
+//
+//		i++;
+//		candies -= give;
+//	}
+//	ans[i % num_people] += candies; // the rest of candies
+//
+//	return ans;
+//}
+
+// 0ms
+vector<int> distributeCandies(int candies, int num_people) {
+	vector<int> ans(num_people, 0);
+
+	int i = 0;
+	while (candies > 0)
 	{
-		if (isalpha(ch))
-			st.push(ch);
+		if (candies < i + 1)
+		{
+			ans[i % num_people] += candies;
+			candies = 0;
+		}
 		else
-			st.pop();
-	}
+		{
+			ans[i % num_people] += i + 1;
+			candies -= i + 1;
+		}
 
-	string ans = "";
-	while (!st.empty())
-	{
-		ans += st.top();
-		st.pop();
+		i++;
 	}
-	reverse(ans.begin(), ans.end());
 
 	return ans;
 }
@@ -43,9 +63,6 @@ string clearDigits(string s) {
 int main() {
 	cout << boolalpha;
 
-	cout << clearDigits("abc") << '\n';
-	cout << clearDigits("cb34") << '\n';
-	cout << clearDigits("cb34a") << '\n';
 
 	return 0;
 }

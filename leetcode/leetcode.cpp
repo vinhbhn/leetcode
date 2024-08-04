@@ -17,27 +17,40 @@
 
 using namespace std;
 
-// O(n) O(1) 0ms 27.9MB
-bool canAliceWin(vector<int>& nums) {
-	// s: single, d: double
-	int s = 0, d = 0;
+// O(N) O(1) 8ms 27.7MB
+int encrypt(int num)
+{
+	int largest_digit = 0, count = 0;
 
-	for (int num : nums)
+	while (num)
 	{
-		if (num < 10)
-			s += num;
-		else
-			d += num;
+		largest_digit = max(largest_digit, num % 10);
+		count++;
+		num /= 10;
 	}
 
-	// because alice choose all single-digit so bob must choose all double-digit and vice versa
-	// alice win if no sum of single-digit == sum of double-digit because alice can choose either
-	return s != d;
+	int ans = 0;
+	while (count--)
+	{
+		ans += largest_digit * static_cast<int>(pow(10, count));
+	}
+
+	return ans;
+}
+int sumOfEncryptedInt(vector<int>& nums) {
+	int res = 0;
+	for (int num : nums)
+	{
+		res += encrypt(num);
+	}
+
+	return res;
 }
 
 int main() {
 	cout << boolalpha;
 
+	cout << encrypt(123) << '\n';
 
 	return 0;
 }

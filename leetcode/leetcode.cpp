@@ -17,47 +17,22 @@
 
 using namespace std;
 
+// O(n) O(1) 0ms 27.9MB
+bool canAliceWin(vector<int>& nums) {
+	// s: single, d: double
+	int s = 0, d = 0;
 
-// O(n) O(n) 3ms 7.9MB
-//vector<int> distributeCandies(int candies, int num_people) {
-//	vector<int> ans(num_people, 0);
-//
-//	int give = 0, i = 0;
-//	while (candies > give)
-//	{
-//		give++;
-//		ans[i % num_people] += give;
-//
-//		i++;
-//		candies -= give;
-//	}
-//	ans[i % num_people] += candies; // the rest of candies
-//
-//	return ans;
-//}
-
-// 0ms
-vector<int> distributeCandies(int candies, int num_people) {
-	vector<int> ans(num_people, 0);
-
-	int i = 0;
-	while (candies > 0)
+	for (int num : nums)
 	{
-		if (candies < i + 1)
-		{
-			ans[i % num_people] += candies;
-			candies = 0;
-		}
+		if (num < 10)
+			s += num;
 		else
-		{
-			ans[i % num_people] += i + 1;
-			candies -= i + 1;
-		}
-
-		i++;
+			d += num;
 	}
 
-	return ans;
+	// because alice choose all single-digit so bob must choose all double-digit and vice versa
+	// alice win if no sum of single-digit == sum of double-digit because alice can choose either
+	return s != d;
 }
 
 int main() {

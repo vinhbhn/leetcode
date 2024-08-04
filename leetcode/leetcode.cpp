@@ -17,31 +17,20 @@
 
 using namespace std;
 
-// O(N) O(1) 8ms 27.7MB
-int encrypt(int num)
-{
-	int largest_digit = 0, count = 0;
-
-	while (num)
-	{
-		largest_digit = max(largest_digit, num % 10);
-		count++;
-		num /= 10;
-	}
-
-	int ans = 0;
-	while (count--)
-	{
-		ans += largest_digit * static_cast<int>(pow(10, count));
-	}
-
-	return ans;
-}
-int sumOfEncryptedInt(vector<int>& nums) {
+// O(n) O(1) 0ms 26.9MB
+int duplicateNumbersXOR(vector<int>& nums) {
 	int res = 0;
+	vector<int> c(51, 0);
+
 	for (int num : nums)
 	{
-		res += encrypt(num);
+		c[num]++;
+	}
+
+	for (int i = 1; i <= 50; i++)
+	{
+		if (c[i] == 2)
+			res ^= i;
 	}
 
 	return res;
@@ -49,8 +38,6 @@ int sumOfEncryptedInt(vector<int>& nums) {
 
 int main() {
 	cout << boolalpha;
-
-	cout << encrypt(123) << '\n';
 
 	return 0;
 }

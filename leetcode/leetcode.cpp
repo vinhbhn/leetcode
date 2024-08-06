@@ -17,16 +17,14 @@
 
 using namespace std;
 
-// O(N^2) O(1) 3ms 23.12MB
-int countCompleteDayPairs(vector<int>& hours) {
+// O(n) 0ms 13.5MB
+int busyStudent(vector<int>& startTime, vector<int>& endTime, int queryTime) {
 	int count = 0;
-	for (int i = 0; i < hours.size() - 1; i++)
+	for (int i = 0; i < startTime.size(); i++)
 	{
-		for (int j = i + 1; j < hours.size(); j++)
-		{
-			if ((hours[i] + hours[j]) % 24 == 0)
-				count++;
-		}
+		// form an interval: queryTime in [startTime(i), endTime(i)]
+		if (startTime[i] <= queryTime && queryTime <= endTime[i])
+			count++;
 	}
 
 	return count;

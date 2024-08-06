@@ -17,17 +17,16 @@
 
 using namespace std;
 
-// O(n) 0ms 13.5MB
-int busyStudent(vector<int>& startTime, vector<int>& endTime, int queryTime) {
-	int count = 0;
-	for (int i = 0; i < startTime.size(); i++)
+// O(n) 0ms 8.3MB
+string getEncryptedString(string s, int k) {
+	string sc = s;
+	int n = s.size();
+	for (int i = 0; i < n; i++)
 	{
-		// form an interval: queryTime in [startTime(i), endTime(i)]
-		if (startTime[i] <= queryTime && queryTime <= endTime[i])
-			count++;
+		sc[i] = s[(i + k) % n];
 	}
 
-	return count;
+	return sc;
 }
 
 int main() {

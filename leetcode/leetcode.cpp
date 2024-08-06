@@ -17,23 +17,19 @@
 
 using namespace std;
 
-// O(n) O(1) 0ms 26.9MB
-int duplicateNumbersXOR(vector<int>& nums) {
-	int res = 0;
-	vector<int> c(51, 0);
-
-	for (int num : nums)
+// O(N^2) O(1) 3ms 23.12MB
+int countCompleteDayPairs(vector<int>& hours) {
+	int count = 0;
+	for (int i = 0; i < hours.size() - 1; i++)
 	{
-		c[num]++;
+		for (int j = i + 1; j < hours.size(); j++)
+		{
+			if ((hours[i] + hours[j]) % 24 == 0)
+				count++;
+		}
 	}
 
-	for (int i = 1; i <= 50; i++)
-	{
-		if (c[i] == 2)
-			res ^= i;
-	}
-
-	return res;
+	return count;
 }
 
 int main() {
